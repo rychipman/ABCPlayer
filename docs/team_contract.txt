@@ -1,0 +1,59 @@
+* Goals of the team
+Get an A-worthy project
+
+* Personal goals
+Danielle: Use proper git workflow. Reinvent Karaoke  
+Harihar: Use ANTLR in a practical project. Learn how to use proper git workflow
+Ryan: Use proper git workflow.
+
+
+* Obstacles
+Bugs that take a long time to resolve. Shortcominges in software architecture.
+
+* What happens if one person decides they're ok with a B?
+The other two will just work harder.
+
+* Is it acceptable for one or two team members to do more work than the others in the order to get the team an A?
+Yes
+
+* When will meetings be held?
+Each day in class and in Simmons (we all live in Simmons).
+
+* How will you use in-class time
+Designing software architecture. Code reviewing.
+
+* How often do you think the team will need to meet outside of class? How long do you anticipate meetings will be?
+We'll probably need at least three coding sessions (3 hrs or more) during the week, in addition to class time.
+
+* How will you record and distribute the minutes and action lists produced by each meeting
+Harihar will write them in a document during the meeting and put them in the git repo
+
+* How much time do you think this will take?
+I'd guess it'll work out to about 20 man-hours a week
+
+* How will work be distributed?
+It will depend on people's schedules, interests, and prior knowledge.
+
+* How will deadlines be set?
+Based off the class deadlines
+
+* What happens if somebody doesn't meet a deadline or come to a meeting?
+They'll be expected to make up for the work and complete their regular assigned work as well.
+
+* How will the work be reviewed?
+Code will be reviewed by one other team member
+
+* What happens if people have different opinions on the quality of the work?
+If time permits, we will discuss the two options and implement the solution with better quality. If we are behind on our deadlines, we'll just implement the quickest solution that works.
+
+* What will you do if one or more team members are not doing their work?
+Kick them off
+
+* How will you deal with work habits of different team members?
+Go with the "better" habit (ex. get the work done early instead of late).
+
+* Do you need consensus?
+Nah, 2/3 is good
+
+* What do you do if somebody get's fixated on a particular idea?
+If time allows, give the person a chance to implement it. If we are behind on the deadlines, we will tell the person to focus on the tasks at hand.
