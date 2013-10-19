@@ -1,0 +1,85 @@
+1) Header comes first
+	X: Index number (doesn't matter)
+	T: Title (ex. Amazing Grace, Mary had a Little Lamb)
+	C: Composer (default: Unknown)
+	M: Meter = sum of durations of notes within a bar (default 4/4)
+	L: Default duration of note (default: if M < 0.75, then 1/16. Else, 1/8)
+	K: Key signature (ex. Am, C)
+	Q: Tempo = notes per minute (default 100)
+	
+	Caveats:	The first fields MUST be the Index number (X), title (T), and key (K)
+				The header fields must be on separate lines
+
+2) Octaves:
+	C = middle C
+	c = one octave higher than middle C
+	c' = two octaves higher than middle C
+	c'' = three octaves higher than middle C
+	C,, = two octaves lower than middle C
+
+3) Separation and repeats
+	| = separate into segments
+	|| or |] = end of major section
+	|: = repeat
+
+4) Note lengths
+	Uses default length (L) in header
+	Can be modified by appending multiplicative factor
+		If L = 1/8, then A1/4 = 1/32 length
+	Apostrophes and Commas must PRECEDE the multiplicative factor (ex. A,1/4)
+	If the numerator or denominator is missing, assume it is 1
+
+5) Accidentals
+	^ = sharp (ex. ^A, ^^C)
+	_ = flat (ex. _B)
+	= = natural (ex. =C)
+
+6) Rest (z)
+	Allows multiplicative factors, but no accidentals (ex. z1/4 is good, but ^z is bad)
+
+7) Chord
+	Sequence of notes enclosed in square brackets (ex. [C2E2])
+	Duration of chord is duration of first note (ex. [C2E4]G2 = [C2E2][E2G2])
+
+8) Tuplets
+	Duplet = 2 notes in the time of 3 notes (ex. (3GAB )
+	Triplet = 3 notes in the time of 2 notes (ex. (2GA )
+	Quadruplet = 4 notes in the time of 3 notes (ex. (4GABB )
+	Tuplets CAN have chords
+	Tuplets CANNOT have rests
+
+9) Repeats
+	Enclose a section with |: and :| to repeat once (ex. |: a b c :|)
+	If the beginning bar |: is omitted, begin at the major section (the bar that follows |])
+	To use alternate endings, begin them with [1 and [2 and [3, etc. 
+		|: C D E F |[1 G A B c | G A B B :|[2 F E D C |
+		C D E F G A B c G A B B C D E F F E D C
+
+10) Multiple voices
+	Include voices in the header (V: voice1Name)
+	And above the music in the body 
+		V: voice1Name
+		C8 C8 | C8 C8 | B,8 B,8 | C8 C8 |]	
+
+11) Lyrics (broken into syllables and separated by spaces)
+	Start with a w: (ex. w: syll-a-ble)
+	Follow immediately after associated notes (and must be on single line)
+	Not mandatory after each line
+	If a bar is repeated, you should repeat the lyrics
+	If syllables < notes, extra notes have no lyrics
+	If syllables > notes, extra syllables are ignored
+	- = syllable break
+	_ = previous syllable for extra note
+	* = blank syllable
+	~ = aligns multiple words under one note
+	/- = aligns multiple syllables under one note
+	| = advance to next bar
+w: syll-a-ble    is aligned with three notes
+w: syll-a--ble   is aligned with four notes
+w: syll-a -ble   (equivalent to the previous line)
+w: time__        is aligned with three notes
+w: of~the~day    is treated as one syllable (i.e. aligned with one note)
+                 but appears as three separate words
+ gf|e2dc B2A2|B2G2 E2D2|.G2.G2 GABc|d4 B2
+w: Sa-ys my au-l' wan to your aul' wan, Will~ye come to the Wa-x-ies dar-gle?
+
