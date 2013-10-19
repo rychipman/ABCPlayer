@@ -43,13 +43,19 @@ package grammar;
 /*
  * These are the lexical rules. They define the tokens used by the lexer.
  */
-EOL : [ \t]*[\n]+[\r]*;
+
 LINEFEED : [\t\r\n]+;
 TEXT : .+?;
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
 KEYACCIDENTAL : '#' | 'b';
 MODEMINOR : 'm';
+SPACE : [ ];
+REST : 'z';
+OCTAVE : '\''+ | ','+;
+ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
+BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
+
 
 /*
  * These are the parser rules. They define the structures used by the parser.
@@ -62,18 +68,20 @@ MODEMINOR : 'm';
  * For more information, see
  * http://www.antlr.org/wiki/display/ANTLR4/Parser+Rules#ParserRules-StartRulesandEOF
  */
-abc_tune : abc_header EOF;
+abc_tune : abc_header abc_music EOF;
+
+/** Header stuff */
 abc_header : field_number comment* field_title other_fields* field_key;
 
-field_number : 'X:' DIGIT+ EOL;
-field_title : 'T:' TEXT EOL;
+field_number : 'X:' DIGIT+ end_of_line;
+field_title : 'T:' TEXT end_of_line;
 other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | comment;
-field_composer : 'C:' TEXT EOL;
-field_default_length : 'L:' note_length_strict EOL;
-field_meter : 'M:' meter EOL;
-field_tempo : 'Q:' tempo EOL;
-field_voice : 'V:' TEXT EOL;
-field_key : 'K:' key EOL;
+field_composer : 'C:' TEXT end_of_line;
+field_default_length : 'L:' note_length_strict end_of_line;
+field_meter : 'M:' meter end_of_line;
+field_tempo : 'Q:' tempo end_of_line;
+field_voice : 'V:' TEXT end_of_line;
+field_key : 'K:' key end_of_line;
 
 comment : '%' TEXT LINEFEED;
 note_length_strict : DIGIT+ '/' DIGIT+;
@@ -82,3 +90,37 @@ meter_fraction : DIGIT+ '/' DIGIT+;
 tempo : meter_fraction '=' DIGIT+;
 
 key : BASENOTE KEYACCIDENTAL? MODEMINOR?;
+
+/** Music stuff */
+abc_music : abc_line+;
+abc_line : element+ LINEFEED (lyric LINEFEED)? | mid_tune_field | comment;
+element : note_element | tuplet_element | BARLINE | nth_repeat | SPACE ;
+
+
+note_element : note | multi_note;
+note : note_or_rest note_length?;
+note_or_rest : pitch | REST;
+pitch : ACCIDENTAL? BASENOTE OCTAVE?;
+note_length : (DIGIT+)? ('/' (DIGIT+)?)?;
+
+tuplet_element : tuplet_spec note_element+;
+tuplet_spec : '(' DIGIT;
+
+multi_note : '[' note+ ']';
+
+nth_repeat : '[1' | '[2';
+
+mid_tune_field : field_voice;
+
+end_of_line : comment | LINEFEED;
+
+lyric : 'w:' lyrical_element*;
+lyrical_element : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
+
+
+
+
+
+
+
+
