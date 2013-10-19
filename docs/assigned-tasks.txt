@@ -2,5 +2,9 @@ Tasks:
 
 * = completed
 
-Harihar - Complete team contract
-Harihar - Finish warmups
+* Harihar - Complete team contract
+* Harihar - Do warmups
+Ryan - check lyrics to Amazing grace
+Danielle - figure out how to implement tests for Sequencer
+Harihar - read about grammar and begin defining lexer/parser
+
