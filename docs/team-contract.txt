@@ -1,0 +1,63 @@
+What are the goals of the team?
+- We want to create an A-worthy project and avoid pushing all the work off until the last minute. If time allows, we'd like to implement some extra, cool features.
+
+What are your personal goals for this assignment?
+- Danielle wants to learn how to use a proper git workflow and reinvent karaoke as we know it. Harihar wants to get more experience with ANTLR. Ryan wants to learn how to use a proper git workflow.
+
+What kind of obstacles might you encounter in reaching your goals?
+- The major obstacles will be difficult-to-resolve bugs and shortcomings in the design. We'll put careful thought into the design so that we don't find major flaws with it during the the project. We'll use test first programming to minimize bugs.
+
+What happens if all of you decide you want to get an A grade, but because of time constraints, one person decides that a B will be acceptable?
+- If this ends up happening, the other two will have to take added work upon themselves.
+
+Is it acceptable for one or two team members to do more work than the others in order to get the team an A?
+- Obviously we'll want to divide the work evenly, and we'll arrange our schedules so that we get plenty of time to work on the project. The primary goal, however, is to finish the project, so each member will take it upon themselves to do work if others are slacking.
+
+Do you have a preference for when meetings will be held? Do you have a preference for where they should be held?
+- Meetings will be held in the evenings, after classes. This way, we have plenty of time to code. Since we all live close together in Simmons, our meetings will be held there.
+
+How will you use the in-class time?
+- Since we have limited time in class, we don't plan to start coding features there. Instead, we'll discuss the software architecture and use the time for teammates to update the team with status and the problems they are facing.
+
+How often do you think the team will need to meet outside of class? How long do you anticipate meetings will be?
+- We'll probably need at least three coding sessions (3 hrs or more) during each week, in addition to class time.
+
+How will you record and distribute the minutes and action lists produced by each meeting?
+- Harihar will write them in a document during the meeting and put them in the git repo
+
+How much time do you think this will take?
+- I'd guess it'll work out to about 20 man-hours a week
+
+How will work be distributed?
+- It will depend on people's schedules, interests, and prior knowledge.
+
+
+How will deadlines be set?
+- We'll aim to meet the class deadlines at least one day in advance.
+
+How will you decide who should do which tasks?
+- People who are interested in a task will be encouraged to take it. People who are skilled in a task will be encouraged to take it. People who are done with their task will be encouraged to take another.
+
+Where will you record who is responsible for which tasks?
+- The task assignments will be recorded in a document on the git repo
+
+What happens if somebody doesn't meet a deadline or come to a meeting?
+- They'll be expected to make up for the work and complete their regular assigned work as well.
+
+How will the work be reviewed?
+- Code will be reviewed by one other team member
+
+What happens if people have different opinions on the quality of the work?
+- If time permits, we will discuss the two options and implement the solution with better quality. If we are behind on our deadlines, we'll just implement the quickest solution that works.
+
+What will you do if one or more team members are not doing their work?
+- Kick them off
+
+How will you deal with work habits of different team members?
+- Go with the "better" habit (ex. get the work done early instead of late).
+
+Do you need consensus?
+- Nah, 2/3 is good
+
+What do you do if somebody get's fixated on a particular idea?
+- If time allows, give the person a chance to implement it. If we are behind on the deadlines, we will tell the person to focus on the tasks at hand.
