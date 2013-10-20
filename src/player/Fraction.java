@@ -1,10 +1,10 @@
-package sound;
+package player;
 
-public class FractionUtils{
+public class Fraction{
     private final int numerator;
     private final int denominator;
 
-    public FractionUtils(int numerator, int denominator) {
+    public Fraction(int numerator, int denominator) {
         if (denominator == 0) {
             throw new RuntimeException("Cannot have a denominator of 0");
         }
