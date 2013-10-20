@@ -1,4 +1,4 @@
-package sound;
+package player;
 
 public class Fraction{
     private final int numerator;
