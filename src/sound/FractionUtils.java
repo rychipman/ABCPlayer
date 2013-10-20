@@ -1,7 +1,29 @@
 package sound;
 
-public class Utilities {
+public class FractionUtils{
+    private final int numerator;
+    private final int denominator;
 
+    public FractionUtils(int numerator, int denominator) {
+        if (denominator == 0) {
+            throw new RuntimeException("Cannot have a denominator of 0");
+        }
+        this.numerator = numerator;
+        this.denominator = denominator;
+    }
+    
+    public int getNumerator() {
+        return numerator;
+    }
+    
+    public int getDenominator() {
+        return denominator;
+    }
+    
+    public double getFraction() {
+        return ( (double) numerator) / ( (double) denominator);
+    }
+    
     /**
      * Using Euclid's algorithm, this calculates the greatest common denominator of two integers.
      * @param a  Must be a positive integer.
@@ -33,5 +55,6 @@ public class Utilities {
         }
         int lcm =  (a / GCD(a, b)) * b;
         return lcm;
-     }
+     } 
+    
 }
