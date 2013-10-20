@@ -20,6 +20,9 @@ public class FractionUtils{
         return denominator;
     }
     
+    /**
+     * Returns a double representing the fraction as a decimal.
+     */
     public double getFraction() {
         return ( (double) numerator) / ( (double) denominator);
     }
