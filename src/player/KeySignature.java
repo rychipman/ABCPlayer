@@ -10,9 +10,21 @@ import java.util.Map;
 
 public class KeySignature {
     private int[] accidentals = new int[7];
+    private Map<String, int[]> keySigMap;
+    private final String key;
     
-    private KeySignature(int[] accidentals) {
-        this.accidentals = accidentals;
+    private KeySignature(String key) {
+        this.key = key;
+        this.keySigMap = this.buildKeySigMap();
+        this.accidentals = this.keySigMap.get(key);
+    }
+    
+    public String getKey() {
+        return this.key;
+    }
+    
+    public int[] getAccidentals() {
+        return this.accidentals.clone();
     }
     
     /**
@@ -21,7 +33,7 @@ public class KeySignature {
      * The array corresponding to each key is ordered {A,N,C,D,E,F,G}
      * @return Returns a map mapping each key to an array of set accidentals.
      */
-    private static Map<String, int[]> buildKeySigMap() {
+    private Map<String, int[]> buildKeySigMap() {
         Map<String, int[]> keySigMap = new HashMap<String, int[]>();
         keySigMap.put("C", new int[] {0,0,0,0,0,0,0});
         keySigMap.put("Am", new int[] {0,0,0,0,0,0,0});
@@ -55,5 +67,6 @@ public class KeySignature {
         keySigMap.put("Abm", new int[] {-1,-1,-1,-1,-1,-1,-1});
         return keySigMap;
     }
+    
     
 }
