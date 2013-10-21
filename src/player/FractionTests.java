@@ -21,6 +21,16 @@ public class FractionTests {
     }
     
     @Test
+    public void compareToTest(){
+        Fraction a = new Fraction(1,2);
+        Fraction b = new Fraction(1,3);
+        Fraction c = new Fraction(2,4);
+        assertTrue(a.compareTo(c) == 0);
+        assertTrue(a.compareTo(b) > 0);
+        assertTrue(b.compareTo(a) < 0);
+    }
+    
+    @Test
     public void LCMTests() {
         // test when b > a
         assertEquals(168, Fraction.LCM(24, 42));

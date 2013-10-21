@@ -1,6 +1,6 @@
 package player;
 
-public class Fraction{
+public class Fraction implements Comparable{
     private final int numerator;
     private final int denominator;
 
@@ -58,6 +58,16 @@ public class Fraction{
         }
         int lcm =  (a / GCD(a, b)) * b;
         return lcm;
-     } 
+     }
+
+    @Override
+    public int compareTo(Object other) {
+        if(!(other instanceof Fraction))
+            throw new IllegalArgumentException("Can only compare this to a Fraction object");
+        Fraction otherFrac = (Fraction)other;
+        return (this.getNumerator()*otherFrac.getDenominator() - otherFrac.getNumerator()*this.getDenominator());
+    } 
+    
+    
     
 }
