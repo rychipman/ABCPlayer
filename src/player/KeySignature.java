@@ -5,4 +5,5 @@ package player;
  * This class provides an enumeration of all the key signatures and a map to the accidentals they provide 
  */
 public class KeySignature {
+    
 }
