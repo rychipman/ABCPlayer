@@ -16,7 +16,6 @@ public class Note implements Music{
     
     @Override
     public String toString() {
-        return "X";
     }
 
     @Override
