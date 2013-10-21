@@ -8,15 +8,15 @@ public class Header implements ISongSequencerVisitable{
     private final int indexNumber;
     private final String title;
     private final String composer;
-    private final String key;
+    private final KeySignature keySignature;
     private final Fraction noteLengthPerBeat;
     private final int beatsPerMeasure;
 
-    public Header(int indexNumber, String title, String composer, String key, Fraction noteLengthPerBeat, int beatsPerMeasure) {
+    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMeasure) {
         this.indexNumber = indexNumber;
         this.title = title;
         this.composer = composer;
-        this.key = key;
+        this.keySignature = keySignature;
         this.noteLengthPerBeat = noteLengthPerBeat;
         this.beatsPerMeasure = beatsPerMeasure;
     }
@@ -26,7 +26,7 @@ public class Header implements ISongSequencerVisitable{
      * @param header the header to copy
      */
     public Header(Header header) {
-        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKey(), header.getNoteLengthPerBeat(), header.getBeatsPerMeasure());
+        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMeasure());
     }
 
     public int getIndexNumber() {
@@ -41,8 +41,8 @@ public class Header implements ISongSequencerVisitable{
         return title;
     }
     
-    public String getKey() {
-        return key;
+    public KeySignature getKeySignature() {
+        return keySignature;
     }
     
     public Fraction getNoteLengthPerBeat() {
@@ -59,7 +59,7 @@ public class Header implements ISongSequencerVisitable{
         output.append("Index Number: " + this.getIndexNumber());
         output.append(" - Composer: " + this.getComposer());
         output.append(" - Title: " + this.getTitle());
-        output.append(" - Key: " + this.getKey());
+        output.append(" - Key: " + this.getKeySignature().toString());
         output.append(" - Note Length per Beat: " + this.getNoteLengthPerBeat());
         output.append(" - Beats per Measure (meter): " + this.getBeatsPerMeasure());
         return output.toString();

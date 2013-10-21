@@ -1,10 +1,10 @@
 package player;
 
 public class SongSequencerVisitor implements ISongSequencerVisitor{
-
-    private final KeySignature keySig
     @Override
     public void visit(Song song) {
+        Header header = song.getHeader();
+        Body body = song.getBody();
     }
 
     @Override
