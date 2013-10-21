@@ -31,7 +31,6 @@ public class Chord implements Music{
             if (n.getDuration().compareTo(maxDuration) > 0)
                 maxDuration = n.getDuration();
         return maxDuration;
-        
     }
 
 }
