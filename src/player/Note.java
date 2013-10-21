@@ -1,6 +1,6 @@
 package player;
 
-public class Note implements Music{
+public class Note implements Music {
     
     private final NoteEnum note;
     private final AccidentalEnum accidental;
@@ -13,19 +13,36 @@ public class Note implements Music{
         this.octave = octave;
         this.duration = duration;
     }
-    
+
     @Override
     public String toString() {
+        StringBuilder octaveBuilder = new StringBuilder();
+        for(int i = 0; i < this.octave; i++)
+            octaveBuilder.append("'");
+        for(int i = 0; i < this.octave*-1; i++)
+            octaveBuilder.append(",");
+        return String.format("%s%s%s%s", this.accidental.toString(), this.note.toString(), octaveBuilder.toString(), this.duration.toString());
     }
-
-    @Override
-    public Voice copyVoice() {
-        return new Note(this.note, this.accidental, this.octave, new Fraction(this.duration));
-    }
-
+   
     @Override
     public Fraction getDuration() {
         return this.duration;
     }
+    
+    public NoteEnum getNote() {
+        return note;
+    }
 
+    public AccidentalEnum getAccidental() {
+        return accidental;
+    }
+
+    public int getOctave() {
+        return octave;
+    }
+    
+    @Override
+    public Music copy() {
+        return new Note(this.note, this.accidental, this.octave, this.duration);
+    }
 }

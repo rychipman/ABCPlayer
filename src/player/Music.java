@@ -1,3 +1,6 @@
 package player;
 
-public interface Music extends Voice{}
+public interface Music {
+    public Music copy();
+    public Fraction getDuration();
+}
