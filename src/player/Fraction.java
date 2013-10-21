@@ -12,6 +12,10 @@ public class Fraction{
         this.denominator = denominator;
     }
     
+    public Fraction(Fraction frac){
+        this(frac.getNumerator(), frac.getDenominator());
+    }
+    
     public int getNumerator() {
         return numerator;
     }

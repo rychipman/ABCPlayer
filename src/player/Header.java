@@ -21,6 +21,14 @@ public class Header {
         this.beatsPerMeasure = beatsPerMeasure;
     }
     
+    /**
+     * Constructor which creates a new Header from an existing header, copying the fields over
+     * @param header the header to copy
+     */
+    public Header(Header header) {
+        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKey(), header.getNoteLengthPerBeat(), header.getBeatsPerMeasure());
+    }
+
     public int getIndexNumber() {
         return indexNumber;
     }
