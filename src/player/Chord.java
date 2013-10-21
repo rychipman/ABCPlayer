@@ -3,10 +3,19 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A type representing a chord, which is simply a group of 
+ * notes played simultaneously within the same voice.
+ * @author rchipman
+ */
 public class Chord implements Music{
 
     private final List<Note> notes;
     
+    /**
+     * Construct a new Chord from the notes that compose it
+     * @param notes the notes that are to be in the Chord
+     */
     public Chord(List<Note> notes){
         assert notes.size() > 1;
         this.notes = new ArrayList<Note>();
