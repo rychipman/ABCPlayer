@@ -23,12 +23,6 @@ public class Tuplet implements Music {
 		}
 		return tupletBuilder.toString();
 	}
-	
-	@Override
-	public void accept(ISongSequencerVisitor visitor) {
-		visitor.visit(this);
-	}
-
 	@Override
 	public Music copy() {
 		return new Tuplet(this.type, new ArrayList<Note>(this.notes));
