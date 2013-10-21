@@ -1,34 +1,37 @@
 package player;
 
+import java.util.List;
+
 public class SongSequencerVisitor implements ISongSequencerVisitor{
+    private KeySignature keySignature;
+    private Fraction noteLengthPerBeat;
+    private int beatsPerMeasure;
+    private List<Music> music;
+    
     @Override
     public void visit(Song song) {
-        Header header = song.getHeader();
-        Body body = song.getBody();
+        song.getHeader().accept(this);
+        song.getBody().accept(this);
     }
 
     @Override
-    public void visit(Header song) {
-        // TODO Auto-generated method stub
-        
+    public void visit(Header header) {
+        this.keySignature = header.getKeySignature();
+        this.noteLengthPerBeat = header.getNoteLengthPerBeat();
+        this.beatsPerMeasure = header.getBeatsPerMeasure();
     }
 
     @Override
-    public void visit(Body song) {
-        // TODO Auto-generated method stub
-        
+    public void visit(Body body) {
+        for(Voice v : body.getVoices())
+            v.accept(this);
     }
 
     @Override
-    public void visit(Music song) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(Music music) {}
 
     @Override
-    public void visit(Note song) {
-        // TODO Auto-generated method stub
-        
+    public void visit(Note note) {
     }
 
     @Override
