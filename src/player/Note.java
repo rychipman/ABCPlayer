@@ -16,7 +16,7 @@ public class Note implements Music{
     
     @Override
     public String toString() {
-        return String.format("Note<>")
+        return "X";
     }
 
     @Override
