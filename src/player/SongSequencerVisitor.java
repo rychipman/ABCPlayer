@@ -1,12 +1,17 @@
 package player;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class SongSequencerVisitor implements ISongSequencerVisitor{
     private KeySignature keySignature;
     private Fraction noteLengthPerBeat;
     private int beatsPerMeasure;
-    private List<Music> music;
+    private HashMap<String, List<Music>> musicForVoiceName;
+    
+    public SongSequencerVisitor(){
+        this.musicForVoiceName = new HashMap<String, List<Music>>();
+    }
     
     @Override
     public void visit(Song song) {
@@ -28,22 +33,8 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
     }
 
     @Override
-    public void visit(Music music) {}
-
-    @Override
-    public void visit(Note note) {
-    }
-
-    @Override
-    public void visit(Rest song) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void visit(Voice voice) {
-        // TODO Auto-generated method stub
-        
+        this.musicForVoiceName.put(voice.getVoiceName(), voice.getSongComponents());
     }
 
 }

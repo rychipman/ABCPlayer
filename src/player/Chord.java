@@ -13,11 +13,6 @@ public class Chord implements Music{
         for (Note n : notes)
             this.notes.add(n);
     }
-    
-    @Override
-    public void accept(ISongSequencerVisitor visitor) {
-        visitor.visit(this);
-    }
 
     @Override
     public Music copy() {

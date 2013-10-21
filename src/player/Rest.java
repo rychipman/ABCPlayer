@@ -22,9 +22,4 @@ public class Rest implements Music {
     public Music copy() {
         return new Rest(this.duration);
     }
-
-    @Override
-    public void accept(ISongSequencerVisitor visitor) {
-        visitor.visit(this);   
-    }
 }
