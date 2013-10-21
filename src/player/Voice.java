@@ -3,7 +3,7 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Voice {
+public class Voice implements ISongSequencerVisitable{
     
     private final String voiceName;
     private final List<Music> songComponents;
@@ -16,4 +16,9 @@ public class Voice {
     }
     
     public Fraction getDuration(){throw new UnsupportedOperationException("Can't get duration");}
+
+    @Override
+    public void accept(ISongSequencerVisitor visitor) {
+        visitor.visit(this);
+    }
 }

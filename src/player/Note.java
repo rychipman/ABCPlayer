@@ -45,4 +45,9 @@ public class Note implements Music {
     public Music copy() {
         return new Note(this.note, this.accidental, this.octave, this.duration);
     }
+
+    @Override
+    public void accept(ISongSequencerVisitor visitor) {
+        visitor.visit(this);
+    }
 }

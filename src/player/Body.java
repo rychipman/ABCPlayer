@@ -3,7 +3,7 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Body {
+public class Body implements ISongSequencerVisitable{
     private final List<Voice> voices;
     
     public Body(List<Voice> voices){
@@ -18,5 +18,10 @@ public class Body {
     
     public List<Voice> getVoices() {
         return voices;
+    }
+
+    @Override
+    public void accept(ISongSequencerVisitor visitor) {
+        visitor.visit(this);
     }
 }

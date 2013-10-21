@@ -1,6 +1,6 @@
 package player;
 
-public interface Music {
+public interface Music extends ISongSequencerVisitable{
     public Music copy();
     public Fraction getDuration();
 }

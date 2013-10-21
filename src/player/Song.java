@@ -9,7 +9,7 @@ package player;
  *      The fields of the class are set by the constructor, 
  *      and they are recursively immutable
  */
-public class Song {
+public class Song implements ISongSequencerVisitable{
     private final Header header;
     private final Body body;
     
@@ -25,4 +25,10 @@ public class Song {
     public Body getBody() {
         return body;
     }
+
+    @Override
+    public void accept(ISongSequencerVisitor visitor) {
+        visitor.visit(this);
+    }
+    
 }

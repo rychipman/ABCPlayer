@@ -4,7 +4,7 @@ package player;
  * Represents the header of an ABC music file
  * This is immutable because each of the fields are immutable
  */
-public class Header {
+public class Header implements ISongSequencerVisitable{
     public final int indexNumber;
     public final String title;
     private final String composer;
@@ -63,5 +63,10 @@ public class Header {
         output.append(" - Note Length per Beat: " + this.getNoteLengthPerBeat());
         output.append(" - Beats per Measure (meter): " + this.getBeatsPerMeasure());
         return output.toString();
+    }
+
+    @Override
+    public void accept(ISongSequencerVisitor visitor) {
+        visitor.visit(this);
     }
 }
