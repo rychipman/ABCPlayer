@@ -5,12 +5,12 @@ package player;
  * This is immutable because each of the fields are immutable
  */
 public class Header implements ISongSequencerVisitable{
-    public final int indexNumber;
-    public final String title;
+    private final int indexNumber;
+    private final String title;
     private final String composer;
-    public final String key;
-    public final Fraction noteLengthPerBeat;
-    public final int beatsPerMeasure;
+    private final String key;
+    private final Fraction noteLengthPerBeat;
+    private final int beatsPerMeasure;
 
     public Header(int indexNumber, String title, String composer, String key, Fraction noteLengthPerBeat, int beatsPerMeasure) {
         this.indexNumber = indexNumber;
