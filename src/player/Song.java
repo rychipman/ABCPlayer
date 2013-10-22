@@ -13,15 +13,26 @@ public class Song implements ISongSequencerVisitable{
     private final Header header;
     private final Body body;
     
+    /**
+     * Construct a new Song comprised of a header and a body.
+     * @param header refers to the Header datatype that specifies title, composer, etc.
+     * @param body refers to the Body datatype that specifies notes, chords, etc.
+     */
     public Song(Header header, Body body){
         this.header = new Header(header);
         this.body = new Body(body);
     }    
     
+    /**
+     * @return Returns the header associated with the song.
+     */
     public Header getHeader() {
         return header;
     }
 
+    /**
+     * @return Returns the body of music associated with the song.
+     */
     public Body getBody() {
         return body;
     }

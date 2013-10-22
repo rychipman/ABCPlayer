@@ -13,16 +13,26 @@ public class KeySignature {
     private Map<String, int[]> keySigMap;
     private final String key;
     
+    /**
+     * Initializes a new KeySignature object.
+     * @param key is inputted as a string (ex "C", "D#m", "Gb")
+     */
     private KeySignature(String key) {
         this.key = key;
         this.keySigMap = this.buildKeySigMap();
         this.accidentals = this.keySigMap.get(key);
     }
     
+    /**
+     * @return Returns the key as a string.
+     */
     public String getKey() {
         return this.key;
     }
     
+    /**
+     * @return Returns a list representing the accidentals associated with the given key.
+     */
     public int[] getAccidentals() {
         return this.accidentals.clone();
     }
@@ -30,8 +40,8 @@ public class KeySignature {
     /**
      * Creates a map of the accidentals corresponding to each key in music.
      * -1 represents a flat, 0 represents a natural, and 1 represents a sharp.
-     * The array corresponding to each key is ordered {A,N,C,D,E,F,G}
-     * @return Returns a map mapping each key to an array of set accidentals.
+     * The array corresponding to each key is ordered {A,B,C,D,E,F,G}
+     * @return Returns a map of each key to an array of its respective accidentals.
      */
     private Map<String, int[]> buildKeySigMap() {
         Map<String, int[]> keySigMap = new HashMap<String, int[]>();
@@ -67,6 +77,4 @@ public class KeySignature {
         keySigMap.put("Abm", new int[] {-1,-1,-1,-1,-1,-1,-1});
         return keySigMap;
     }
-    
-    
 }

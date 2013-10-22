@@ -1,5 +1,8 @@
 package player;
 
+/**
+ * Specifies that a note can only take the value of A,B,C,D,E,F,G.
+ */
 public enum NoteEnum {
     C(0), D(2), E(4), F(5), G(7), A(9), B(11);
     NoteEnum(int i)
