@@ -13,7 +13,7 @@ public class KeySignature {
     private Map<String, int[]> keySigMap;
     private final String key;
     
-    private KeySignature(String key) {
+    public KeySignature(String key) {
         this.key = key;
         this.keySigMap = this.buildKeySigMap();
         this.accidentals = this.keySigMap.get(key);

@@ -25,24 +25,14 @@ public class Note implements Music {
     }
    
     @Override
-    public Fraction getDuration() {
-        return this.duration;
-    }
+    public Fraction getDuration() {return this.duration;}
     
-    public NoteEnum getNote() {
-        return note;
-    }
+    public NoteEnum getNote() {return note;}
 
-    public AccidentalEnum getAccidental() {
-        return accidental;
-    }
+    public AccidentalEnum getAccidental() {return accidental;}
 
-    public int getOctave() {
-        return octave;
-    }
+    public int getOctave() {return octave;}
     
     @Override
-    public Music copy() {
-        return new Note(this.note, this.accidental, this.octave, this.duration);
-    }
+    public Music copy() {return new Note(this.note, this.accidental, this.octave, this.duration);}
 }

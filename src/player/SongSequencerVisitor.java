@@ -58,6 +58,10 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getAccidentalVal() + 8*mNote.getOctave());
                     seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
+                    System.out
+                            .println("Playing note " + mNote.toString()
+                                    + " at time " + startTick + " for "
+                                    + duration);
                     startTick += duration;
                 } else if (m instanceof Chord){
                     Chord mChord = (Chord)m;
