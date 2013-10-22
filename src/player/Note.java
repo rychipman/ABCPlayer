@@ -33,9 +33,7 @@ public class Note implements Music {
      * @return Returns the set duration of the note.
      */
     @Override
-    public Fraction getDuration() {
-        return this.duration;
-    }
+    public Fraction getDuration() {return this.duration;}
     
     /**
      * @return Returns the pure note, without accidentals (A,B,C,D,E,F,G)

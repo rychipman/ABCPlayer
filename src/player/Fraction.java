@@ -68,6 +68,8 @@ public class Fraction implements Comparable{
         return (this.getNumerator()*otherFrac.getDenominator() - otherFrac.getNumerator()*this.getDenominator());
     } 
     
-    
-    
+    @Override
+    public String toString(){
+        return String.format("%d/%d", this.getNumerator(), this.getDenominator());
+    }
 }

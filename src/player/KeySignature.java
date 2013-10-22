@@ -15,9 +15,9 @@ public class KeySignature {
     
     /**
      * Initializes a new KeySignature object.
-     * @param key is inputted as a string (ex "C", "D#m", "Gb")
+     * @param key is inputed as a string (ex "C", "D#m", "Gb")
      */
-    private KeySignature(String key) {
+    public KeySignature(String key) {
         this.key = key;
         this.keySigMap = this.buildKeySigMap();
         this.accidentals = this.keySigMap.get(key);
