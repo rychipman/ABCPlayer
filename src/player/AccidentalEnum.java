@@ -5,7 +5,19 @@ package player;
  * @author rchipman
  */
 public enum AccidentalEnum {
-    NONE, SHARP, DOUBLE_SHARP, FLAT, DOUBLE_FLAT, NATURAL;
+    NONE(0), SHARP(1), DOUBLE_SHARP(2), FLAT(-1), DOUBLE_FLAT(-2), NATURAL(0);
+    
+    
+    private AccidentalEnum(int i){
+        this.accidentalVal = i;
+    }
+
+    private int accidentalVal;
+
+    public int getAccidentalVal()
+    {
+        return this.accidentalVal;
+    }
     
     /**
      * Get the ABC String for this kind of accidental

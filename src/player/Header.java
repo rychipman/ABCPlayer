@@ -10,15 +10,15 @@ public class Header implements ISongSequencerVisitable{
     private final String composer;
     private final KeySignature keySignature;
     private final Fraction noteLengthPerBeat;
-    private final int beatsPerMeasure;
+    private final int beatsPerMinute;
 
-    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMeasure) {
+    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMinute) {
         this.indexNumber = indexNumber;
         this.title = title;
         this.composer = composer;
         this.keySignature = keySignature;
         this.noteLengthPerBeat = noteLengthPerBeat;
-        this.beatsPerMeasure = beatsPerMeasure;
+        this.beatsPerMinute = beatsPerMinute;
     }
     
     /**
@@ -26,20 +26,14 @@ public class Header implements ISongSequencerVisitable{
      * @param header the header to copy
      */
     public Header(Header header) {
-        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMeasure());
+        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMinute());
     }
 
-    public int getIndexNumber() {
-        return indexNumber;
-    }
+    public int getIndexNumber() {return indexNumber;}
     
-    public String getComposer() {
-        return composer;
-    } 
+    public String getComposer() {return composer;} 
     
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() {return title;}
     
     public KeySignature getKeySignature() {
         return keySignature;
@@ -49,8 +43,8 @@ public class Header implements ISongSequencerVisitable{
         return noteLengthPerBeat;
     }
     
-    public int getBeatsPerMeasure() {
-        return beatsPerMeasure;
+    public int getBeatsPerMinute() {
+        return beatsPerMinute;
     }
     
     @Override
@@ -61,7 +55,7 @@ public class Header implements ISongSequencerVisitable{
         output.append(" - Title: " + this.getTitle());
         output.append(" - Key: " + this.getKeySignature().toString());
         output.append(" - Note Length per Beat: " + this.getNoteLengthPerBeat());
-        output.append(" - Beats per Measure (meter): " + this.getBeatsPerMeasure());
+        output.append(" - Beats per Measure (meter): " + this.getBeatsPerMinute());
         return output.toString();
     }
 

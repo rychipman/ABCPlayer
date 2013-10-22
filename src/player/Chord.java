@@ -10,8 +10,12 @@ import java.util.List;
  */
 public class Chord implements Music{
 
-    private final List<Note> notes;
+    private List<Note> notes;
     
+    public List<Note> getNotes() {
+        return notes;
+    }
+
     /**
      * Construct a new Chord from the notes that compose it
      * @param notes the notes that are to be in the Chord

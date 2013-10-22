@@ -1,7 +1,18 @@
 package player;
 
 public enum NoteEnum {
-    C, D, E, F, G, A, B;
+    C(0), D(2), E(4), F(5), G(7), A(9), B(11);
+    NoteEnum(int i)
+    {
+        this.pitchScale = i;
+    }
+
+    private int pitchScale;
+
+    public int getPitchScale()
+    {
+        return pitchScale;
+    }
     
     @Override
     public String toString(){

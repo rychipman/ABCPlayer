@@ -6,9 +6,17 @@ import java.util.List;
 public class Tuplet implements Music {
 
 	private final TupleEnum type;
-	private final List<Note> notes;
+	private List<Note> notes;
 	
-	public Tuplet(TupleEnum type, List<Note> notes) {
+	public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
+    public Tuplet(TupleEnum type, List<Note> notes) {
 		this.type = type;
 		this.notes = new ArrayList<Note>(notes);
 	}
