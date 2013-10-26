@@ -82,7 +82,6 @@ field_meter : 'M:' meter end_of_line;
 field_tempo : 'Q:' tempo end_of_line;
 field_voice : 'V:' TEXT end_of_line;
 field_key : 'K:' key end_of_line;
-
 comment : '%' TEXT LINEFEED;
 note_length_strict : DIGIT+ '/' DIGIT+;
 meter : 'C' | 'C|' | meter_fraction;
