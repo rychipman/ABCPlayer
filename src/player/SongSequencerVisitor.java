@@ -56,7 +56,7 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                 duration = ticksPerBeat.getDenominator() * m.getDuration().getNumerator() / m.getDuration().getDenominator();
                 if (m instanceof Note){
                     Note mNote = (Note)m;
-                    Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getAccidentalVal() + 8*mNote.getOctave());
+                    Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 8*mNote.getOctave());
                     seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     System.out
                             .println("Playing note " + mNote.toString()
@@ -66,14 +66,14 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                 } else if (m instanceof Chord){
                     Chord mChord = (Chord)m;
                     for (Note n : mChord.getNotes()){
-                        Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getAccidentalVal() + 8*n.getOctave());
+                        Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 8*n.getOctave());
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     }
                     startTick += duration;
                 } else if (m instanceof Tuplet){
                     Tuplet mTuplet = (Tuplet)m;
                     for (Note n : mTuplet.getNotes()){
-                        Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getAccidentalVal() + 8*n.getOctave());
+                        Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 8*n.getOctave());
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     }
                     startTick += duration;

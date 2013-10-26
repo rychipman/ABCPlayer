@@ -6,12 +6,26 @@ import java.util.List;
 /**
  * A type representing a chord, which is simply a group of 
  * notes played simultaneously within the same voice.
- * @author rchipman
+ * 
+ * Rep Invariant: This class is immutable
+ *      We copy the notes in the constructor to ensure that the client cannot modify them
+ *      The list of notes is final
+ *      We do not modify the fields in other methods
+ *      There is no rep exposure
+ *      
+ * Datatype definition:
+ * Chord = List<Note>
  */
 public class Chord implements Music{
 
-    private List<Note> notes;
+    /**
+     * The list of notes to be played simultaneously
+     */
+    private final List<Note> notes;
     
+    /**
+     * @return
+     */
     public List<Note> getNotes() {
         return notes;
     }
@@ -27,11 +41,18 @@ public class Chord implements Music{
             this.notes.add(n);
     }
 
+    /**
+     * Create a new chord with the same notes
+     */
     @Override
     public Music copy() {
         return new Chord(this.notes);
     }
 
+    /**
+     * The duration of the chord is the duration of the longest note
+     * This method returns the duration of the longest note
+     */
     @Override
     public Fraction getDuration() {
         Fraction maxDuration = new Fraction(0,1);
