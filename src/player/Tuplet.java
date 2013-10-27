@@ -54,12 +54,15 @@ public class Tuplet implements Music {
 	    case DUPLET:
 	        durationNum *= 3;
 	        durationDen *= 2;
+	        break;
 	    case TRIPLET:
 	        durationNum *= 2;
 	        durationDen *= 3;
+	        break;
 	    case QUADRUPLET:
-//	        durationNum *= 3;
-//	        durationDen *= 4;
+	        durationNum *= 3;
+	        durationDen *= 4;
+	        break;
 	    }
 	    return new Fraction(durationNum, durationDen);
 	}
