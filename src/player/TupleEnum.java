@@ -2,7 +2,6 @@ package player;
 
 /**
  * Specifies that a Tuple can only come as a Duplet, Triplet, or Quadruplet.
- * @author Dani
  */
 public enum TupleEnum {
     DUPLET, TRIPLET, QUADRUPLET;
