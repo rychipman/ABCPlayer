@@ -57,7 +57,7 @@ public class ADTTest {
         List<Voice> voices = new ArrayList<Voice>();
         voices.add(voice);
         Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,4), 60);
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,4), 180);
         Song song = new Song(header, body);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
         song.accept(visitor);
@@ -105,12 +105,10 @@ public class ADTTest {
         music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
         music.add(new Note(NoteEnum.B, AccidentalEnum.FLAT,0, new Fraction(1,8)));
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
-        
         chordHolder.set(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
         chordHolder.set(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
         chordHolder.set(2, new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
         music.add(new Tuplet(TupleEnum.TRIPLET, chordHolder));
-        
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
         music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL,1, new Fraction(1,8)));
         music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,8)));
@@ -124,7 +122,7 @@ public class ADTTest {
         List<Voice> voices = new ArrayList<Voice>();
         voices.add(voice);
         Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 40);
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 200);
         Song song = new Song(header, body);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
         song.accept(visitor);

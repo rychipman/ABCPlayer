@@ -44,16 +44,20 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
     }
     
     public void play() throws MidiUnavailableException, InvalidMidiDataException{
-        Fraction ticksPerBeat = new Fraction(1,1);
+        Fraction lcmCalc = new Fraction(1,1);
         for (String voiceName : this.musicForVoiceName.keySet())
             for(Music m : this.musicForVoiceName.get(voiceName))
-                ticksPerBeat = new Fraction(1, Fraction.LCM(m.getDuration().getDenominator(), ticksPerBeat.getDenominator()));
+                lcmCalc = new Fraction(1, Fraction.LCM(m.getDuration().getDenominator(), lcmCalc.getDenominator()));
+                Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator() / this.noteLengthPerBeat.getDenominator());
         SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, ticksPerBeat.getDenominator(), null);
+        
+        System.out.println("TICKS PER BEAT: " + ticksPerBeat.getDenominator());
+        
         int startTick = 0;
         int duration;
         for (String voiceName : this.musicForVoiceName.keySet()){
             for(Music m : this.musicForVoiceName.get(voiceName)){
-                duration = ticksPerBeat.getDenominator() * m.getDuration().getNumerator() / m.getDuration().getDenominator();
+                duration = (ticksPerBeat.getDenominator() * m.getDuration().getNumerator() * this.noteLengthPerBeat.getDenominator()) / m.getDuration().getDenominator();
                 if (m instanceof Note){
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 12*mNote.getOctave());
@@ -70,13 +74,27 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     }
                     startTick += duration;
-                } else if (m instanceof Tuplet){
+                } else if (m instanceof Tuplet) {
+                    System.out.println("Tuplet Duration: " + duration);
                     Tuplet mTuplet = (Tuplet)m;
                     for (Note n : mTuplet.getNotes()){
+                        int tupleNoteDur = duration;
+                        switch (mTuplet.getType()) {
+                            case DUPLET:
+                                tupleNoteDur = duration / 2;
+                            case TRIPLET:
+                                tupleNoteDur = duration / 3;
+                            case QUADRUPLET:
+//                                tupleNoteDur = duration / 4;
+                        }
                         Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
-                        seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
+                        seqPlayer.addNote(pitch.toMidiNote(), startTick, tupleNoteDur);  
+                        System.out
+                                .println("TUPLET -- Playing note " + n.toString()
+                                        + " at time " + startTick + " for "
+                                        + tupleNoteDur);
+                        startTick += tupleNoteDur;
                     }
-                    startTick += duration;
                 } else if (m instanceof Rest){
                     startTick += duration;
                 }

@@ -11,6 +11,10 @@ public class Tuplet implements Music {
 	public List<Note> getNotes() {
         return notes;
     }
+	
+	public TupleEnum getType() {
+	    return type;
+	}
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
@@ -35,29 +39,29 @@ public class Tuplet implements Music {
 	public Music copy() {
 		return new Tuplet(this.type, new ArrayList<Note>(this.notes));
 	}
-
+	
 	@Override
 	public Fraction getDuration() {
-		int durationNum = 0;
-		int durationDen = 1;
-		for(Note n : notes) {
-			int noteNum = n.getDuration().getNumerator();
-			int noteDen = n.getDuration().getDenominator();
-			durationNum = noteNum*durationDen + durationNum*noteDen;
-			durationDen = noteDen * durationDen;
-		}
-		switch(type) {
-		case DUPLET:
-			durationNum *= 3;
-			durationDen *= 2;
-		case TRIPLET:
-			durationNum *= 2;
-			durationDen *= 3;
-		case QUADRUPLET:
-			durationNum *= 3;
-			durationDen *= 4;
-		}
-		return new Fraction(durationNum, durationDen);
+	    int durationNum = 0;
+	    int durationDen = 1;
+	    for (Note n: notes) {
+	        int noteNum = n.getDuration().getNumerator();
+	        int noteDen = n.getDuration().getDenominator();
+	        durationNum += noteNum;
+	        durationDen = noteDen;
+	    }
+	    switch (type) {
+	    case DUPLET:
+	        durationNum *= 3;
+	        durationDen *= 2;
+	    case TRIPLET:
+	        durationNum *= 2;
+	        durationDen *= 3;
+	    case QUADRUPLET:
+//	        durationNum *= 3;
+//	        durationDen *= 4;
+	    }
+	    return new Fraction(durationNum, durationDen);
 	}
 
 }
