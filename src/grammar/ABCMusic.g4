@@ -55,8 +55,22 @@ REST : 'z';
 OCTAVE : '\''+ | ','+;
 ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
+
+KEY : BASENOTE KEYACCIDENTAL? MODEMINOR?;
+METER_FRACTION : DIGIT+ '/' DIGIT+;
+TEMPO : METER_FRACTION '=' DIGIT+;
+METER : 'C' | 'C|' | METER_FRACTION;
+NOTE_LENGTH_STRICT : DIGIT+ '/' DIGIT+;
+
 FIELD_NUMBER : 'X:' (SPACE)* DIGIT;
 FIELD_TITLE : 'T:' (SPACE)* TEXT;
+FIELD_COMPOSER: 'C:' (SPACE)* TEXT;
+FIELD_DEFAULT_LENGTH: 'L: ' (SPACE)* NOTE_LENGTH_STRICT;
+FIELD_METER: 'M: ' (SPACE)* METER;
+FIELD_TEMPO: 'Q: ' (SPACE)* TEMPO;
+FIELD_VOICE: 'V: ' (SPACE)* TEXT;
+FIELD_KEY: 'K: ' (SPACE)* KEY;
+
 
 /*
  * These are the parser rules. They define the structures used by the parser.
@@ -77,20 +91,17 @@ abc_header : field_number comment* field_title other_fields* field_key;
 
 field_number : FIELD_NUMBER end_of_line;
 field_title : FIELD_TITLE end_of_line;
-other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | comment;
-field_composer : 'C:' TEXT end_of_line;
-field_default_length : 'L:' note_length_strict end_of_line;
-field_meter : 'M:' meter end_of_line;
-field_tempo : 'Q:' tempo end_of_line;
-field_voice : 'V:' TEXT end_of_line;
-field_key : 'K:' key end_of_line;
-comment : '%' TEXT LINEFEED;
-note_length_strict : DIGIT+ '/' DIGIT+;
-meter : 'C' | 'C|' | meter_fraction;
-meter_fraction : DIGIT+ '/' DIGIT+;
-tempo : meter_fraction '=' DIGIT+;
+other_fields : FIELD_COMPOSER | FIELD_DEFAULT_LENGTH | FIELD_METER | FIELD_TEMPO | FIELD_VOICE | comment;
+field_composer : FIELD_COMPOSER end_of_line;
+field_default_length : FIELD_LENGTH_STRICT end_of_line;
+field_meter : FIELD_METER end_of_line;
+field_tempo : FIELD_TEMPO end_of_line;
+field_voice : FIELD_VOICE end_of_line;
+field_key : FIELD_KEY end_of_line;
 
-key : BASENOTE KEYACCIDENTAL? MODEMINOR?;
+comment : '%' TEXT LINEFEED;
+
+
 
 /** Music stuff */
 abc_music : abc_line+;
