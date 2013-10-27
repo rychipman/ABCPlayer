@@ -57,6 +57,7 @@ ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 FIELD_NUMBER : 'X:' DIGIT;
 
+
 /*
  * These are the parser rules. They define the structures used by the parser.
  *
@@ -73,7 +74,7 @@ abc_tune : abc_header abc_music EOF;
 /** Header stuff */
 abc_header : field_number comment* field_title other_fields* field_key;
 
-field_number : FIELD_NUMBER EOF;
+field_number : FIELD_NUMBER end_of_line;
 field_title : 'T:' TEXT end_of_line;
 other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | comment;
 field_composer : 'C:' TEXT end_of_line;
