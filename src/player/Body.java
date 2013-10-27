@@ -6,9 +6,23 @@ import java.util.List;
 /**
  * A type representing the body of an abc music document.
  * The body is made up of one or more Voices.
- * @author rchipman
+ * 
+ * Rep Invariant: This class is immutable
+ *      We are assured that a Voice is immutable, and we ensure that our list of voices is immutable
+ *      We copy the voices that are passed to the constructor, to ensure that the client cannot modify the voices
+ *      We can safely return the voices list as is because it is immutable
+ *      Since the class is immutable, we can safely pass it to the visitor
+ *      There is no rep exposure
+ *      
+ *  Datatype Definition:
+ *  Body = List<Voices>
  */
 public class Body implements ISongSequencerVisitable{
+    
+    /**
+     * This is the list of voices composing the song
+     * Each voice will correspond to an instrument or the lyrics
+     */
     private final List<Voice> voices;
     
     /**
@@ -39,7 +53,7 @@ public class Body implements ISongSequencerVisitable{
 
     /**
      * Accept a visitor so that we can parse our input using the Visitor method 
-     * @param visitor
+     * @param visitor the visitor to accept
      */
     @Override
     public void accept(ISongSequencerVisitor visitor) {

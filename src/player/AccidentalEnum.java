@@ -2,21 +2,38 @@ package player;
 
 /**
  * Enum representing the different kinds of accidentals used in abc notation
- * @author rchipman
+ * 
+ * Rep Invariant: This class is immutable because enums and ints are immutable
  */
 public enum AccidentalEnum {
+    /**
+     * Accidentals are constructed with a number that indicates the number of semitones they
+     * displace a note. For example, a DOUBLE_SHARP increases a note by two semitones, so 
+     * it is constructed with a value of 2.
+     */
     NONE(0), SHARP(1), DOUBLE_SHARP(2), FLAT(-1), DOUBLE_FLAT(-2), NATURAL(0);
     
+    /**
+     * Number of semitones to the accidental will offset a note by
+     * a negative value means the semitones are decreased
+     * a positive value means the semitones are increased
+     */
+    private int semitoneOffset;
     
-    private AccidentalEnum(int i){
-        this.accidentalVal = i;
+    /**
+     * Construct with a semitone offset
+     * @param semitoneOffset the number of semitones that this accidental will offset a note by
+     */
+    private AccidentalEnum(int semitoneOffset){
+        this.semitoneOffset = semitoneOffset;
     }
 
-    private int accidentalVal;
-
-    public int getAccidentalVal()
+    /**
+     * @return the number of semitones that this accidental will offset a note by
+     */
+    public int getSemitoneOffset()
     {
-        return this.accidentalVal;
+        return this.semitoneOffset;
     }
     
     /**

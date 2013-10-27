@@ -9,7 +9,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
 public class ABCMusicBaseListener implements ABCMusicListener {
-	@Override public void enterNote_length_strict(ABCMusicParser.Note_length_strictContext ctx) { }
+	@Override public void enterNote_length_strict(ABCMusicParser.Note_length_strictContext ctx) { 
+	    
+	}
 	@Override public void exitNote_length_strict(ABCMusicParser.Note_length_strictContext ctx) { }
 
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) { }
