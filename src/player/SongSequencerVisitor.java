@@ -82,10 +82,13 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                         switch (mTuplet.getType()) {
                             case DUPLET:
                                 tupleNoteDur = duration / 2;
+                                break;
                             case TRIPLET:
                                 tupleNoteDur = duration / 3;
+                                break;
                             case QUADRUPLET:
-//                                tupleNoteDur = duration / 4;
+                                tupleNoteDur = duration / 4;
+                                break;
                         }
                         Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, tupleNoteDur);  
