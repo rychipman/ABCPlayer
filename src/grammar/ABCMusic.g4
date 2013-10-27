@@ -45,7 +45,7 @@ package grammar;
  */
 
 LINEFEED : [\t\r\n]+;
-TEXT : .+?;
+TEXT : [^%]+?;
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
 KEYACCIDENTAL : '#' | 'b';
@@ -55,8 +55,8 @@ REST : 'z';
 OCTAVE : '\''+ | ','+;
 ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
-FIELD_NUMBER : 'X:' DIGIT;
-
+FIELD_NUMBER : 'X:' (SPACE)* DIGIT;
+FIELD_TITLE : 'T:' (SPACE)* TEXT;
 
 /*
  * These are the parser rules. They define the structures used by the parser.
@@ -75,7 +75,7 @@ abc_tune : abc_header abc_music EOF;
 abc_header : field_number comment* field_title other_fields* field_key;
 
 field_number : FIELD_NUMBER end_of_line;
-field_title : 'T:' TEXT end_of_line;
+field_title : FIELD_TITLE end_of_line;
 other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | comment;
 field_composer : 'C:' TEXT end_of_line;
 field_default_length : 'L:' note_length_strict end_of_line;
