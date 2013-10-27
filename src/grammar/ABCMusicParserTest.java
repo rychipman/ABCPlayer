@@ -43,7 +43,7 @@ public class ABCMusicParserTest {
         
         // Generate the parse tree using the starter rule.
         ParseTree tree;
-        tree = parser.abc_tune(); // "abc_music" is the starter rule.
+        tree = parser.field_number(); // "abc_music" is the starter rule.
 
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new ABCMusicBaseListener();

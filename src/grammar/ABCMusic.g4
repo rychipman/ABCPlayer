@@ -68,6 +68,7 @@ BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
  * For more information, see
  * http://www.antlr.org/wiki/display/ANTLR4/Parser+Rules#ParserRules-StartRulesandEOF
  */
+ 
 abc_tune : abc_header abc_music EOF;
 
 /** Header stuff */
@@ -94,7 +95,6 @@ key : BASENOTE KEYACCIDENTAL? MODEMINOR?;
 abc_music : abc_line+;
 abc_line : element+ LINEFEED (lyric LINEFEED)? | mid_tune_field | comment;
 element : note_element | tuplet_element | BARLINE | nth_repeat | SPACE ;
-
 
 note_element : note | multi_note;
 note : note_or_rest note_length?;
