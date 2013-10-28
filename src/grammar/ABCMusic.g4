@@ -58,7 +58,7 @@ BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
 FRACTION : DIGIT+ '/' DIGIT+;
 KEY : BASENOTE KEYACCIDENTAL? MODEMINOR?;
-TEMPO : FRACTION '=' DIGIT+;
+TEMPO : (FRACTION '=')? DIGIT+;
 METER : 'C' | 'C|' | FRACTION;
 COMMENT : '%' TEXT LINEFEED;
 
