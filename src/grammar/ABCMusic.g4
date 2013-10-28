@@ -45,7 +45,7 @@ package grammar;
  */
 
 LINEFEED : [\t\r\n]+;
-TEXT : [^%]+?;
+fragment TEXT : [^%]+?;
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
 KEYACCIDENTAL : '#' | 'b';
@@ -61,15 +61,33 @@ METER_FRACTION : DIGIT+ '/' DIGIT+;
 TEMPO : METER_FRACTION '=' DIGIT+;
 METER : 'C' | 'C|' | METER_FRACTION;
 NOTE_LENGTH_STRICT : DIGIT+ '/' DIGIT+;
+COMMENT : '%' TEXT LINEFEED;
 
 FIELD_NUMBER : 'X:' (SPACE)* DIGIT;
 FIELD_TITLE : 'T:' (SPACE)* TEXT;
 FIELD_COMPOSER: 'C:' (SPACE)* TEXT;
-FIELD_DEFAULT_LENGTH: 'L: ' (SPACE)* NOTE_LENGTH_STRICT;
-FIELD_METER: 'M: ' (SPACE)* METER;
-FIELD_TEMPO: 'Q: ' (SPACE)* TEMPO;
-FIELD_VOICE: 'V: ' (SPACE)* TEXT;
-FIELD_KEY: 'K: ' (SPACE)* KEY;
+FIELD_DEFAULT_LENGTH: 'L:' (SPACE)* NOTE_LENGTH_STRICT;
+FIELD_METER: 'M:' (SPACE)* METER;
+FIELD_TEMPO: 'Q:' (SPACE)* TEMPO;
+FIELD_VOICE: 'V:' (SPACE)* TEXT;
+FIELD_KEY: 'K:' (SPACE)* KEY;
+
+LYRIC : 'w:' LYRICAL_ELEMENT*;
+LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
+
+END_OF_LINE : COMMENT | LINEFEED;
+
+NTH_REPEAT : '[1' | '[2';
+
+TUPLET_SPEC : '(' DIGIT;
+
+PITCH : ACCIDENTAL? BASENOTE OCTAVE?;
+NOTE_OR_REST : PITCH | REST;
+fragment NOTE_LENGTH : (DIGIT+)? ('/' (DIGIT+)?)?;
+NOTE : NOTE_OR_REST NOTE_LENGTH?;
+MULTINOTE : '[' NOTE+ ']';
+NOTE_ELEMENT : NOTE | MULTINOTE;
+TUPLET_ELEMENT : TUPLET_SPEC NOTE_ELEMENT+;
 
 
 /*
@@ -87,51 +105,21 @@ FIELD_KEY: 'K: ' (SPACE)* KEY;
 abc_tune : abc_header abc_music EOF;
 
 /** Header stuff */
-abc_header : field_number comment* field_title other_fields* field_key;
+abc_header : field_number COMMENT* field_title other_fields* field_key;
 
-field_number : FIELD_NUMBER end_of_line;
-field_title : FIELD_TITLE end_of_line;
-other_fields : FIELD_COMPOSER | FIELD_DEFAULT_LENGTH | FIELD_METER | FIELD_TEMPO | FIELD_VOICE | comment;
-field_composer : FIELD_COMPOSER end_of_line;
-field_default_length : FIELD_LENGTH_STRICT end_of_line;
-field_meter : FIELD_METER end_of_line;
-field_tempo : FIELD_TEMPO end_of_line;
-field_voice : FIELD_VOICE end_of_line;
-field_key : FIELD_KEY end_of_line;
-
-comment : '%' TEXT LINEFEED;
-
-
+field_number : FIELD_NUMBER END_OF_LINE;
+field_title : FIELD_TITLE END_OF_LINE;
+other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | COMMENT;
+field_composer : FIELD_COMPOSER END_OF_LINE;
+field_default_length : FIELD_DEFAULT_LENGTH END_OF_LINE;
+field_meter : FIELD_METER END_OF_LINE;
+field_tempo : FIELD_TEMPO END_OF_LINE;
+field_voice : FIELD_VOICE END_OF_LINE;
+field_key : FIELD_KEY END_OF_LINE;
 
 /** Music stuff */
 abc_music : abc_line+;
-abc_line : element+ LINEFEED (lyric LINEFEED)? | mid_tune_field | comment;
-element : note_element | tuplet_element | BARLINE | nth_repeat | SPACE ;
-
-note_element : note | multi_note;
-note : note_or_rest note_length?;
-note_or_rest : pitch | REST;
-pitch : ACCIDENTAL? BASENOTE OCTAVE?;
-note_length : (DIGIT+)? ('/' (DIGIT+)?)?;
-
-tuplet_element : tuplet_spec note_element+;
-tuplet_spec : '(' DIGIT;
-
-multi_note : '[' note+ ']';
-
-nth_repeat : '[1' | '[2';
+abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
+element : NOTE_ELEMENT | TUPLET_ELEMENT | BARLINE | NTH_REPEAT | SPACE ;
 
 mid_tune_field : field_voice;
-
-end_of_line : comment | LINEFEED;
-
-lyric : 'w:' lyrical_element*;
-lyrical_element : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
-
-
-
-
-
-
-
-
