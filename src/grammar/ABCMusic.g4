@@ -45,7 +45,7 @@ package grammar;
  */
 
 LINEFEED : ('\t' | '\r' | '\n')+;
-fragment TEXT : 'Piece No.1';
+TEXT : 'Piece No.1';
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
 KEYACCIDENTAL : '#' | 'b';
@@ -57,19 +57,19 @@ ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
 FRACTION : DIGIT+ '/' DIGIT+;
+DIGITS : DIGIT+;
 KEY : BASENOTE KEYACCIDENTAL? MODEMINOR?;
-TEMPO : (FRACTION '=')? DIGIT+;
 METER : 'C' | 'C|' | FRACTION;
 COMMENT : '%' TEXT LINEFEED;
 
-FIELD_NUMBER : 'X:' (SPACE)* DIGIT;
-FIELD_TITLE : 'T:' (SPACE)* TEXT;
-FIELD_COMPOSER: 'C:' (SPACE)* TEXT;
-FIELD_DEFAULT_LENGTH: 'L:' (SPACE)* FRACTION;
-FIELD_METER: 'M:' (SPACE)* METER;
-FIELD_TEMPO: 'Q:' (SPACE)* TEMPO;
-FIELD_VOICE: 'V:' (SPACE)* TEXT;
-FIELD_KEY: 'K:' (SPACE)* KEY;
+FN_START : 'X:' (SPACE)*;
+FTI_START : 'T:' (SPACE)*;
+FC_START : 'C:' (SPACE)*;
+FD_START : 'L:' (SPACE)*;
+FM_START : 'M:' (SPACE)*;
+FTE_START : 'Q:' (SPACE)* (FRACTION '=')?;
+FV_START : 'V:' (SPACE)*;
+FK_START : 'K:' (SPACE)*;
 
 LYRIC : 'w:' LYRICAL_ELEMENT*;
 LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
@@ -101,15 +101,15 @@ abc_tune : abc_header abc_music EOF;
 abc_header : field_number COMMENT* field_title other_fields* field_key;
 
 end_of_line: COMMENT | LINEFEED;
-field_number : FIELD_NUMBER end_of_line;
-field_title : FIELD_TITLE end_of_line;
+field_number : FN_START DIGITS end_of_line;
+field_title : FTI_START TEXT end_of_line;
 other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | COMMENT;
-field_composer : FIELD_COMPOSER end_of_line;
-field_default_length : FIELD_DEFAULT_LENGTH end_of_line;
-field_meter : FIELD_METER end_of_line;
-field_tempo : FIELD_TEMPO end_of_line;
-field_voice : FIELD_VOICE end_of_line;
-field_key : FIELD_KEY end_of_line;
+field_composer : FC_START TEXT end_of_line;
+field_default_length : FD_START FRACTION end_of_line;
+field_meter : FM_START METER end_of_line;
+field_tempo : FTE_START DIGITS end_of_line;
+field_voice : FV_START TEXT end_of_line;
+field_key : FK_START KEY end_of_line;
 
 /* Music stuff */
 abc_music : abc_line+;
