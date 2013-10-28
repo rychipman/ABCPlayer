@@ -18,8 +18,11 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) { }
 	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) { }
 
-	@Override public void enterMid_tune_field(ABCMusicParser.Mid_tune_fieldContext ctx) { }
-	@Override public void exitMid_tune_field(ABCMusicParser.Mid_tune_fieldContext ctx) { }
+	@Override public void enterVoice(ABCMusicParser.VoiceContext ctx) { }
+	@Override public void exitVoice(ABCMusicParser.VoiceContext ctx) { }
+
+	@Override public void enterMusic_line(ABCMusicParser.Music_lineContext ctx) { }
+	@Override public void exitMusic_line(ABCMusicParser.Music_lineContext ctx) { }
 
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) { }
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) { }
@@ -35,9 +38,6 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) { }
-
-	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
-	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
 
 	@Override public void enterNote_length(ABCMusicParser.Note_lengthContext ctx) { }
 	@Override public void exitNote_length(ABCMusicParser.Note_lengthContext ctx) { }

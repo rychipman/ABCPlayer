@@ -112,15 +112,15 @@ field_voice : FV_START TEXT end_of_line;
 field_key : FK_START KEY end_of_line;
 
 /* Music stuff */
-abc_music : abc_line+;
-abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
+abc_music : (voice | COMMENT)+;
+music_line : element+ LINEFEED (LYRIC LINEFEED)?;
 
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
 multinote: L_BRACKET ((pitch | REST) note_length?)+ R_BRACKET;
 note_length : (SLASH? DIGIT+) | FRACTION;
-note_element : ((pitch | REST) note_length?) | multinote2;
+note_element : ((pitch | REST) note_length?) | multinote;
 tuplet_element : TUPLET_SPEC note_element+;
 
 element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) (SPACE*) ;
 
-mid_tune_field : field_voice;
+voice : (field_voice music_line)+ | (music_line)?;

@@ -1,5 +1,6 @@
 package grammar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -10,6 +11,7 @@ import player.Body;
 import player.Fraction;
 import player.Header;
 import player.KeySignature;
+import player.Music;
 import player.Song;
 import player.Voice;
 
@@ -27,6 +29,11 @@ public class SongListener extends ABCMusicBaseListener {
 	private int tempo;
 	
 	private List<Voice> voices;
+	
+	private String voiceName;
+	private List<Music> components;
+	
+	
 	/**
 	 * Top-level elements
 	 */
@@ -94,17 +101,24 @@ public class SongListener extends ABCMusicBaseListener {
 	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 	
 	@Override public void enterField_voice(ABCMusicParser.Field_voiceContext ctx) { }
-	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) { }
+	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) {
+		voiceName = ctx.TEXT().getText();
+	}
 	
 	/**
 	 * Music Elements
 	 */
 
-	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
-	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
+	@Override public void enterVoice(ABCMusicParser.VoiceContext ctx) {
+		voiceName = "";
+		components = new ArrayList<Music>();
+	}
+	@Override public void exitVoice(ABCMusicParser.VoiceContext ctx) {
+		voices.add(new Voice(voiceName, components));
+	}
 
-	@Override public void enterMid_tune_field(ABCMusicParser.Mid_tune_fieldContext ctx) { }
-	@Override public void exitMid_tune_field(ABCMusicParser.Mid_tune_fieldContext ctx) { }
+	@Override public void enterMusic_line(ABCMusicParser.Music_lineContext ctx) { }
+	@Override public void exitMusic_line(ABCMusicParser.Music_lineContext ctx) { }
 	
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
