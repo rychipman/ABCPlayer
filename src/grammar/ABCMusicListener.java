@@ -12,6 +12,9 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterElement(ABCMusicParser.ElementContext ctx);
 	void exitElement(ABCMusicParser.ElementContext ctx);
 
+	void enterMultinote(ABCMusicParser.MultinoteContext ctx);
+	void exitMultinote(ABCMusicParser.MultinoteContext ctx);
+
 	void enterMid_tune_field(ABCMusicParser.Mid_tune_fieldContext ctx);
 	void exitMid_tune_field(ABCMusicParser.Mid_tune_fieldContext ctx);
 
@@ -24,6 +27,12 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterAbc_header(ABCMusicParser.Abc_headerContext ctx);
 	void exitAbc_header(ABCMusicParser.Abc_headerContext ctx);
 
+	void enterEnd_of_line(ABCMusicParser.End_of_lineContext ctx);
+	void exitEnd_of_line(ABCMusicParser.End_of_lineContext ctx);
+
+	void enterNote_element(ABCMusicParser.Note_elementContext ctx);
+	void exitNote_element(ABCMusicParser.Note_elementContext ctx);
+
 	void enterAbc_line(ABCMusicParser.Abc_lineContext ctx);
 	void exitAbc_line(ABCMusicParser.Abc_lineContext ctx);
 
@@ -32,6 +41,9 @@ public interface ABCMusicListener extends ParseTreeListener {
 
 	void enterAbc_tune(ABCMusicParser.Abc_tuneContext ctx);
 	void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx);
+
+	void enterNote_or_rest(ABCMusicParser.Note_or_restContext ctx);
+	void exitNote_or_rest(ABCMusicParser.Note_or_restContext ctx);
 
 	void enterField_key(ABCMusicParser.Field_keyContext ctx);
 	void exitField_key(ABCMusicParser.Field_keyContext ctx);
@@ -45,8 +57,17 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterField_number(ABCMusicParser.Field_numberContext ctx);
 	void exitField_number(ABCMusicParser.Field_numberContext ctx);
 
+	void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx);
+	void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx);
+
 	void enterField_title(ABCMusicParser.Field_titleContext ctx);
 	void exitField_title(ABCMusicParser.Field_titleContext ctx);
+
+	void enterPitch(ABCMusicParser.PitchContext ctx);
+	void exitPitch(ABCMusicParser.PitchContext ctx);
+
+	void enterNote(ABCMusicParser.NoteContext ctx);
+	void exitNote(ABCMusicParser.NoteContext ctx);
 
 	void enterField_voice(ABCMusicParser.Field_voiceContext ctx);
 	void exitField_voice(ABCMusicParser.Field_voiceContext ctx);

@@ -44,8 +44,10 @@ package grammar;
  * These are the lexical rules. They define the tokens used by the lexer.
  */
 
-LINEFEED : [\t\r\n]+;
-fragment TEXT : [^%]+?;
+LINEFEED : ('\t' | '\r' | '\n')+;
+fragment ALPHABET : 'A'..'Z' | 'a'..'z';
+fragment DIGITS : '0'..'9';
+fragment TEXT : 'Piece No.1';
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
 KEYACCIDENTAL : '#' | 'b';
@@ -75,19 +77,13 @@ FIELD_KEY: 'K:' (SPACE)* KEY;
 LYRIC : 'w:' LYRICAL_ELEMENT*;
 LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
 
-END_OF_LINE : COMMENT | LINEFEED;
-
 NTH_REPEAT : '[1' | '[2';
 
 TUPLET_SPEC : '(' DIGIT;
 
-PITCH : ACCIDENTAL? BASENOTE OCTAVE?;
-NOTE_OR_REST : PITCH | REST;
-fragment NOTE_LENGTH : (DIGIT+)? ('/' (DIGIT+)?)?;
-NOTE : NOTE_OR_REST NOTE_LENGTH?;
-MULTINOTE : '[' NOTE+ ']';
-NOTE_ELEMENT : NOTE | MULTINOTE;
-TUPLET_ELEMENT : TUPLET_SPEC NOTE_ELEMENT+;
+NOTE_LENGTH : (DIGIT+ '/')? DIGIT+;
+L_BRACKET : '[';
+R_BRACKET : ']';
 
 
 /*
@@ -104,22 +100,31 @@ TUPLET_ELEMENT : TUPLET_SPEC NOTE_ELEMENT+;
  
 abc_tune : abc_header abc_music EOF;
 
-/** Header stuff */
+/* Header stuff */
 abc_header : field_number COMMENT* field_title other_fields* field_key;
 
-field_number : FIELD_NUMBER END_OF_LINE;
-field_title : FIELD_TITLE END_OF_LINE;
+end_of_line: COMMENT | LINEFEED;
+field_number : FIELD_NUMBER end_of_line;
+field_title : FIELD_TITLE end_of_line;
 other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | COMMENT;
-field_composer : FIELD_COMPOSER END_OF_LINE;
-field_default_length : FIELD_DEFAULT_LENGTH END_OF_LINE;
-field_meter : FIELD_METER END_OF_LINE;
-field_tempo : FIELD_TEMPO END_OF_LINE;
-field_voice : FIELD_VOICE END_OF_LINE;
-field_key : FIELD_KEY END_OF_LINE;
+field_composer : FIELD_COMPOSER end_of_line;
+field_default_length : FIELD_DEFAULT_LENGTH end_of_line;
+field_meter : FIELD_METER end_of_line;
+field_tempo : FIELD_TEMPO end_of_line;
+field_voice : FIELD_VOICE end_of_line;
+field_key : FIELD_KEY end_of_line;
 
-/** Music stuff */
+/* Music stuff */
 abc_music : abc_line+;
 abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
-element : NOTE_ELEMENT | TUPLET_ELEMENT | BARLINE | NTH_REPEAT | SPACE ;
+
+pitch : ACCIDENTAL? BASENOTE OCTAVE?;
+note_or_rest : pitch | REST;
+note : note_or_rest NOTE_LENGTH?;
+multinote: L_BRACKET note+ R_BRACKET;
+note_element : note | multinote;
+tuplet_element : TUPLET_SPEC note_element+;
+
+element : note_element | tuplet_element | BARLINE | NTH_REPEAT | SPACE ;
 
 mid_tune_field : field_voice;

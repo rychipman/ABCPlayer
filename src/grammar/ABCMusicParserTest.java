@@ -33,6 +33,7 @@ public class ABCMusicParserTest {
     public static String parseFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         String fileAsString = Charset.defaultCharset().decode(ByteBuffer.wrap(encoded)).toString();
+    	System.out.println(unEscapeString(fileAsString));
         CharStream fileAsStream = new ANTLRInputStream(fileAsString);
         ABCMusicLexer lexer = new ABCMusicLexer(fileAsStream);
         lexer.reportErrorsAsExceptions(); 
@@ -51,5 +52,15 @@ public class ABCMusicParserTest {
         return ((ABCMusicBaseListener)listener).toString();
     }
     
-
+    public static String unEscapeString(String s){
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<s.length(); i++)
+            switch (s.charAt(i)){
+                case '\n': sb.append("\\n\n"); break;
+                case '\t': sb.append("\\t\t"); break;
+                // ... rest of escape characters
+                default: sb.append(s.charAt(i));
+            }
+        return sb.toString();
+    }
 }
