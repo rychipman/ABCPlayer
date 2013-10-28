@@ -6,9 +6,6 @@ import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.Token;
 
 public interface ABCMusicListener extends ParseTreeListener {
-	void enterField_tempo(ABCMusicParser.Field_tempoContext ctx);
-	void exitField_tempo(ABCMusicParser.Field_tempoContext ctx);
-
 	void enterElement(ABCMusicParser.ElementContext ctx);
 	void exitElement(ABCMusicParser.ElementContext ctx);
 
@@ -18,11 +15,11 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterVoice(ABCMusicParser.VoiceContext ctx);
 	void exitVoice(ABCMusicParser.VoiceContext ctx);
 
-	void enterMusic_line(ABCMusicParser.Music_lineContext ctx);
-	void exitMusic_line(ABCMusicParser.Music_lineContext ctx);
-
 	void enterAbc_music(ABCMusicParser.Abc_musicContext ctx);
 	void exitAbc_music(ABCMusicParser.Abc_musicContext ctx);
+
+	void enterMusic_line(ABCMusicParser.Music_lineContext ctx);
+	void exitMusic_line(ABCMusicParser.Music_lineContext ctx);
 
 	void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx);
 	void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx);
@@ -36,20 +33,11 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterNote_length(ABCMusicParser.Note_lengthContext ctx);
 	void exitNote_length(ABCMusicParser.Note_lengthContext ctx);
 
-	void enterField_composer(ABCMusicParser.Field_composerContext ctx);
-	void exitField_composer(ABCMusicParser.Field_composerContext ctx);
-
 	void enterAbc_tune(ABCMusicParser.Abc_tuneContext ctx);
 	void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx);
 
 	void enterField_key(ABCMusicParser.Field_keyContext ctx);
 	void exitField_key(ABCMusicParser.Field_keyContext ctx);
-
-	void enterField_default_length(ABCMusicParser.Field_default_lengthContext ctx);
-	void exitField_default_length(ABCMusicParser.Field_default_lengthContext ctx);
-
-	void enterField_meter(ABCMusicParser.Field_meterContext ctx);
-	void exitField_meter(ABCMusicParser.Field_meterContext ctx);
 
 	void enterField_number(ABCMusicParser.Field_numberContext ctx);
 	void exitField_number(ABCMusicParser.Field_numberContext ctx);
@@ -65,7 +53,4 @@ public interface ABCMusicListener extends ParseTreeListener {
 
 	void enterNote(ABCMusicParser.NoteContext ctx);
 	void exitNote(ABCMusicParser.NoteContext ctx);
-
-	void enterField_voice(ABCMusicParser.Field_voiceContext ctx);
-	void exitField_voice(ABCMusicParser.Field_voiceContext ctx);
 }

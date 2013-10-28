@@ -44,14 +44,14 @@ package grammar;
  * These are the lexical rules. They define the tokens used by the lexer.
  */
 
-COMMENT : '%' (~'\n')+ LINEFEED;
-FN_START : 'X:' (SPACE)* DIGITS ;
-FTI_START : 'T:' (SPACE)*  (~'\n')+ ; 
-FC_START : 'C:' (SPACE)*  (~'\n')+ ; 
-FD_START : 'L:' (SPACE)* (DIGIT+ '/' DIGIT+) ;
-FM_START : 'M:' (SPACE)* ('C' | 'C|' | (DIGIT+ '/' DIGIT+)) ;
-FTE_START : 'Q:' (SPACE)* ((DIGIT+ '/' DIGIT+) '=')? DIGITS ;
-FV_START : 'V:' (SPACE)*  (~'\n')+ ; 
+COMMENT : '%' (~'\n')+ LINEFEED -> skip;
+FIELD_NUMBER : 'X:' (SPACE)* DIGITS ;
+FIELD_TITLE : 'T:' (SPACE)*  (~'\n')+ ; 
+FIELD_COMPOSER : 'C:' (SPACE)*  (~'\n')+ ; 
+FIELD_DEFAULT_LENGTH : 'L:' (SPACE)* (DIGIT+ '/' DIGIT+) ;
+FIELD_METER : 'M:' (SPACE)* ('C' | 'C|' | (DIGIT+ '/' DIGIT+)) ;
+FIELD_TEMPO : 'Q:' (SPACE)* ((DIGIT+ '/' DIGIT+) '=')? DIGITS ;
+FIELD_VOICE : 'V:' (SPACE)*  (~'\n')+ ; 
 
 FRACTION : DIGIT+ '/' DIGIT+;
 
@@ -66,7 +66,7 @@ ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
 
-FK_START : 'K:' (SPACE)* BASENOTE KEYACCIDENTAL? MODEMINOR?;
+FIELD_KEY : 'K:' (SPACE)* BASENOTE KEYACCIDENTAL? MODEMINOR?;
 
 LYRIC : 'w:' LYRICAL_ELEMENT* (~'\n')*;
 LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' ; 
@@ -94,23 +94,18 @@ DIGIT : '0'..'9';
  * http://www.antlr.org/wiki/display/ANTLR4/Parser+Rules#ParserRules-StartRulesandEOF
  */
  
-abc_tune : EOF;
+abc_tune : abc_header abc_music EOF;
 
 /* Header stuff */
-abc_header : field_number COMMENT* field_title other_fields* field_key;
+abc_header : field_number field_title other_fields* field_key;
 
-field_number : FN_START;
-field_title : FTI_START;
-other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | COMMENT;
-field_composer : FC_START ;
-field_default_length : FD_START ;
-field_meter : FM_START ;
-field_tempo : FTE_START  ;
-field_voice : FV_START ;
-field_key : FK_START ;
+field_number : FIELD_NUMBER;
+field_title : FIELD_TITLE;
+other_fields : FIELD_COMPOSER | FIELD_DEFAULT_LENGTH | FIELD_METER | FIELD_TEMPO | FIELD_VOICE;
+field_key : FIELD_KEY ;
 
 /* Music stuff */
-abc_music : (voice | COMMENT)+;
+abc_music : voice+;
 music_line : element+ LINEFEED (LYRIC LINEFEED)?;
 
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
@@ -122,4 +117,4 @@ tuplet_element : TUPLET_START note_element+;
 
 element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) (SPACE*) ;
 
-voice : (field_voice music_line)+ | (music_line)?;
+voice : (FIELD_VOICE music_line)+ | (music_line)?;

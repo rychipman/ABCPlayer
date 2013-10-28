@@ -40,14 +40,9 @@ public class ABCMusicParserTest {
     	CharStream fileAsStream = new ANTLRInputStream(fileAsString);
     	ABCMusicLexer lexer = new ABCMusicLexer(fileAsStream);
         lexer.reportErrorsAsExceptions();
-        List<? extends Token> toks = lexer.getAllTokens();
-        String[] tokTypes = lexer.getTokenNames();
-        for (Token t : toks){
-            System.out.println(t.getText());
-            System.out.println(tokTypes[t.getType()]);
-            System.out.println();
-        }
+        
         TokenStream tokens = new CommonTokenStream(lexer);
+        
         // Feed the tokens into the parser
         ABCMusicParser parser = new ABCMusicParser(tokens);
         parser.reportErrorsAsExceptions();

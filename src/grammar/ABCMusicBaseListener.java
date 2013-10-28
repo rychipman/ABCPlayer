@@ -9,9 +9,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
 public class ABCMusicBaseListener implements ABCMusicListener {
-	@Override public void enterField_tempo(ABCMusicParser.Field_tempoContext ctx) { }
-	@Override public void exitField_tempo(ABCMusicParser.Field_tempoContext ctx) { }
-
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
 
@@ -21,11 +18,11 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 	@Override public void enterVoice(ABCMusicParser.VoiceContext ctx) { }
 	@Override public void exitVoice(ABCMusicParser.VoiceContext ctx) { }
 
-	@Override public void enterMusic_line(ABCMusicParser.Music_lineContext ctx) { }
-	@Override public void exitMusic_line(ABCMusicParser.Music_lineContext ctx) { }
-
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) { }
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) { }
+
+	@Override public void enterMusic_line(ABCMusicParser.Music_lineContext ctx) { }
+	@Override public void exitMusic_line(ABCMusicParser.Music_lineContext ctx) { }
 
 	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
@@ -39,20 +36,11 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 	@Override public void enterNote_length(ABCMusicParser.Note_lengthContext ctx) { }
 	@Override public void exitNote_length(ABCMusicParser.Note_lengthContext ctx) { }
 
-	@Override public void enterField_composer(ABCMusicParser.Field_composerContext ctx) { }
-	@Override public void exitField_composer(ABCMusicParser.Field_composerContext ctx) { }
-
 	@Override public void enterAbc_tune(ABCMusicParser.Abc_tuneContext ctx) { }
 	@Override public void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx) { }
 
 	@Override public void enterField_key(ABCMusicParser.Field_keyContext ctx) { }
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) { }
-
-	@Override public void enterField_default_length(ABCMusicParser.Field_default_lengthContext ctx) { }
-	@Override public void exitField_default_length(ABCMusicParser.Field_default_lengthContext ctx) { }
-
-	@Override public void enterField_meter(ABCMusicParser.Field_meterContext ctx) { }
-	@Override public void exitField_meter(ABCMusicParser.Field_meterContext ctx) { }
 
 	@Override public void enterField_number(ABCMusicParser.Field_numberContext ctx) { }
 	@Override public void exitField_number(ABCMusicParser.Field_numberContext ctx) { }
@@ -68,9 +56,6 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 
 	@Override public void enterNote(ABCMusicParser.NoteContext ctx) { }
 	@Override public void exitNote(ABCMusicParser.NoteContext ctx) { }
-
-	@Override public void enterField_voice(ABCMusicParser.Field_voiceContext ctx) { }
-	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) { }
 
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
 	@Override public void exitEveryRule(ParserRuleContext ctx) { }
