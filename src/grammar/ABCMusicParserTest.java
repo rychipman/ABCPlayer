@@ -35,17 +35,22 @@ public class ABCMusicParserTest {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         String fileAsString = Charset.defaultCharset().decode(ByteBuffer.wrap(encoded)).toString();
     	System.out.println(unEscapeString(fileAsString));
-        CharStream fileAsStream = new ANTLRInputStream(fileAsString);
-        ABCMusicLexer lexer = new ABCMusicLexer(fileAsStream);
+    	CharStream fileAsStream = new ANTLRInputStream(fileAsString);
+    	ABCMusicLexer lexer = new ABCMusicLexer(fileAsStream);
         lexer.reportErrorsAsExceptions(); 
         TokenStream tokens = new CommonTokenStream(lexer);
         // Feed the tokens into the parser.
         ABCMusicParser parser = new ABCMusicParser(tokens);
         parser.reportErrorsAsExceptions();
-        
         // Generate the parse tree using the starter rule.
         ParseTree tree;
+        for(int i = 0; i < tokens.size(); i++)
+            System.out.println(tokens.get(i));
+        System.out.println("DONE");
+        if(true)
+            return "";
         tree = parser.abc_tune(); // "abc_music" is the starter rule.
+        
         ((RuleContext)tree).inspect(parser);
         
         ParseTreeWalker walker = new ParseTreeWalker();
