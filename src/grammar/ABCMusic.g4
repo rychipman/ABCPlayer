@@ -45,7 +45,7 @@ package grammar;
  */
 
 LINEFEED : ('\t' | '\r' | '\n')+;
-TEXT : 'Piece No.1';
+DIGITS : DIGIT+;
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
 KEYACCIDENTAL : '#' | 'b';
@@ -56,23 +56,20 @@ OCTAVE : '\''+ | ','+;
 ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
+
 FRACTION : DIGIT+ '/' DIGIT+;
-DIGITS : DIGIT+;
-KEY : BASENOTE KEYACCIDENTAL? MODEMINOR?;
-METER : 'C' | 'C|' | FRACTION;
-COMMENT : '%' TEXT LINEFEED;
-
+COMMENT : '%' (~'\n')+ LINEFEED;
 FN_START : 'X:' (SPACE)*;
-FTI_START : 'T:' (SPACE)*;
-FC_START : 'C:' (SPACE)*;
+FTI_START : 'T:' (SPACE)*  (~'\n')+; 
+FC_START : 'C:' (SPACE)*  (~'\n')+; 
 FD_START : 'L:' (SPACE)*;
-FM_START : 'M:' (SPACE)*;
+FM_START : 'M:' (SPACE)* ('C' | 'C|' | FRACTION);
 FTE_START : 'Q:' (SPACE)* (FRACTION '=')?;
-FV_START : 'V:' (SPACE)*;
-FK_START : 'K:' (SPACE)*;
+FV_START : 'V:' (SPACE)*  (~'\n')+; 
+FK_START : 'K:' (SPACE)* BASENOTE KEYACCIDENTAL? MODEMINOR?;
 
-LYRIC : 'w:' LYRICAL_ELEMENT*;
-LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
+LYRIC : 'w:' LYRICAL_ELEMENT* (~'\n')*;
+LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' ; 
 
 NTH_REPEAT : '[1' | '[2';
 
@@ -102,14 +99,14 @@ abc_header : field_number COMMENT* field_title other_fields* field_key;
 
 end_of_line: COMMENT | LINEFEED;
 field_number : FN_START DIGITS end_of_line;
-field_title : FTI_START TEXT end_of_line;
+field_title : FTI_START end_of_line;
 other_fields : field_composer | field_default_length | field_meter | field_tempo | field_voice | COMMENT;
-field_composer : FC_START TEXT end_of_line;
+field_composer : FC_START end_of_line;
 field_default_length : FD_START FRACTION end_of_line;
-field_meter : FM_START METER end_of_line;
+field_meter : FM_START end_of_line;
 field_tempo : FTE_START DIGITS end_of_line;
-field_voice : FV_START TEXT end_of_line;
-field_key : FK_START KEY end_of_line;
+field_voice : FV_START end_of_line;
+field_key : FK_START end_of_line;
 
 /* Music stuff */
 abc_music : (voice | COMMENT)+;

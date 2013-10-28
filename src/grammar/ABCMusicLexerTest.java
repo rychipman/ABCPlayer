@@ -95,8 +95,8 @@ public class ABCMusicLexerTest {
 	
 	@Test
     public void testMeter() {
-        String input = "CC| 4/4";
-        String[] expected = {"C", "C|", " ", "4/4"};
+        String input = "M: C|";
+        String[] expected = {"M: C|"};
         verifyLexer(input, expected);
     }
 	
