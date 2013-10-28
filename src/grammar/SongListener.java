@@ -1,5 +1,9 @@
 package grammar;
 
+import grammar.ABCMusicParser.NoteContext;
+import grammar.ABCMusicParser.Note_lengthContext;
+import grammar.ABCMusicParser.PitchContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +11,16 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import player.AccidentalEnum;
 import player.Body;
+import player.Chord;
 import player.Fraction;
 import player.Header;
 import player.KeySignature;
 import player.Music;
 import player.Note;
+import player.NoteEnum;
+import player.Rest;
 import player.Song;
 import player.TupleEnum;
 import player.Tuplet;
@@ -38,10 +46,12 @@ public class SongListener extends ABCMusicBaseListener {
 	//container for things in the Voice
 	private List<Music> components;
 	private List<Music> tupletNotes;
-	private List<Note> chordNotes;
+	private List<Music> chordNotes;
 	
 	//Notes are always put in this container. this will be assigned to the appropriate
 	//container from above (see below) when necessary
+	private List<Music> chordParentContainer;
+	private List<Music> tupletParentContainer;
 	private List<Music> noteContainer;
 	
 	
@@ -135,10 +145,23 @@ public class SongListener extends ABCMusicBaseListener {
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
 
-	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) { }
-	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) { }
+	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) {
+		chordParentContainer = noteContainer;
+		chordNotes = new ArrayList<Music>();
+		noteContainer = chordNotes;
+	}
+	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) {
+		//TODO not great form, but temporary -- assumes only notes can be in chords
+		ArrayList<Note> notes = new ArrayList<Note>();
+		for(Music m : chordNotes) {
+			notes.add((Note)m);
+		}
+		chordParentContainer.add(new Chord(notes));
+		noteContainer = chordParentContainer;
+	}
 
 	@Override public void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
+		tupletParentContainer = noteContainer;
 		//empty the tuplet note container
 		tupletNotes = new ArrayList<Music>();
 		//set the tuplet container as the current destinatino for all notes
@@ -153,16 +176,47 @@ public class SongListener extends ABCMusicBaseListener {
 		case 4: tupletType = TupleEnum.QUADRUPLET; break;
 		}
 		//create the tuplet object and append it to the voice
-		components.add(new Tuplet(tupletType, tupletNotes));
+		tupletParentContainer.add(new Tuplet(tupletType, tupletNotes));
 		//set the container back to the main voice
-		noteContainer = components;
+		noteContainer = tupletParentContainer;
 	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	
 	@Override public void enterNote(ABCMusicParser.NoteContext ctx) { }
-	@Override public void exitNote(ABCMusicParser.NoteContext ctx) { }
+	@Override public void exitNote(ABCMusicParser.NoteContext ctx) {	
+		Fraction duration = defaultLength;
+		if(ctx.note_length() != null) {
+			Note_lengthContext durationCtx = ctx.note_length();
+			if(durationCtx.FRACTION() != null) {
+				duration = parseFraction(durationCtx.FRACTION().getText());
+			} else if(durationCtx.SLASH() != null) {
+				int num = 1;
+				int den = Integer.parseInt(durationCtx.DIGITS().getText());
+				duration = new Fraction(num, den);
+			} else {
+				int num = Integer.parseInt(durationCtx.DIGITS().getText());
+				int den = 1;
+				duration = new Fraction(num, den);
+			}
+		}
+		
+		NoteEnum baseNote = NoteEnum.C;
+		AccidentalEnum accidental = AccidentalEnum.NONE;
+		int octave = 4;
+		if(ctx.pitch() != null) {
+			PitchContext pitchCtx = ctx.pitch();
+			//TODO all this to parse and switch through the pitch
+			//TODO do we need to add all the code for transposing here?
+		}
+		
+		if(ctx.REST() != null) {
+			noteContainer.add(new Rest(duration));
+		} else {
+			noteContainer.add(new Note(baseNote, accidental, octave, duration));
+		}
+	}
 
 	@Override public void enterNote_length(ABCMusicParser.Note_lengthContext ctx) { }
 	@Override public void exitNote_length(ABCMusicParser.Note_lengthContext ctx) { }

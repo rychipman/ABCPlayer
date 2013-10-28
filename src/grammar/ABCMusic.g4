@@ -118,7 +118,7 @@ music_line : element+ LINEFEED (LYRIC LINEFEED)?;
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
 note : (pitch | REST) note_length?;
 multinote: L_BRACKET (note)+ R_BRACKET;
-note_length : (SLASH? DIGIT+) | FRACTION;
+note_length : (SLASH? DIGITS) | FRACTION;
 note_element : note | multinote;
 tuplet_element : L_PAREN DIGIT note_element+;
 

@@ -90,7 +90,15 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                                 tupleNoteDur = duration / 4;
                                 break;
                         }
-                        Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
+                        Pitch pitch = null;
+                        if(n instanceof Note) {
+                        	Note n1 = (Note)n;
+                        	pitch = new Pitch(n1.getNote().toString().charAt(0)).transpose(n1.getAccidental().getSemitoneOffset() + 12*n1.getOctave());
+                        } else {
+                        	//TODO this is really bad -- this is currently assuming that all stuffin a tuplet will be a note
+                        	// I changed the support in tuplet to List<Music> in the ADT, but that still has to be done here,
+                        	// along with major refactoring
+                        }
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, tupleNoteDur);  
                         System.out
                                 .println("TUPLET -- Playing note " + n.toString()
