@@ -1,4 +1,4 @@
-// Generated from src/grammar/ABCMusic.g4 by ANTLR 4.0
+// Generated from ABCMusic.g4 by ANTLR 4.0
 
 package grammar;
 

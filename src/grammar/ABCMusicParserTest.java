@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -45,7 +46,8 @@ public class ABCMusicParserTest {
         // Generate the parse tree using the starter rule.
         ParseTree tree;
         tree = parser.abc_tune(); // "abc_music" is the starter rule.
-
+        ((RuleContext)tree).inspect(parser);
+        
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new ABCMusicBaseListener();
         walker.walk(listener, tree);

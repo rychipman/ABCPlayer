@@ -1,5 +1,9 @@
 package player;
 
+import java.io.IOException;
+
+import grammar.ABCMusicParserTest;
+
 /**
  * Main entry point of your application.
  */
@@ -20,5 +24,12 @@ public class Main {
 
     public static void main(String[] args) {
         // CALL play() HERE
+        try {
+            System.out.println(ABCMusicParserTest
+                    .parseFile(ABCMusicParserTest.songFileNames[0]));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
