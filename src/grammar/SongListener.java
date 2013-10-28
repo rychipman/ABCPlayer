@@ -87,12 +87,12 @@ public class SongListener extends ABCMusicBaseListener {
 
 	@Override public void enterField_title(ABCMusicParser.Field_titleContext ctx) { }
 	@Override public void exitField_title(ABCMusicParser.Field_titleContext ctx) {
-		title = ctx.TEXT().getText();
+		title = parseText("T:", ctx.FTI_START().getText());
 	}
 
 	@Override public void enterField_composer(ABCMusicParser.Field_composerContext ctx) { }
 	@Override public void exitField_composer(ABCMusicParser.Field_composerContext ctx) {
-		composer = ctx.TEXT().getText();
+		composer = parseText("C:", ctx.FC_START().getText());
 	}
 
 	@Override public void enterField_meter(ABCMusicParser.Field_meterContext ctx) { }
@@ -123,7 +123,7 @@ public class SongListener extends ABCMusicBaseListener {
 	
 	@Override public void enterField_voice(ABCMusicParser.Field_voiceContext ctx) { }
 	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) {
-		voiceName = ctx.TEXT().getText();
+		voiceName = parseText("V:", ctx.FV_START().getText());
 	}
 	
 	/**
@@ -235,5 +235,10 @@ public class SongListener extends ABCMusicBaseListener {
 		int num = Integer.parseInt(fracArray[0]);
 		int den = Integer.parseInt(fracArray[1]);
 		return new Fraction(num, den);
+	}
+	
+	private String parseText(String label, String line) {
+		String[] split = line.split(label);
+		return split[1].trim();
 	}
 }
