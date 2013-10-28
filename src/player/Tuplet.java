@@ -11,6 +11,10 @@ public class Tuplet implements Music {
 	public List<Note> getNotes() {
         return notes;
     }
+	
+	public TupleEnum getType() {
+		return type;
+	}
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
@@ -46,16 +50,22 @@ public class Tuplet implements Music {
 			durationNum = noteNum*durationDen + durationNum*noteDen;
 			durationDen = noteDen * durationDen;
 		}
+		int gcd = Fraction.GCD(durationNum, durationDen);
+		durationNum /= gcd;
+		durationDen /= gcd;
 		switch(type) {
 		case DUPLET:
 			durationNum *= 3;
 			durationDen *= 2;
+			break;
 		case TRIPLET:
 			durationNum *= 2;
 			durationDen *= 3;
+			break;
 		case QUADRUPLET:
 			durationNum *= 3;
 			durationDen *= 4;
+			break;
 		}
 		return new Fraction(durationNum, durationDen);
 	}
