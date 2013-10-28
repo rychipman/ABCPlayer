@@ -45,13 +45,6 @@ public class ABCMusicLexerTest {
 	}
 	
 	@Test
-	public void testSpace() {
-		String input = "A  C   bb";
-		String[] expected = {"A", " ", " ", "C", " ", " ", " ", "bb"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
 	public void testRests() {
 		String input = "ab z z C";
 		String[] expected = {"ab", " ", "z", " ", "z", " ", "C"};
@@ -95,8 +88,8 @@ public class ABCMusicLexerTest {
 	
 	@Test
     public void testTempo() {
-        String input = "42 1/4=234C";
-        String[] expected = {"42", " ", "1/4=234", "C"};
+        String input = "1/4=234";
+        String[] expected = {"1/4", "=", "234"};
         verifyLexer(input, expected);
     }
 	
@@ -114,12 +107,13 @@ public class ABCMusicLexerTest {
         verifyLexer(input, expected);
     }
 	
-	
-//	@Test(expected=RuntimeException.class)
-//	public void testExceptions() {
-//		verifyLexer("z?()()qx", new String[8]);
-//	}
-	
+	@Test
+	public void testLinefeed() {
+	    String input = "\t\r  \n";
+	    String[] expected = {"\t\r", "  ", "\n"};
+	    verifyLexer(input, expected);
+	}
+		
 	public void verifyLexer(String input, String[] expectedTokens) {
         CharStream stream = new ANTLRInputStream(input);
         ABCMusicLexer lexer = new ABCMusicLexer(stream);
