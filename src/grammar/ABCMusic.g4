@@ -105,8 +105,8 @@ other_fields : FIELD_COMPOSER | FIELD_DEFAULT_LENGTH | FIELD_METER | FIELD_TEMPO
 field_key : FIELD_KEY ;
 
 /* Music stuff */
-abc_music : voice+;
-music_line : element+ LINEFEED (LYRIC LINEFEED)?;
+abc_music : abc_line+;
+abc_line : (element+ LINEFEED? (LYRIC LINEFEED)?) | (FIELD_VOICE LINEFEED);
 
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
 note : (pitch | REST) note_length?;
@@ -116,5 +116,3 @@ note_element : note | multinote;
 tuplet_element : TUPLET_START note_element+;
 
 element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) (SPACE*) ;
-
-voice : (FIELD_VOICE music_line)+ | (music_line)?;
