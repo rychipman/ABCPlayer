@@ -97,15 +97,20 @@ public class SongListener extends ABCMusicBaseListener {
 
 	@Override public void enterField_meter(ABCMusicParser.Field_meterContext ctx) { }
 	@Override public void exitField_meter(ABCMusicParser.Field_meterContext ctx) {
-		
-		//TODO parse this string
+		String meterString = parseText("M:", ctx.FM_START().getText());
+		if(meterString.equals("C")) {
+			meter = new Fraction(4,4);
+		} else if(meterString.equals("C|")) {
+			meter = new Fraction(2,2);
+		} else {
+			meter = parseFraction(meterString);
+		}
 	}
 
 	@Override public void enterField_default_length(ABCMusicParser.Field_default_lengthContext ctx) { }
 	@Override public void exitField_default_length(ABCMusicParser.Field_default_lengthContext ctx) {
 		String fracText = ctx.FRACTION().getText();
 		defaultLength = parseFraction(fracText);
-		//TODO header is not currently implementing this -- need to add
 	}
 
 	@Override public void enterField_tempo(ABCMusicParser.Field_tempoContext ctx) { }
@@ -115,7 +120,8 @@ public class SongListener extends ABCMusicBaseListener {
 
 	@Override public void enterField_key(ABCMusicParser.Field_keyContext ctx) { }
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) {
-		//TODO parse this string
+		String keyString = parseText("K:", ctx.FK_START().getText());
+		key = new KeySignature(keyString);
 	}
 
 	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
@@ -164,7 +170,7 @@ public class SongListener extends ABCMusicBaseListener {
 		tupletParentContainer = noteContainer;
 		//empty the tuplet note container
 		tupletNotes = new ArrayList<Music>();
-		//set the tuplet container as the current destinatino for all notes
+		//set the tuplet container as the current destination for all notes
 		noteContainer = tupletNotes;
 	}
 	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
