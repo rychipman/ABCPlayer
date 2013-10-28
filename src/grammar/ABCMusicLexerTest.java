@@ -32,22 +32,22 @@ public class ABCMusicLexerTest {
 	
 	@Test
 	public void testAccidentals() {
-		String input = "C#Bbab";
-		String[] expected = {"C#", "Bb", "ab"};
+		String input = "C' B,";
+		String[] expected = {"C", "'", " ", "B", ","};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testMode() {
-		String input = "Gm b";
-		String[] expected = {"Gm", " ", "b"};
+		String input = "K: Gm";
+		String[] expected = {"K: Gm"};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testRests() {
-		String input = "ab z z C";
-		String[] expected = {"ab", " ", "z", " ", "z", " ", "C"};
+		String input = "z z C";
+		String[] expected = {"z", " ", "z", " ", "C"};
 		verifyLexer(input, expected);
 	}
 	
@@ -81,8 +81,8 @@ public class ABCMusicLexerTest {
 	
 	@Test
     public void testKey() {
-        String input = "Gbm";
-        String[] expected = {"Gbm"};
+        String input = "K: Gm";
+        String[] expected = {"K: Gm"};
         verifyLexer(input, expected);
     }
 	
