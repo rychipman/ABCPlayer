@@ -45,8 +45,6 @@ package grammar;
  */
 
 LINEFEED : ('\t' | '\r' | '\n')+;
-fragment ALPHABET : 'A'..'Z' | 'a'..'z';
-fragment DIGITS : '0'..'9';
 fragment TEXT : 'Piece No.1';
 DIGIT : '0'..'9';
 BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
@@ -81,9 +79,10 @@ NTH_REPEAT : '[1' | '[2';
 
 TUPLET_SPEC : '(' DIGIT;
 
-NOTE_LENGTH : (DIGIT+ '/')? DIGIT+;
+SLASH: '/';
 L_BRACKET : '[';
 R_BRACKET : ']';
+NOTE_LENGTH : (DIGIT* SLASH)? DIGIT+;
 
 
 /*
@@ -120,7 +119,8 @@ abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
 
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
 note_or_rest : pitch | REST;
-note : note_or_rest NOTE_LENGTH?;
+len : (NOTE_LENGTH)?;
+note : note_or_rest len;
 multinote: L_BRACKET note+ R_BRACKET;
 note_element : note | multinote;
 tuplet_element : TUPLET_SPEC note_element+;
