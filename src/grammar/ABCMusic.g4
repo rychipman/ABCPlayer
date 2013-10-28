@@ -82,7 +82,7 @@ TUPLET_SPEC : '(' DIGIT;
 SLASH: '/';
 L_BRACKET : '[';
 R_BRACKET : ']';
-NOTE_LENGTH : (DIGIT* SLASH)? DIGIT+;
+
 
 
 /*
@@ -117,14 +117,12 @@ field_key : FIELD_KEY end_of_line;
 abc_music : abc_line+;
 abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
 
+note_length : DIGIT* (SLASH DIGIT*)?;
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
-note_or_rest : pitch | REST;
-len : (NOTE_LENGTH)?;
-note : note_or_rest len;
-multinote: L_BRACKET note+ R_BRACKET;
-note_element : note | multinote;
+multinote: L_BRACKET (pitch | REST)+ R_BRACKET;
+note_element : (pitch | REST | multinote) note_length;
 tuplet_element : TUPLET_SPEC note_element+;
 
-element : note_element | tuplet_element | BARLINE | NTH_REPEAT | SPACE ;
+element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) SPACE ;
 
 mid_tune_field : field_voice;
