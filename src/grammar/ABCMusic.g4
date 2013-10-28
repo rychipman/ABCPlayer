@@ -44,7 +44,7 @@ package grammar;
  * These are the lexical rules. They define the tokens used by the lexer.
  */
 
-COMMENT : '%' (~'\n')+ LINEFEED -> skip;
+COMMENT : '%' (~'\n')+ -> skip;
 FIELD_NUMBER : 'X:' (SPACE)* DIGITS ;
 FIELD_TITLE : 'T:' (SPACE)*  (~'\n')+ ; 
 FIELD_COMPOSER : 'C:' (SPACE)*  (~'\n')+ ; 
@@ -55,7 +55,7 @@ FIELD_VOICE : 'V:' (SPACE)*  (~'\n')+ ;
 
 FRACTION : DIGIT+ '/' DIGIT+;
 
-LINEFEED : ('\t' | '\r' | '\n')+ -> skip;
+LINEFEED : ('\t' | '\r' | '\n')+ ;
 NOTE : (PITCH | REST) ((SLASH? DIGITS) | (DIGIT+ '/' DIGIT+))?;
 PITCH : ('^' | '^^' | '_' | '__' | '=')? ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') ('\''+ | ','+)?;
 KEYACCIDENTAL : '#' | 'b';
@@ -96,7 +96,7 @@ DIGIT : '0'..'9';
 abc_tune : abc_header abc_music EOF;
 
 /* Header stuff */
-abc_header : field_number field_title other_fields* field_key;
+abc_header : field_number LINEFEED field_title LINEFEED (other_fields LINEFEED)* field_key LINEFEED;
 
 field_number : FIELD_NUMBER;
 field_title : FIELD_TITLE;
@@ -105,11 +105,11 @@ field_key : FIELD_KEY ;
 
 /* Music stuff */
 abc_music : abc_line+;
-abc_line : (element+ | LYRIC | FIELD_VOICE) LINEFEED?;
+abc_line : (element+ LINEFEED (LYRIC LINEFEED)? | FIELD_VOICE) LINEFEED?;
 
 note : NOTE;
 multinote: L_BRACKET (note)+ R_BRACKET;
 note_element : note | multinote;
 tuplet_element : TUPLET_START note_element+;
 
-element : (note_element | tuplet_element | BARLINE | NTH_REPEAT | LINEFEED) (SPACE*) ;
+element : (note_element | tuplet_element | BARLINE | NTH_REPEAT ) (SPACE*) ;
