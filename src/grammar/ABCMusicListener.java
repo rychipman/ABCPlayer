@@ -1,4 +1,4 @@
-// Generated from src/grammar/ABCMusic.g4 by ANTLR 4.0
+// Generated from ABCMusic.g4 by ANTLR 4.0
 
 package grammar;
 
@@ -29,9 +29,6 @@ public interface ABCMusicListener extends ParseTreeListener {
 
 	void enterAbc_header(ABCMusicParser.Abc_headerContext ctx);
 	void exitAbc_header(ABCMusicParser.Abc_headerContext ctx);
-
-	void enterEnd_of_line(ABCMusicParser.End_of_lineContext ctx);
-	void exitEnd_of_line(ABCMusicParser.End_of_lineContext ctx);
 
 	void enterNote_element(ABCMusicParser.Note_elementContext ctx);
 	void exitNote_element(ABCMusicParser.Note_elementContext ctx);

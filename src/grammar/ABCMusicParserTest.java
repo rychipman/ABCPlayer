@@ -7,11 +7,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -37,18 +39,20 @@ public class ABCMusicParserTest {
     	System.out.println(unEscapeString(fileAsString));
     	CharStream fileAsStream = new ANTLRInputStream(fileAsString);
     	ABCMusicLexer lexer = new ABCMusicLexer(fileAsStream);
-        lexer.reportErrorsAsExceptions(); 
+        lexer.reportErrorsAsExceptions();
+        List<? extends Token> toks = lexer.getAllTokens();
+        String[] tokTypes = lexer.getTokenNames();
+        for (Token t : toks){
+            System.out.println(t.getText());
+            System.out.println(tokTypes[t.getType()]);
+            System.out.println();
+        }
         TokenStream tokens = new CommonTokenStream(lexer);
-        // Feed the tokens into the parser.
+        // Feed the tokens into the parser
         ABCMusicParser parser = new ABCMusicParser(tokens);
         parser.reportErrorsAsExceptions();
         // Generate the parse tree using the starter rule.
         ParseTree tree;
-        for(int i = 0; i < tokens.size(); i++)
-            System.out.println(tokens.get(i));
-        System.out.println("DONE");
-        if(true)
-            return "";
         tree = parser.abc_tune(); // "abc_music" is the starter rule.
         
         ((RuleContext)tree).inspect(parser);

@@ -2,6 +2,11 @@ package grammar;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -26,14 +31,14 @@ public class ABCMusicLexerTest {
 	@Test
 	public void testBaseNotes() {
 		String input = "C D E F G A B c d e f g a b";
-		String[] expected = {"C", " ", "D", " ", "E", " ", "F", " ", "G", " ", "A", " ", "B", " ", "c", " ", "d", " ", "e", " ", "f", " ", "g", " ", "a", " ", "b"};
+		String[] expected = {"C",  "D", "E", "F", "G", "A", "B", "c", "d", "e", "f", "g", "a", "b"};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testAccidentals() {
 		String input = "C' B,";
-		String[] expected = {"C", "'", " ", "B", ","};
+		String[] expected = {"C", "'",  "B", ","};
 		verifyLexer(input, expected);
 	}
 	
@@ -47,35 +52,35 @@ public class ABCMusicLexerTest {
 	@Test
 	public void testRests() {
 		String input = "z z C";
-		String[] expected = {"z", " ", "z", " ", "C"};
+		String[] expected = {"z", "z", "C"};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testOctaves() {
 		String input = "' ''' , ,,,";
-		String[] expected = {"'", " ", "'''", " ", ",", " ", ",,,"};
+		String[] expected = {"'", "'''", ",", ",,,"};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testAccidental() {
 		String input = "^ ^^ _ __ =";
-		String[] expected = {"^", " ", "^^", " ", "_", " ", "__", " ", "="};
+		String[] expected = {"^", "^^",  "_", "__",  "="};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testBarline() {
 		String input = "| || [| |] |: :||";
-		String[] expected = {"|", " ", "||", " ", "[|", " ", "|]", " ", "|:", " ", ":|", "|"};
+		String[] expected = {"|", "||", "[|", "|]", "|:", ":|", "|"};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testFractions() {
 	    String input = "3/4 1/2 2C";
-	    String[] expected = {"3/4", " ", "1/2", " ", "2", "C"};
+	    String[] expected = {"3/4", "1/2", "2", "C"};
 	    verifyLexer(input, expected);
 	}
 	
@@ -103,17 +108,36 @@ public class ABCMusicLexerTest {
 	@Test
     public void testBrackets() {
         String input = "[B1/2 G]";
-        String[] expected = {"[", "B", "1/2", " ", "G", "]"};
+        String[] expected = {"[", "B", "1/2", "G", "]"};
         verifyLexer(input, expected);
     }
 	
 	@Test
 	public void testLinefeed() {
-	    String input = "\t\r  \n";
-	    String[] expected = {"\t\r", "  ", "\n"};
+	    String input = "\t\r\n";
+	    String[] expected = {};
 	    verifyLexer(input, expected);
 	}
-		
+	
+	@Test
+	public void testFullPiece(){
+	    byte[] encoded;
+        try {
+            encoded = Files.readAllBytes(Paths.get(ABCMusicParserTest.songFileNames[0]));
+            String input = Charset.defaultCharset().decode(ByteBuffer.wrap(encoded)).toString();
+            CharStream stream = new ANTLRInputStream(input);
+            ABCMusicLexer lexer = new ABCMusicLexer(stream);
+            lexer.reportErrorsAsExceptions();
+            List<? extends Token> actualTokens = lexer.getAllTokens();            
+            for(int i = 0; i < actualTokens.size(); i++) {
+                 String actualToken = actualTokens.get(i).getText();
+                 System.out.println(actualToken);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }        
+	}
+	
 	public void verifyLexer(String input, String[] expectedTokens) {
         CharStream stream = new ANTLRInputStream(input);
         ABCMusicLexer lexer = new ABCMusicLexer(stream);

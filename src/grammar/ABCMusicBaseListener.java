@@ -1,4 +1,4 @@
-// Generated from src/grammar/ABCMusic.g4 by ANTLR 4.0
+// Generated from ABCMusic.g4 by ANTLR 4.0
 
 package grammar;
 
@@ -32,9 +32,6 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 
 	@Override public void enterAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
 	@Override public void exitAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
-
-	@Override public void enterEnd_of_line(ABCMusicParser.End_of_lineContext ctx) { }
-	@Override public void exitEnd_of_line(ABCMusicParser.End_of_lineContext ctx) { }
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) { }
