@@ -76,7 +76,7 @@ LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' | TEXT;
 
 NTH_REPEAT : '[1' | '[2';
 
-TUPLET_SPEC : '(' DIGIT;
+L_PAREN : '(';
 
 SLASH: '/';
 L_BRACKET : '[';
@@ -116,10 +116,11 @@ abc_music : (voice | COMMENT)+;
 music_line : element+ LINEFEED (LYRIC LINEFEED)?;
 
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
-multinote: L_BRACKET ((pitch | REST) note_length?)+ R_BRACKET;
+note : (pitch | REST) note_length?;
+multinote: L_BRACKET (note)+ R_BRACKET;
 note_length : (SLASH? DIGIT+) | FRACTION;
-note_element : ((pitch | REST) note_length?) | multinote;
-tuplet_element : TUPLET_SPEC note_element+;
+note_element : note | multinote;
+tuplet_element : L_PAREN DIGIT note_element+;
 
 element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) (SPACE*) ;
 

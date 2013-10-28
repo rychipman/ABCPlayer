@@ -12,7 +12,10 @@ import player.Fraction;
 import player.Header;
 import player.KeySignature;
 import player.Music;
+import player.Note;
 import player.Song;
+import player.TupleEnum;
+import player.Tuplet;
 import player.Voice;
 
 public class SongListener extends ABCMusicBaseListener {
@@ -30,8 +33,16 @@ public class SongListener extends ABCMusicBaseListener {
 	
 	private List<Voice> voices;
 	
+	//temporary containers to be used when parsing higher-level objects
 	private String voiceName;
+	//container for things in the Voice
 	private List<Music> components;
+	private List<Music> tupletNotes;
+	private List<Note> chordNotes;
+	
+	//Notes are always put in this container. this will be assigned to the appropriate
+	//container from above (see below) when necessary
+	private List<Music> noteContainer;
 	
 	
 	/**
@@ -112,6 +123,7 @@ public class SongListener extends ABCMusicBaseListener {
 	@Override public void enterVoice(ABCMusicParser.VoiceContext ctx) {
 		voiceName = "";
 		components = new ArrayList<Music>();
+		noteContainer = components;
 	}
 	@Override public void exitVoice(ABCMusicParser.VoiceContext ctx) {
 		voices.add(new Voice(voiceName, components));
@@ -126,11 +138,31 @@ public class SongListener extends ABCMusicBaseListener {
 	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) { }
 	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) { }
 
-	@Override public void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) { }
-	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) { }
+	@Override public void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
+		//empty the tuplet note container
+		tupletNotes = new ArrayList<Music>();
+		//set the tuplet container as the current destinatino for all notes
+		noteContainer = tupletNotes;
+	}
+	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
+		int type = Integer.parseInt(ctx.DIGIT().getText());
+		TupleEnum tupletType = TupleEnum.TRIPLET;
+		switch(type) {
+		case 2: tupletType = TupleEnum.DUPLET; break;
+		case 3: tupletType = TupleEnum.TRIPLET; break;
+		case 4: tupletType = TupleEnum.QUADRUPLET; break;
+		}
+		//create the tuplet object and append it to the voice
+		components.add(new Tuplet(tupletType, tupletNotes));
+		//set the container back to the main voice
+		noteContainer = components;
+	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) { }
+	
+	@Override public void enterNote(ABCMusicParser.NoteContext ctx) { }
+	@Override public void exitNote(ABCMusicParser.NoteContext ctx) { }
 
 	@Override public void enterNote_length(ABCMusicParser.Note_lengthContext ctx) { }
 	@Override public void exitNote_length(ABCMusicParser.Note_lengthContext ctx) { }

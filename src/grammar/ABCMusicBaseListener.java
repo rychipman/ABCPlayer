@@ -69,6 +69,9 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 	@Override public void enterPitch(ABCMusicParser.PitchContext ctx) { }
 	@Override public void exitPitch(ABCMusicParser.PitchContext ctx) { }
 
+	@Override public void enterNote(ABCMusicParser.NoteContext ctx) { }
+	@Override public void exitNote(ABCMusicParser.NoteContext ctx) { }
+
 	@Override public void enterField_voice(ABCMusicParser.Field_voiceContext ctx) { }
 	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) { }
 

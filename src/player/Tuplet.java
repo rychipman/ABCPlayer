@@ -6,9 +6,9 @@ import java.util.List;
 public class Tuplet implements Music {
 
 	private final TupleEnum type;
-	private List<Note> notes;
+	private List<Music> notes;
 	
-	public List<Note> getNotes() {
+	public List<Music> getNotes() {
         return notes;
     }
 	
@@ -16,13 +16,13 @@ public class Tuplet implements Music {
 		return type;
 	}
 
-    public void setNotes(List<Note> notes) {
+    public void setNotes(List<Music> notes) {
         this.notes = notes;
     }
 
-    public Tuplet(TupleEnum type, List<Note> notes) {
+    public Tuplet(TupleEnum type, List<Music> notes) {
 		this.type = type;
-		this.notes = new ArrayList<Note>(notes);
+		this.notes = new ArrayList<Music>(notes);
 	}
 	
 	@Override
@@ -30,21 +30,21 @@ public class Tuplet implements Music {
 		StringBuilder tupletBuilder = new StringBuilder();
 		tupletBuilder.append(type.toString());
 		type.toString();
-		for(Note n : notes) {
+		for(Music n : notes) {
 			tupletBuilder.append(n.toString());
 		}
 		return tupletBuilder.toString();
 	}
 	@Override
 	public Music copy() {
-		return new Tuplet(this.type, new ArrayList<Note>(this.notes));
+		return new Tuplet(this.type, new ArrayList<Music>(this.notes));
 	}
 
 	@Override
 	public Fraction getDuration() {
 		int durationNum = 0;
 		int durationDen = 1;
-		for(Note n : notes) {
+		for(Music n : notes) {
 			int noteNum = n.getDuration().getNumerator();
 			int noteDen = n.getDuration().getDenominator();
 			durationNum = noteNum*durationDen + durationNum*noteDen;

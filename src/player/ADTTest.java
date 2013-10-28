@@ -77,6 +77,7 @@ public class ADTTest {
     public void superMario() {
         List<Music> music = new ArrayList<Music>();
         List<Note> chordHolder = new ArrayList<Note>();
+        List<Music> tupletHolder = new ArrayList<Music>();
         chordHolder.add(new Note(NoteEnum.F, AccidentalEnum.SHARP, 0, new Fraction(1,8)));
         chordHolder.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,8)));
         music.add(new Chord(chordHolder));
@@ -105,10 +106,10 @@ public class ADTTest {
         music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
         music.add(new Note(NoteEnum.B, AccidentalEnum.FLAT,0, new Fraction(1,8)));
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
-        chordHolder.set(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
-        chordHolder.set(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
-        chordHolder.set(2, new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
-        music.add(new Tuplet(TupleEnum.TRIPLET, chordHolder));
+        tupletHolder.set(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
+        tupletHolder.set(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
+        tupletHolder.set(2, new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
+        music.add(new Tuplet(TupleEnum.TRIPLET, tupletHolder));
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
         music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL,1, new Fraction(1,8)));
         music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,8)));

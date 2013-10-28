@@ -77,7 +77,7 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                 } else if (m instanceof Tuplet) {
                     System.out.println("Tuplet Duration: " + duration);
                     Tuplet mTuplet = (Tuplet)m;
-                    for (Note n : mTuplet.getNotes()){
+                    for (Music n : mTuplet.getNotes()){
                         int tupleNoteDur = duration;
                         switch (mTuplet.getType()) {
                             case DUPLET:
