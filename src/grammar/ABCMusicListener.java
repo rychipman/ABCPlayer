@@ -21,14 +21,11 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterAbc_header(ABCMusicParser.Abc_headerContext ctx);
 	void exitAbc_header(ABCMusicParser.Abc_headerContext ctx);
 
-	void enterNote_element(ABCMusicParser.Note_elementContext ctx);
-	void exitNote_element(ABCMusicParser.Note_elementContext ctx);
-
 	void enterAbc_line(ABCMusicParser.Abc_lineContext ctx);
 	void exitAbc_line(ABCMusicParser.Abc_lineContext ctx);
 
-	void enterNote_length(ABCMusicParser.Note_lengthContext ctx);
-	void exitNote_length(ABCMusicParser.Note_lengthContext ctx);
+	void enterNote_element(ABCMusicParser.Note_elementContext ctx);
+	void exitNote_element(ABCMusicParser.Note_elementContext ctx);
 
 	void enterAbc_tune(ABCMusicParser.Abc_tuneContext ctx);
 	void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx);
@@ -39,14 +36,11 @@ public interface ABCMusicListener extends ParseTreeListener {
 	void enterField_number(ABCMusicParser.Field_numberContext ctx);
 	void exitField_number(ABCMusicParser.Field_numberContext ctx);
 
-	void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx);
-	void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx);
-
 	void enterField_title(ABCMusicParser.Field_titleContext ctx);
 	void exitField_title(ABCMusicParser.Field_titleContext ctx);
 
-	void enterPitch(ABCMusicParser.PitchContext ctx);
-	void exitPitch(ABCMusicParser.PitchContext ctx);
+	void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx);
+	void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx);
 
 	void enterNote(ABCMusicParser.NoteContext ctx);
 	void exitNote(ABCMusicParser.NoteContext ctx);

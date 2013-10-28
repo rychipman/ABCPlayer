@@ -38,7 +38,7 @@ public class ABCMusicLexerTest {
 	@Test
 	public void testAccidentals() {
 		String input = "C' B,";
-		String[] expected = {"C", "'",  "B", ","};
+		String[] expected = {"C'", "B,"};
 		verifyLexer(input, expected);
 	}
 	
@@ -58,15 +58,15 @@ public class ABCMusicLexerTest {
 	
 	@Test
 	public void testOctaves() {
-		String input = "' ''' , ,,,";
-		String[] expected = {"'", "'''", ",", ",,,"};
+		String input = "C' C,";
+		String[] expected = {"C'", "C,"};
 		verifyLexer(input, expected);
 	}
 	
 	@Test
 	public void testAccidental() {
-		String input = "^ ^^ _ __ =";
-		String[] expected = {"^", "^^",  "_", "__",  "="};
+		String input = "^B,1/2 __C'3";
+		String[] expected = {"^B,1/2", "__C'3"};
 		verifyLexer(input, expected);
 	}
 	
@@ -93,8 +93,8 @@ public class ABCMusicLexerTest {
 	
 	@Test
     public void testTempo() {
-        String input = "1/4=234";
-        String[] expected = {"1/4", "=", "234"};
+        String input = "Q:1/4=234";
+        String[] expected = {"Q:1/4=234"};
         verifyLexer(input, expected);
     }
 	
@@ -108,7 +108,7 @@ public class ABCMusicLexerTest {
 	@Test
     public void testBrackets() {
         String input = "[B1/2 G]";
-        String[] expected = {"[", "B", "1/2", "G", "]"};
+        String[] expected = {"[", "B1/2", "G", "]"};
         verifyLexer(input, expected);
     }
 	
@@ -128,10 +128,13 @@ public class ABCMusicLexerTest {
             CharStream stream = new ANTLRInputStream(input);
             ABCMusicLexer lexer = new ABCMusicLexer(stream);
             lexer.reportErrorsAsExceptions();
-            List<? extends Token> actualTokens = lexer.getAllTokens();            
+            List<? extends Token> actualTokens = lexer.getAllTokens();
+            String[] tokTypes = lexer.getTokenNames();
             for(int i = 0; i < actualTokens.size(); i++) {
                  String actualToken = actualTokens.get(i).getText();
+                 System.out.println(tokTypes[actualTokens.get(i).getType()]);
                  System.out.println(actualToken);
+                 System.out.println();
             }
         } catch (IOException e) {
             e.printStackTrace();

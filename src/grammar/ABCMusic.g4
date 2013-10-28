@@ -56,17 +56,16 @@ FIELD_VOICE : 'V:' (SPACE)*  (~'\n')+ ;
 FRACTION : DIGIT+ '/' DIGIT+;
 
 LINEFEED : ('\t' | '\r' | '\n')+ -> skip;
-BASENOTE : 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b';
+NOTE : (PITCH | REST) ((SLASH? DIGITS) | (DIGIT+ '/' DIGIT+))?;
+PITCH : ('^' | '^^' | '_' | '__' | '=')? ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') ('\''+ | ','+)?;
 KEYACCIDENTAL : '#' | 'b';
 MODEMINOR : 'm';
 SPACE : [ ] -> skip;
 REST : 'z';
-OCTAVE : '\''+ | ','+;
-ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
 
-FIELD_KEY : 'K:' (SPACE)* BASENOTE KEYACCIDENTAL? MODEMINOR?;
+FIELD_KEY : 'K:' (SPACE)* ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') KEYACCIDENTAL? MODEMINOR?;
 
 LYRIC : 'w:' LYRICAL_ELEMENT* (~'\n')*;
 LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' ; 
@@ -106,13 +105,11 @@ field_key : FIELD_KEY ;
 
 /* Music stuff */
 abc_music : abc_line+;
-abc_line : (element+ LINEFEED? (LYRIC LINEFEED)?) | (FIELD_VOICE LINEFEED);
+abc_line : (element+ | LYRIC | FIELD_VOICE) LINEFEED?;
 
-pitch : ACCIDENTAL? BASENOTE OCTAVE?;
-note : (pitch | REST) note_length?;
+note : NOTE;
 multinote: L_BRACKET (note)+ R_BRACKET;
-note_length : (SLASH? DIGITS) | (DIGIT+ '/' DIGIT+);
 note_element : note | multinote;
 tuplet_element : TUPLET_START note_element+;
 
-element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) (SPACE*) ;
+element : (note_element | tuplet_element | BARLINE | NTH_REPEAT | LINEFEED) (SPACE*) ;
