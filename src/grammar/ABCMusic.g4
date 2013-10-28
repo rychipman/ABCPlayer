@@ -56,17 +56,16 @@ OCTAVE : '\''+ | ','+;
 ACCIDENTAL : '^' | '^^' | '_' | '__' | '=';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
+FRACTION : DIGIT+ '/' DIGIT+;
 KEY : BASENOTE KEYACCIDENTAL? MODEMINOR?;
-METER_FRACTION : DIGIT+ '/' DIGIT+;
-TEMPO : METER_FRACTION '=' DIGIT+;
-METER : 'C' | 'C|' | METER_FRACTION;
-NOTE_LENGTH_STRICT : DIGIT+ '/' DIGIT+;
+TEMPO : FRACTION '=' DIGIT+;
+METER : 'C' | 'C|' | FRACTION;
 COMMENT : '%' TEXT LINEFEED;
 
 FIELD_NUMBER : 'X:' (SPACE)* DIGIT;
 FIELD_TITLE : 'T:' (SPACE)* TEXT;
 FIELD_COMPOSER: 'C:' (SPACE)* TEXT;
-FIELD_DEFAULT_LENGTH: 'L:' (SPACE)* NOTE_LENGTH_STRICT;
+FIELD_DEFAULT_LENGTH: 'L:' (SPACE)* FRACTION;
 FIELD_METER: 'M:' (SPACE)* METER;
 FIELD_TEMPO: 'Q:' (SPACE)* TEMPO;
 FIELD_VOICE: 'V:' (SPACE)* TEXT;
@@ -82,7 +81,6 @@ TUPLET_SPEC : '(' DIGIT;
 SLASH: '/';
 L_BRACKET : '[';
 R_BRACKET : ']';
-
 
 
 /*
@@ -117,10 +115,10 @@ field_key : FIELD_KEY end_of_line;
 abc_music : abc_line+;
 abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
 
-note_length : DIGIT* (SLASH DIGIT*)?;
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
 multinote: L_BRACKET (pitch | REST)+ R_BRACKET;
-note_element : (pitch | REST | multinote) note_length;
+note_length : (SLASH DIGIT+) | FRACTION;
+note_element : (pitch | REST | multinote) note_length?;
 tuplet_element : TUPLET_SPEC note_element+;
 
 element : (note_element | tuplet_element | BARLINE | NTH_REPEAT) SPACE ;
