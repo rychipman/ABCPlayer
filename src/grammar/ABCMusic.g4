@@ -116,7 +116,7 @@ abc_music : abc_line+;
 abc_line : element+ LINEFEED (LYRIC LINEFEED)? | mid_tune_field | COMMENT;
 
 pitch : ACCIDENTAL? BASENOTE OCTAVE?;
-multinote: L_BRACKET (pitch | REST)+ R_BRACKET;
+multinote: L_BRACKET ((pitch | REST) note_length?)+ R_BRACKET;
 note_length : (SLASH? DIGIT+) | FRACTION;
 note_element : (pitch | REST | multinote) note_length?;
 tuplet_element : TUPLET_SPEC note_element+;
