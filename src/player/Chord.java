@@ -36,7 +36,7 @@ public class Chord implements Singable {
     }
     
     public String getSyllable() {
-    	return syllable;
+        return syllable;
     }
 
     /**
@@ -55,7 +55,10 @@ public class Chord implements Singable {
      */
     @Override
     public Music copy() {
-        return new Chord(this.notes);
+        Chord copiedChord = new Chord(this.notes);
+        copiedChord.setSyllable(this.getSyllable());
+        return copiedChord;
+        
     }
 
     /**

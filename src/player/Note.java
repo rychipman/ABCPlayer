@@ -25,7 +25,7 @@ public class Note implements Singable {
     }
     
     public String getSyllable() {
-    	return syllable;
+        return syllable;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Note implements Singable {
             octaveBuilder.append("'");
         for(int i = 0; i < this.octave*-1; i++)
             octaveBuilder.append(",");
-        return String.format("%s%s%s%s", this.accidental.toString(), this.note.toString(), octaveBuilder.toString(), this.duration.toString());
+        return String.format("%s%s%s%s with %s", this.accidental.toString(), this.note.toString(), octaveBuilder.toString(), this.duration.toString(), this.getSyllable());
     }
    
     /**
@@ -71,6 +71,8 @@ public class Note implements Singable {
      */
     @Override
     public Music copy() {
-        return new Note(this.note, this.accidental, this.octave, this.duration);
+        Note copiedNote = new Note(this.note, this.accidental, this.octave, this.duration);
+        copiedNote.setSyllable(this.getSyllable());
+        return copiedNote;
     }
 }

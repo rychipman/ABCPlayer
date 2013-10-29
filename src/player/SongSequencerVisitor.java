@@ -6,6 +6,7 @@ import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
+import sound.LyricListener;
 import sound.Pitch;
 import sound.SequencePlayer;
 
@@ -49,10 +50,14 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
             for(Music m : this.musicForVoiceName.get(voiceName))
                 lcmCalc = new Fraction(1, Fraction.LCM(m.getDuration().getDenominator(), lcmCalc.getDenominator()));
                 Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator() / this.noteLengthPerBeat.getDenominator());
-        SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, ticksPerBeat.getDenominator(), null);
         
-        System.out.println("TICKS PER BEAT: " + ticksPerBeat.getDenominator());
-        
+        LyricListener listener = new LyricListener() {
+             public void processLyricEvent(String text) {
+                 System.out.println(text);
+             }
+        };
+        SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, ticksPerBeat.getDenominator(), listener);
+                
         int startTick = 0;
         int duration;
         for (String voiceName : this.musicForVoiceName.keySet()){
@@ -61,48 +66,43 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                 if (m instanceof Note){
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 12*mNote.getOctave());
+                    if (mNote.getSyllable() != null) {seqPlayer.addLyricEvent(mNote.getSyllable(), startTick);}
                     seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
-                    System.out
-                            .println("Playing note " + mNote.toString()
-                                    + " at time " + startTick + " for "
-                                    + duration);
                     startTick += duration;
                 } else if (m instanceof Chord){
                     Chord mChord = (Chord)m;
+                    if (mChord.getSyllable() != null) {seqPlayer.addLyricEvent(mChord.getSyllable(), startTick);}
                     for (Note n : mChord.getNotes()){
                         Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     }
                     startTick += duration;
                 } else if (m instanceof Tuplet) {
-                    System.out.println("Tuplet Duration: " + duration);
                     Tuplet mTuplet = (Tuplet)m;
-                    for (Music music : mTuplet.getNotes()){
-                        int tupleNoteDur = duration;
-                        tupleNoteDur = getTupleNoteDur(mTuplet.getType(), tupleNoteDur);
-                        if(music instanceof Note) {
+                    int tupleNoteDur = duration;
+                    tupleNoteDur = getTupleNoteDur(mTuplet.getType(), tupleNoteDur);
+                    for (Music tupletElem : mTuplet.getNotes()){
+                        if(tupletElem instanceof Note) {
                             Pitch pitch1 = null;
-                        	Note n = (Note)music;
+                        	Note n = (Note)tupletElem;
                         	pitch1 = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
+                        	if (n.getSyllable() != null) {seqPlayer.addLyricEvent(n.getSyllable(), startTick);}
                         	seqPlayer.addNote(pitch1.toMidiNote(), startTick, tupleNoteDur); 
                         	startTick += tupleNoteDur;
-                        } else if (music instanceof Chord) {
-                            Chord c = (Chord)music;
+                        } else if (tupletElem instanceof Chord) {
+                            Chord c = (Chord)tupletElem;
+                            if (c.getSyllable() != null) {seqPlayer.addLyricEvent(c.getSyllable(), startTick);}
                             for (Note note : c.getNotes()){
                                 Pitch pitch2 = null;
                                 pitch2 = new Pitch(note.getNote().toString().charAt(0)).transpose(note.getAccidental().getSemitoneOffset() + 12*note.getOctave());
                                 seqPlayer.addNote(pitch2.toMidiNote(), startTick, tupleNoteDur);
                             }
                             startTick += tupleNoteDur;
-                        } else if (music instanceof Rest) {
+                        } else if (tupletElem instanceof Rest) {
                             startTick += tupleNoteDur;
                         } else {
                             throw new RuntimeException("You cannot build a tuple out of anything but a Note, Chord, or Rest");
                         }
-                        System.out
-                                .println("TUPLET -- Playing note " + music.toString()
-                                        + " at time " + startTick + " for "
-                                        + tupleNoteDur);
                     }
                 } else if (m instanceof Rest){
                     startTick += duration;

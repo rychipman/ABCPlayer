@@ -36,10 +36,7 @@ public class Voice implements ISongSequencerVisitable{
      * @return
      */
     public List<Music> getSongComponents() {
-        List<Music> copySongComps = new ArrayList<Music>();
-        for (Music m : this.songComponents)
-            copySongComps.add(m);
-        return copySongComps;
+        return this.songComponents;
     }
 
     /**

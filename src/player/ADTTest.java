@@ -95,7 +95,11 @@ public class ADTTest {
         chordHolder.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
         music.add(new Chord(chordHolder));
         music.add(new Rest(new Fraction(1,4)));
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
+        
+        Note test = new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4));
+        test.setSyllable("Super Mario!");
+        music.add(test);
+        
         music.add(new Rest(new Fraction(1,4)));
         music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(3,8)));
         music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,8)));
@@ -123,7 +127,7 @@ public class ADTTest {
         List<Voice> voices = new ArrayList<Voice>();
         voices.add(voice);
         Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 100);
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 200);
         Song song = new Song(header, body);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
         song.accept(visitor);
