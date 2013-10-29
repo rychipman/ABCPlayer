@@ -16,18 +16,27 @@ import java.util.List;
  * Datatype definition:
  * Chord = List<Note>
  */
-public class Chord implements Music{
+public class Chord implements Singable {
 
     /**
      * The list of notes to be played simultaneously
      */
     private final List<Note> notes;
+    private String syllable;
     
     /**
      * @return
      */
     public List<Note> getNotes() {
         return notes;
+    }
+    
+    public void setSyllable(String syllable) {
+    	this.syllable = syllable;
+    }
+    
+    public String getSyllable() {
+    	return syllable;
     }
 
     /**

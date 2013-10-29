@@ -5,18 +5,27 @@ package player;
  * Note is an immutable class that inherits from Music and implements Voice.
  * This is the basis for the music in the song.
  */
-public class Note implements Music {
+public class Note implements Singable {
     
     private final NoteEnum note;
     private final AccidentalEnum accidental;
     private final int octave;
     private final Fraction duration;
+    private String syllable;
     
     public Note(NoteEnum note, AccidentalEnum accidental, int octave, Fraction duration){
         this.note = note;
         this.accidental = accidental;
         this.octave = octave;
         this.duration = duration;
+    }
+    
+    public void setSyllable(String syllable) {
+    	this.syllable = syllable;
+    }
+    
+    public String getSyllable() {
+    	return syllable;
     }
 
     @Override
