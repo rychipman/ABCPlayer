@@ -60,7 +60,7 @@ NOTE : (PITCH | REST) ( SLASH | (SLASH? DIGITS) | (DIGIT+ '/' DIGIT+))?;
 PITCH : ('^' | '^^' | '_' | '__' | '=')? ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') ('\''+ | ','+)?;
 KEYACCIDENTAL : '#' | 'b';
 MODEMINOR : 'm';
-SPACE : ' '+ -> skip;
+SPACE : ' '+ ;
 REST : 'z';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
@@ -111,4 +111,4 @@ multinote: L_BRACKET (NOTE)+ R_BRACKET;
 note_element : NOTE | multinote;
 tuplet_element : TUPLET_START note_element+;
 barline : BARLINE;
-element : (note_element | tuplet_element | barline | NTH_REPEAT ) ;
+element : (note_element | tuplet_element | barline | NTH_REPEAT ) SPACE*;
