@@ -1,5 +1,6 @@
 package grammar;
 
+import grammar.ABCMusicParser.Field_voiceContext;
 import grammar.ABCMusicParser.LyricContext;
 
 import java.util.ArrayList;
@@ -81,30 +82,30 @@ public class SongListener implements ABCMusicListener {
 
 	@Override public void enterField_number(ABCMusicParser.Field_numberContext ctx) { }
 	@Override public void exitField_number(ABCMusicParser.Field_numberContext ctx) {
-		String indexString = parseText("X:", ctx.FIELD_NUMBER().getText());
+		String indexString = ctx.FIELD_NUMBER().getText().replace("X:", "").trim();
 		index = Integer.parseInt(indexString);
 		System.out.println("The index is " + indexString);
 	}
 
 	@Override public void enterField_title(ABCMusicParser.Field_titleContext ctx) { }
 	@Override public void exitField_title(ABCMusicParser.Field_titleContext ctx) {
-		title = parseText("T:", ctx.FIELD_TITLE().getText());
+		title = ctx.FIELD_TITLE().getText().replace("T:", "").trim();
 		System.out.println("The title is " + title);
 	}
 
 	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) {
 		if(ctx.FIELD_COMPOSER() != null) {
-			composer = parseText("C:", ctx.FIELD_COMPOSER().getText());
+			composer = ctx.FIELD_COMPOSER().getText().replace("C:", "").trim();
 			System.out.println("Composer is " + composer);
 		}
 		if(ctx.FIELD_DEFAULT_LENGTH() != null) {
-			String fracText = parseText("L:", ctx.FIELD_DEFAULT_LENGTH().getText());
+			String fracText = ctx.FIELD_DEFAULT_LENGTH().getText().replace("L:", "").trim();
 			defaultLength = new Fraction(fracText);
 			System.out.println("Default length is " + defaultLength);
 		}
 		if(ctx.FIELD_METER() != null) {
-			String meterString = parseText("M:", ctx.FIELD_METER().getText());
+			String meterString = ctx.FIELD_METER().getText().replace("M:", "").trim();
 			if(meterString.equals("C")) {
 				meter = new Fraction(4,4);
 			} else if(meterString.equals("C|")) {
@@ -116,7 +117,7 @@ public class SongListener implements ABCMusicListener {
 		}
 		if(ctx.FIELD_TEMPO() != null) {
 			//TODO also parse for optional length field
-		    String tempoString = parseText("Q:",ctx.FIELD_TEMPO().getText());
+		    String tempoString = ctx.FIELD_TEMPO().getText().replace("Q:", "").trim();
 		    int indexOfTempo = tempoString.indexOf("=");
 		    if (indexOfTempo+1 >= 0 && indexOfTempo+1 < tempoString.length())
 		        tempoString = tempoString.substring(indexOfTempo+1);
@@ -125,16 +126,16 @@ public class SongListener implements ABCMusicListener {
 		}
 		if(ctx.FIELD_VOICE() != null) {
 			//TODO what is this doing in the header?
-			voiceName = parseText("V:", ctx.FIELD_VOICE().getText());
+			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
 			System.out.println("Voice name is " + voiceName);
 		}
 	}
 
 	@Override public void enterField_key(ABCMusicParser.Field_keyContext ctx) { }
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) {
-		String keyString = parseText("K:", ctx.FIELD_KEY().getText());
+		String keyString = ctx.FIELD_KEY().getText().replace("K:", "").trim();
 		key = new KeySignature(keyString);
-		System.out.println("Key is " + key);
+		System.out.println("Key is " + keyString);
 	}
 	
 	/**
@@ -173,7 +174,7 @@ public class SongListener implements ABCMusicListener {
 		noteContainer = tupletNotes;
 	}
 	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
-		int type = Integer.parseInt(ctx.TUPLET_START().getText());
+		int type = Integer.parseInt(ctx.TUPLET_START().getText().replace("(", "").trim());
 		TupleEnum tupletType = TupleEnum.TRIPLET;
 		switch(type) {
 		case 2: tupletType = TupleEnum.DUPLET; break;
@@ -322,12 +323,6 @@ public class SongListener implements ABCMusicListener {
 		return AccidentalEnum.NONE;
 	}
 
-	
-	private String parseText(String label, String line) {
-		//TODO make sure this works
-		String[] split = line.split(label);
-		return split[1].trim();
-	}
     @Override
     public void enterLyric(LyricContext ctx) {
         // TODO Auto-generated method stub
@@ -361,5 +356,17 @@ public class SongListener implements ABCMusicListener {
             
         }
         
+    }
+    @Override
+    public void enterField_voice(Field_voiceContext ctx) {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void exitField_voice(Field_voiceContext ctx) {
+        String voiceName = ctx.getText().replace("V:", "").trim();
+        System.out.println("Switched to voice name = " + voiceName);
+        //voiceName = parseText("V:", ctx.FIELD_VOICE().getText());
+        //System.out.println("Voice name is " + voiceName);
     }
 }
