@@ -163,6 +163,7 @@ public class SongListener implements ABCMusicListener {
 			notes.add((Note)m);
 		}
 		chordParentContainer.add(new Chord(notes));
+		System.out.println(new Chord(notes));
 		noteContainer = chordParentContainer;
 	}
 

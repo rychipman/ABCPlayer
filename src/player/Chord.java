@@ -73,5 +73,17 @@ public class Chord implements Singable {
                 maxDuration = n.getDuration();
         return maxDuration;
     }
+    
+    /**
+     * @return the string representation of the Chord
+     */
+    @Override
+    public String toString(){
+        StringBuilder chord = new StringBuilder("Chord(");
+        for (Note m : this.notes)
+            chord.append(m.toString() + ", ");
+        chord.append(")");
+        return chord.toString();
+    }
 
 }
