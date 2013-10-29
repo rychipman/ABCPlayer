@@ -88,7 +88,7 @@ public class SongListener extends ABCMusicBaseListener {
 	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) {
 		if(ctx.FIELD_COMPOSER() != null) {
-			
+			composer = parseText("C:", ctx.FIELD_COMPOSER().getText());
 		}
 		if(ctx.FIELD_DEFAULT_LENGTH() != null) {
 			String fracText = ctx.FIELD_DEFAULT_LENGTH().getText();
