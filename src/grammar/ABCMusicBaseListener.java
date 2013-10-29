@@ -36,6 +36,9 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 	@Override public void enterField_key(ABCMusicParser.Field_keyContext ctx) { }
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) { }
 
+	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) { }
+	@Override public void exitBarline(ABCMusicParser.BarlineContext ctx) { }
+
 	@Override public void enterField_number(ABCMusicParser.Field_numberContext ctx) { }
 	@Override public void exitField_number(ABCMusicParser.Field_numberContext ctx) { }
 
@@ -44,9 +47,6 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 
 	@Override public void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) { }
 	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) { }
-
-	@Override public void enterNote(ABCMusicParser.NoteContext ctx) { }
-	@Override public void exitNote(ABCMusicParser.NoteContext ctx) { }
 
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
 	@Override public void exitEveryRule(ParserRuleContext ctx) { }
