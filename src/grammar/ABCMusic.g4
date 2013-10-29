@@ -103,8 +103,9 @@ field_key : FIELD_KEY ;
 
 /* Music stuff */
 abc_music : abc_line+;
-abc_line : (element+ LINEFEED (LYRIC LINEFEED)? | FIELD_VOICE) LINEFEED?;
+abc_line : (element+ LINEFEED (lyric LINEFEED)? | FIELD_VOICE) LINEFEED?;
 
+lyric : LYRIC;
 
 multinote: L_BRACKET (NOTE)+ R_BRACKET;
 note_element : NOTE | multinote;

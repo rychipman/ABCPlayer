@@ -43,6 +43,18 @@ public class Fraction implements Comparable<Object>{
         this.denominator = denominator;
     }
     
+    
+    public Fraction(String fractionAsString){
+        String[] fracArray = fractionAsString.split("/");
+        int num = Integer.parseInt(fracArray[0]);
+        int den = Integer.parseInt(fracArray[1]);
+        if(den == 0){
+            throw new IllegalArgumentException("Cannot have a denominator of 0");
+        }
+        this.numerator = num;
+        this.denominator = den;
+    }
+    
     /**
      * @return the numerator of the fraction
      */
