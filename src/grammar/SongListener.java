@@ -141,7 +141,6 @@ public class SongListener implements ABCMusicListener {
 		noteContainer = chordNotes;
 	}
 	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) {
-		//TODO not great form, but temporary -- assumes only notes can be in chords
 		ArrayList<Note> notes = new ArrayList<Note>();
 		for(Music m : chordNotes) {
 			notes.add((Note)m);
@@ -276,6 +275,38 @@ public class SongListener implements ABCMusicListener {
 			}
 		}
 	}
+	
+    @Override
+    public void enterLyric(LyricContext ctx) { }
+    @Override
+    public void exitLyric(LyricContext ctx) {
+        List<String> lyric = new ArrayList<String>();
+        StringBuilder syllable = new StringBuilder();
+        String context = ctx.getText();
+
+        for (int i=2; i < context.length(); i++) { //start at i = 2 so as to skip the w: at the beginning of lyric
+
+            if (context.charAt(i) == '-') {
+                lyric.add(syllable.toString());
+                syllable = new StringBuilder();
+            } else if (context.charAt(i) == '_') {
+                lyric.add(syllable.toString());
+                syllable = new StringBuilder();
+            } else if (context.charAt(i) == '*') {
+                lyric.add("");
+            } else if (context.charAt(i) == '~') {
+                syllable.append(" "); //
+            } else if (String.valueOf(context.charAt(i)).equals("/-")) {
+                syllable.append("-");
+            } else if (context.charAt(i) == '|') {
+                
+            } else { // else context[i] should be a letter
+                syllable.append(""+context.charAt(i));
+            }
+            
+        }
+        
+    }
 
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
 	@Override public void exitEveryRule(ParserRuleContext ctx) { }
@@ -319,38 +350,4 @@ public class SongListener implements ABCMusicListener {
 		String[] split = line.split(label);
 		return split[1].trim();
 	}
-    @Override
-    public void enterLyric(LyricContext ctx) {
-        // TODO Auto-generated method stub
-        
-    }
-    @Override
-    public void exitLyric(LyricContext ctx) {
-        List<String> lyric = new ArrayList<String>();
-        StringBuilder syllable = new StringBuilder();
-        String context = ctx.getText();
-
-        for (int i=2; i < context.length(); i++) { //start at i = 2 so as to skip the w: at the beginning of lyric
-
-            if (context.charAt(i) == '-') {
-                lyric.add(syllable.toString());
-                syllable = new StringBuilder();
-            } else if (context.charAt(i) == '_') {
-                lyric.add(syllable.toString());
-                syllable = new StringBuilder();
-            } else if (context.charAt(i) == '*') {
-                lyric.add("");
-            } else if (context.charAt(i) == '~') {
-                syllable.append(" "); //
-            } else if (String.valueOf(context.charAt(i)).equals("/-")) {
-                syllable.append("-");
-            } else if (context.charAt(i) == '|') {
-                
-            } else { // else context[i] should be a letter
-                syllable.append(""+context.charAt(i));
-            }
-            
-        }
-        
-    }
 }
