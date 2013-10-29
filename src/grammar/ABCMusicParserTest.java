@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 public class ABCMusicParserTest {
 
-    public final static String[] songFileNames = new String[]{"sample_abc/sampleFile.abc"};
+    public final static String[] songFileNames = new String[]{"sample_abc/fur_elise.abc"};
     @Test
     public void parseTest(){
         try {

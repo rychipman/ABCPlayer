@@ -1,9 +1,5 @@
 package grammar;
 
-import grammar.ABCMusicParser.NoteContext;
-import grammar.ABCMusicParser.Note_lengthContext;
-import grammar.ABCMusicParser.PitchContext;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +23,7 @@ import player.Tuplet;
 import player.Voice;
 
 public class SongListener extends ABCMusicBaseListener {
+	
 	private Song song;
 	private Header header;
 	private Body body;
@@ -73,80 +70,65 @@ public class SongListener extends ABCMusicBaseListener {
 		body = new Body(voices);
 	}
 	
-	@Override public void enterEnd_of_line(ABCMusicParser.End_of_lineContext ctx) { }
-	@Override public void exitEnd_of_line(ABCMusicParser.End_of_lineContext ctx) { }
-	
 	/**
 	 * Header Elements
 	 */
 
 	@Override public void enterField_number(ABCMusicParser.Field_numberContext ctx) { }
 	@Override public void exitField_number(ABCMusicParser.Field_numberContext ctx) {
-		index = Integer.parseInt(ctx.DIGITS().getText());
+		String indexString = parseText("X:", ctx.FIELD_NUMBER().getText());
+		index = Integer.parseInt(indexString);
 	}
 
 	@Override public void enterField_title(ABCMusicParser.Field_titleContext ctx) { }
 	@Override public void exitField_title(ABCMusicParser.Field_titleContext ctx) {
-		title = parseText("T:", ctx.FTI_START().getText());
+		title = parseText("T:", ctx.FIELD_TITLE().getText());
 	}
 
-	@Override public void enterField_composer(ABCMusicParser.Field_composerContext ctx) { }
-	@Override public void exitField_composer(ABCMusicParser.Field_composerContext ctx) {
-		composer = parseText("C:", ctx.FC_START().getText());
-	}
-
-	@Override public void enterField_meter(ABCMusicParser.Field_meterContext ctx) { }
-	@Override public void exitField_meter(ABCMusicParser.Field_meterContext ctx) {
-		String meterString = parseText("M:", ctx.FM_START().getText());
-		if(meterString.equals("C")) {
-			meter = new Fraction(4,4);
-		} else if(meterString.equals("C|")) {
-			meter = new Fraction(2,2);
-		} else {
-			meter = parseFraction(meterString);
+	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
+	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) {
+		if(ctx.FIELD_COMPOSER() != null) {
+			
 		}
-	}
-
-	@Override public void enterField_default_length(ABCMusicParser.Field_default_lengthContext ctx) { }
-	@Override public void exitField_default_length(ABCMusicParser.Field_default_lengthContext ctx) {
-		String fracText = ctx.FRACTION().getText();
-		defaultLength = parseFraction(fracText);
-	}
-
-	@Override public void enterField_tempo(ABCMusicParser.Field_tempoContext ctx) { }
-	@Override public void exitField_tempo(ABCMusicParser.Field_tempoContext ctx) {
-		tempo = Integer.parseInt(ctx.DIGITS().getText());
+		if(ctx.FIELD_DEFAULT_LENGTH() != null) {
+			String fracText = ctx.FIELD_DEFAULT_LENGTH().getText();
+			defaultLength = parseFraction(fracText);
+		}
+		if(ctx.FIELD_METER() != null) {
+			String meterString = parseText("M:", ctx.FIELD_METER().getText());
+			if(meterString.equals("C")) {
+				meter = new Fraction(4,4);
+			} else if(meterString.equals("C|")) {
+				meter = new Fraction(2,2);
+			} else {
+				meter = parseFraction(meterString);
+			}
+		}
+		if(ctx.FIELD_TEMPO() != null) {
+			//TODO also parse for optional length field
+			tempo = Integer.parseInt(ctx.FIELD_TEMPO().getText());
+		}
+		if(ctx.FIELD_VOICE() != null) {
+			//TODO what is this doing in the header?
+			voiceName = parseText("V:", ctx.FIELD_VOICE().getText());
+		}
 	}
 
 	@Override public void enterField_key(ABCMusicParser.Field_keyContext ctx) { }
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) {
-		String keyString = parseText("K:", ctx.FK_START().getText());
+		String keyString = parseText("K:", ctx.FIELD_KEY().getText());
 		key = new KeySignature(keyString);
-	}
-
-	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
-	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
-	
-	@Override public void enterField_voice(ABCMusicParser.Field_voiceContext ctx) { }
-	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) {
-		voiceName = parseText("V:", ctx.FV_START().getText());
 	}
 	
 	/**
 	 * Music Elements
 	 */
-
-	@Override public void enterVoice(ABCMusicParser.VoiceContext ctx) {
-		voiceName = "";
-		components = new ArrayList<Music>();
-		noteContainer = components;
-	}
-	@Override public void exitVoice(ABCMusicParser.VoiceContext ctx) {
-		voices.add(new Voice(voiceName, components));
-	}
-
-	@Override public void enterMusic_line(ABCMusicParser.Music_lineContext ctx) { }
-	@Override public void exitMusic_line(ABCMusicParser.Music_lineContext ctx) { }
+	
+	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) { }
+	@Override public void exitBarline(ABCMusicParser.BarlineContext ctx) { }
+	
+	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
+	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
 	
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
@@ -174,7 +156,7 @@ public class SongListener extends ABCMusicBaseListener {
 		noteContainer = tupletNotes;
 	}
 	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
-		int type = Integer.parseInt(ctx.DIGIT().getText());
+		int type = Integer.parseInt(ctx.TUPLET_START().getText());
 		TupleEnum tupletType = TupleEnum.TRIPLET;
 		switch(type) {
 		case 2: tupletType = TupleEnum.DUPLET; break;
@@ -188,21 +170,18 @@ public class SongListener extends ABCMusicBaseListener {
 	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
-	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) { }
-	
-	@Override public void enterNote(ABCMusicParser.NoteContext ctx) { }
-	@Override public void exitNote(ABCMusicParser.NoteContext ctx) {	
+	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) {
+		//TODO parse the string into Accidental, note, octave, and duration parts
 		Fraction duration = defaultLength;
-		if(ctx.note_length() != null) {
-			Note_lengthContext durationCtx = ctx.note_length();
+		if(parsedDuration != null) {
 			if(durationCtx.FRACTION() != null) {
-				duration = parseFraction(durationCtx.FRACTION().getText());
+				duration = fraction
 			} else if(durationCtx.SLASH() != null) {
 				int num = 1;
-				int den = Integer.parseInt(durationCtx.DIGITS().getText());
+				int den = denominator of fraction
 				duration = new Fraction(num, den);
 			} else {
-				int num = Integer.parseInt(durationCtx.DIGITS().getText());
+				int num = numerator of fraction
 				int den = 1;
 				duration = new Fraction(num, den);
 			}
@@ -224,13 +203,6 @@ public class SongListener extends ABCMusicBaseListener {
 		}
 	}
 
-	@Override public void enterNote_length(ABCMusicParser.Note_lengthContext ctx) { }
-	@Override public void exitNote_length(ABCMusicParser.Note_lengthContext ctx) { }
-
-	@Override public void enterPitch(ABCMusicParser.PitchContext ctx) { }
-	@Override public void exitPitch(ABCMusicParser.PitchContext ctx) { }
-
-
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
 	@Override public void exitEveryRule(ParserRuleContext ctx) { }
 	@Override public void visitTerminal(TerminalNode node) { }
@@ -244,6 +216,7 @@ public class SongListener extends ABCMusicBaseListener {
 	}
 	
 	private String parseText(String label, String line) {
+		//TODO make sure this works
 		String[] split = line.split(label);
 		return split[1].trim();
 	}
