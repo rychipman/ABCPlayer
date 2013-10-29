@@ -44,7 +44,7 @@ package grammar;
  * These are the lexical rules. They define the tokens used by the lexer.
  */
 
-COMMENT : '%' (~'\n')+ -> skip;
+COMMENT : '%' (~'\n')* -> skip;
 FIELD_NUMBER : 'X:' (SPACE)* DIGITS ;
 FIELD_TITLE : 'T:' (SPACE)*  (~'\n')+ ; 
 FIELD_COMPOSER : 'C:' (SPACE)*  (~'\n')+ ; 
