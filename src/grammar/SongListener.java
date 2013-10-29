@@ -229,7 +229,31 @@ public class SongListener implements ABCMusicListener {
     }
     @Override
     public void exitLyric(LyricContext ctx) {
-        // TODO Auto-generated method stub
+        List<String> lyric = new ArrayList<String>();
+        StringBuilder syllable = new StringBuilder();
+        String context = ctx.getText();
+
+        for (int i=2; i < context.length(); i++) { //start at i = 2 so as to skip the w: at the beginning of lyric
+
+            if (context.charAt(i) == '-') {
+                lyric.add(syllable.toString());
+                syllable = new StringBuilder();
+            } else if (context.charAt(i) == '_') {
+                lyric.add(syllable.toString());
+                syllable = new StringBuilder();
+            } else if (context.charAt(i) == '*') {
+                lyric.add("");
+            } else if (context.charAt(i) == '~') {
+                syllable.append(" "); //
+            } else if (context.charAt(i) == '/-') {
+                syllable.append("-");
+            } else if (context.charAt(i) == '|') {
+                
+            } else { // else context[i] should be a letter
+                syllable.append(""+context.charAt(i));
+            }
+            
+        }
         
     }
 }
