@@ -12,66 +12,66 @@ import org.junit.Test;
 
 public class ADTTest {
 
-    @Test
-    public void odeToJoy() {
-        List<Music> music = new ArrayList<Music>();
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(3,8)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,8)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(2,4)));
-        
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
-        
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(3,8)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,8)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(2,4)));
-        
-        Voice voice = new Voice("Test Voice", music);
-        List<Voice> voices = new ArrayList<Voice>();
-        voices.add(voice);
-        Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,4), 180);
-        Song song = new Song(header, body);
-        SongSequencerVisitor visitor = new SongSequencerVisitor();
-        song.accept(visitor);
-        try {
-            visitor.play();
-        } catch (MidiUnavailableException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvalidMidiDataException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        assertTrue(true);
-    }
+//    @Test
+//    public void odeToJoy() {
+//        List<Music> music = new ArrayList<Music>();
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        
+//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        
+//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(3,8)));
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,8)));
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(2,4)));
+//        
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        
+//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        
+//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,4)));
+//        
+//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(3,8)));
+//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,8)));
+//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(2,4)));
+//        
+//        Voice voice = new Voice("Test Voice", music);
+//        List<Voice> voices = new ArrayList<Voice>();
+//        voices.add(voice);
+//        Body body = new Body(voices);
+//        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,4), 180);
+//        Song song = new Song(header, body);
+//        SongSequencerVisitor visitor = new SongSequencerVisitor();
+//        song.accept(visitor);
+//        try {
+//            visitor.play();
+//        } catch (MidiUnavailableException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (InvalidMidiDataException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        assertTrue(true);
+//    }
     
     @Test
     public void superMario() {
@@ -106,9 +106,9 @@ public class ADTTest {
         music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
         music.add(new Note(NoteEnum.B, AccidentalEnum.FLAT,0, new Fraction(1,8)));
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
-        tupletHolder.set(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
-        tupletHolder.set(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
-        tupletHolder.set(2, new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
+        tupletHolder.add(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,4)));
+        tupletHolder.add(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
+        tupletHolder.add(2, new Chord(chordHolder));
         music.add(new Tuplet(TupleEnum.TRIPLET, tupletHolder));
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,1, new Fraction(1,4)));
         music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL,1, new Fraction(1,8)));
@@ -123,7 +123,7 @@ public class ADTTest {
         List<Voice> voices = new ArrayList<Voice>();
         voices.add(voice);
         Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 200);
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 100);
         Song song = new Song(header, body);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
         song.accept(visitor);
