@@ -1,5 +1,7 @@
 package grammar;
 
+import grammar.ABCMusicParser.LyricContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import player.TupleEnum;
 import player.Tuplet;
 import player.Voice;
 
-public class SongListener extends ABCMusicBaseListener {
+public class SongListener implements ABCMusicListener {
 	
 	private Song song;
 	private Header header;
@@ -220,4 +222,14 @@ public class SongListener extends ABCMusicBaseListener {
 		String[] split = line.split(label);
 		return split[1].trim();
 	}
+    @Override
+    public void enterLyric(LyricContext ctx) {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void exitLyric(LyricContext ctx) {
+        // TODO Auto-generated method stub
+        
+    }
 }
