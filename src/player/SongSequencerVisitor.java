@@ -77,34 +77,32 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                 } else if (m instanceof Tuplet) {
                     System.out.println("Tuplet Duration: " + duration);
                     Tuplet mTuplet = (Tuplet)m;
-                    for (Music n : mTuplet.getNotes()){
+                    for (Music music : mTuplet.getNotes()){
                         int tupleNoteDur = duration;
-                        switch (mTuplet.getType()) {
-                            case DUPLET:
-                                tupleNoteDur = duration / 2;
-                                break;
-                            case TRIPLET:
-                                tupleNoteDur = duration / 3;
-                                break;
-                            case QUADRUPLET:
-                                tupleNoteDur = duration / 4;
-                                break;
-                        }
-                        Pitch pitch = null;
-                        if(n instanceof Note) {
-                        	Note n1 = (Note)n;
-                        	pitch = new Pitch(n1.getNote().toString().charAt(0)).transpose(n1.getAccidental().getSemitoneOffset() + 12*n1.getOctave());
+                        tupleNoteDur = getTupleNoteDur(mTuplet.getType(), tupleNoteDur);
+                        if(music instanceof Note) {
+                            Pitch pitch1 = null;
+                        	Note n = (Note)music;
+                        	pitch1 = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
+                        	seqPlayer.addNote(pitch1.toMidiNote(), startTick, tupleNoteDur); 
+                        	startTick += tupleNoteDur;
+                        } else if (music instanceof Chord) {
+                            Chord c = (Chord)music;
+                            for (Note note : c.getNotes()){
+                                Pitch pitch2 = null;
+                                pitch2 = new Pitch(note.getNote().toString().charAt(0)).transpose(note.getAccidental().getSemitoneOffset() + 12*note.getOctave());
+                                seqPlayer.addNote(pitch2.toMidiNote(), startTick, tupleNoteDur);
+                            }
+                            startTick += tupleNoteDur;
+                        } else if (music instanceof Rest) {
+                            startTick += tupleNoteDur;
                         } else {
-                        	//TODO this is really bad -- this is currently assuming that all stuffin a tuplet will be a note
-                        	// I changed the support in tuplet to List<Music> in the ADT, but that still has to be done here,
-                        	// along with major refactoring
+                            throw new RuntimeException("You cannot build a tuple out of anything but a Note, Chord, or Rest");
                         }
-                        seqPlayer.addNote(pitch.toMidiNote(), startTick, tupleNoteDur);  
                         System.out
-                                .println("TUPLET -- Playing note " + n.toString()
+                                .println("TUPLET -- Playing note " + music.toString()
                                         + " at time " + startTick + " for "
                                         + tupleNoteDur);
-                        startTick += tupleNoteDur;
                     }
                 } else if (m instanceof Rest){
                     startTick += duration;
@@ -113,4 +111,20 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         }
         seqPlayer.play();
     }
+    
+    public static int getTupleNoteDur(TupleEnum type, int duration) {
+        switch (type) {
+        case DUPLET:
+            duration /= 2;
+            break;
+        case TRIPLET:
+            duration /= 3;
+            break;
+        case QUADRUPLET:
+            duration /= 4;
+            break;
+        }
+        return duration;
+    }
+    
 }
