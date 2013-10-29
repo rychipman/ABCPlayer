@@ -45,18 +45,18 @@ package grammar;
  */
 
 COMMENT : '%' (~'\n')* -> skip;
-FIELD_NUMBER : 'X:' (SPACE)* DIGITS ;
+FIELD_NUMBER : 'X:' (SPACE)* DIGIT+ ;
 FIELD_TITLE : 'T:' (SPACE)*  (~'\n')+ ; 
 FIELD_COMPOSER : 'C:' (SPACE)*  (~'\n')+ ; 
 FIELD_DEFAULT_LENGTH : 'L:' (SPACE)* (DIGIT+ '/' DIGIT+) ;
 FIELD_METER : 'M:' (SPACE)* ('C' | 'C|' | (DIGIT+ '/' DIGIT+)) ;
-FIELD_TEMPO : 'Q:' (SPACE)* ((DIGIT+ '/' DIGIT+) '=')? DIGITS ;
+FIELD_TEMPO : 'Q:' (SPACE)* ((DIGIT+ '/' DIGIT+) '=')? DIGIT+ ;
 FIELD_VOICE : 'V:' (SPACE)*  (~'\n')+ ; 
 
 FRACTION : DIGIT+ '/' DIGIT+;
 
 LINEFEED : ('\t' | '\r' | '\n')+ ;
-NOTE : (PITCH | REST) ( SLASH | (SLASH? DIGITS) | (DIGIT+ '/' DIGIT+))?;
+NOTE : (PITCH | REST) ( SLASH | (DIGIT+ SLASH) | (SLASH? DIGIT+) | (DIGIT+ '/' DIGIT+))?;
 PITCH : ('^' | '^^' | '_' | '__' | '=')? ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') ('\''+ | ','+)?;
 KEYACCIDENTAL : '#' | 'b';
 MODEMINOR : 'm';
@@ -76,7 +76,6 @@ TUPLET_START : '(' DIGIT;
 SLASH: '/';
 L_BRACKET : '[';
 R_BRACKET : ']';
-DIGITS : DIGIT+;
 DIGIT : '0'..'9';
 
 

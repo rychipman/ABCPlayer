@@ -21,13 +21,13 @@ public class ABCMusicParser extends Parser {
 		FIELD_METER=6, FIELD_TEMPO=7, FIELD_VOICE=8, FRACTION=9, LINEFEED=10, 
 		NOTE=11, PITCH=12, KEYACCIDENTAL=13, MODEMINOR=14, SPACE=15, REST=16, 
 		BARLINE=17, FIELD_KEY=18, LYRIC=19, NTH_REPEAT=20, TUPLET_START=21, SLASH=22, 
-		L_BRACKET=23, R_BRACKET=24, DIGITS=25, DIGIT=26;
+		L_BRACKET=23, R_BRACKET=24, DIGIT=25;
 	public static final String[] tokenNames = {
 		"<INVALID>", "COMMENT", "FIELD_NUMBER", "FIELD_TITLE", "FIELD_COMPOSER", 
 		"FIELD_DEFAULT_LENGTH", "FIELD_METER", "FIELD_TEMPO", "FIELD_VOICE", "FRACTION", 
 		"LINEFEED", "NOTE", "PITCH", "KEYACCIDENTAL", "'m'", "SPACE", "'z'", "BARLINE", 
 		"FIELD_KEY", "LYRIC", "NTH_REPEAT", "TUPLET_START", "'/'", "'['", "']'", 
-		"DIGITS", "DIGIT"
+		"DIGIT"
 	};
 	public static final int
 		RULE_abc_tune = 0, RULE_abc_header = 1, RULE_field_number = 2, RULE_field_title = 3, 
@@ -809,7 +809,7 @@ public class ABCMusicParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\2\3\34r\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t"+
+		"\2\3\33r\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t"+
 		"\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\2\3\2\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\7\3(\n\3\f\3\16\3+\13\3\3\3\3\3\3\3\3\4\3\4\3\5\3"+
 		"\5\3\6\3\6\3\7\3\7\3\b\6\b9\n\b\r\b\16\b:\3\t\6\t>\n\t\r\t\16\t?\3\t\3"+
