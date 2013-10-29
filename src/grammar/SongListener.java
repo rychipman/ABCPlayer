@@ -172,36 +172,108 @@ public class SongListener implements ABCMusicListener {
 	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
+	/**
+	 * Called whenever the lisener exits a note_element. If the note element is also a multinote,
+	 * it ignores and lets the multinote handler take it. If it is a basic note, parses and creates
+	 * the note object
+	 */
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) {
-		//TODO parse the string into Accidental, note, octave, and duration parts
-		Fraction duration = defaultLength;
-		if(parsedDuration != null) {
-			if(durationCtx.FRACTION() != null) {
-				duration = fraction
-			} else if(durationCtx.SLASH() != null) {
-				int num = 1;
-				int den = denominator of fraction
-				duration = new Fraction(num, den);
-			} else {
-				int num = numerator of fraction
-				int den = 1;
-				duration = new Fraction(num, den);
+		// if this is a base note element, not a multinote (chord)
+		if(ctx.NOTE() != null) {
+			//Split the string into a note and a note_duration part
+			String noteString = ctx.NOTE().getText();
+			String[] splitNote = noteString.split("(?=[\\d+/])",2);
+			String pitchString = splitNote[0];
+			
+			//Parse the not duration
+			Fraction duration = defaultLength;
+			if(splitNote.length == 2) {
+				//TODO why does fraction notation for duration allow for just a slash?
+				String durationString = splitNote[1];
+				String[] splitFraction = durationString.split("(?=/)|(?<=/)");
+				if(splitFraction.length == 3) {
+					int num = 1;
+					int den = 1;
+					if(splitFraction[0].equals("")) {
+						den = Integer.parseInt(splitFraction[2]);
+					} else if(splitFraction[2].equals("")) {
+						//this case should never happen..right?
+					} else {
+						num = Integer.parseInt(splitFraction[0]);
+						den = Integer.parseInt(splitFraction[2]);
+					}
+					duration = new Fraction(num, den);
+				} else if(splitFraction.length == 1) {
+					int num = Integer.parseInt(splitFraction[0]);
+					int den = 1;
+					duration = new Fraction(num, den);
+				}
 			}
-		}
-		
-		NoteEnum baseNote = NoteEnum.C;
-		AccidentalEnum accidental = AccidentalEnum.NONE;
-		int octave = 4;
-		if(ctx.pitch() != null) {
-			PitchContext pitchCtx = ctx.pitch();
-			//TODO all this to parse and switch through the pitch
-			//TODO do we need to add all the code for transposing here?
-		}
-		
-		if(ctx.REST() != null) {
-			noteContainer.add(new Rest(duration));
-		} else {
-			noteContainer.add(new Note(baseNote, accidental, octave, duration));
+			
+			//Set arbitrary default values
+			NoteEnum baseNote = NoteEnum.C;
+			AccidentalEnum accidental = AccidentalEnum.NONE;
+			int octave = 0;	
+			
+			//split the pitch into accidental, basenote, octave
+			String[] splitPitch = pitchString.split("(?=[A-Ga-gz])|(?<=[A-Ga-gz])");
+			
+			//parse for basenote
+			String basenoteString = splitPitch[1];
+			if(basenoteString.toLowerCase().equals("a")) {
+				baseNote = NoteEnum.A;
+			} else if(basenoteString.toLowerCase().equals("b")) {
+				baseNote = NoteEnum.B;
+			} else if(basenoteString.toLowerCase().equals("c")) {
+				baseNote = NoteEnum.C;
+			} else if(basenoteString.toLowerCase().equals("d")) {
+				baseNote = NoteEnum.D;
+			} else if(basenoteString.toLowerCase().equals("e")) {
+				baseNote = NoteEnum.E;
+			} else if(basenoteString.toLowerCase().equals("f")) {
+				baseNote = NoteEnum.F;
+			} else if(basenoteString.toLowerCase().equals("g")) {
+				baseNote = NoteEnum.G;
+			}
+			
+			//Apply key signature
+			accidental = setKeySigAccidental(baseNote);			
+			
+			//Apply any inline accidentals
+			String accidentalString = splitPitch[0];
+			if(accidentalString.equals("_")) {
+				accidental = AccidentalEnum.FLAT;
+			} else if(accidentalString.equals("__")) {
+				accidental = AccidentalEnum.DOUBLE_FLAT;
+			} else if(accidentalString.equals("^")) {
+				accidental = AccidentalEnum.SHARP;
+			} else if(accidentalString.equals("^^")) {
+				accidental = AccidentalEnum.DOUBLE_SHARP;
+			} else if(accidentalString.equals("=")) {
+				accidental = AccidentalEnum.NATURAL;
+			}
+			
+			//parse for octave
+			if(basenoteString.equals(basenoteString.toLowerCase()))
+				octave++;
+			if(splitPitch.length == 3) {
+				//if octave is specified
+				String octaveString = splitPitch[2];
+				String octaveType = octaveString.substring(0, 1); 
+				for(int i=0; i<octaveString.length(); i++) {
+					if(octaveType.equals("'"))
+						octave++;
+					else if(octaveType.equals(","))
+						octave--;
+				}
+			}		
+			
+			//add a rest or a note
+			if(basenoteString.equals("z")) {
+				noteContainer.add(new Rest(duration));
+			} else {
+				noteContainer.add(new Note(baseNote, accidental, octave, duration));
+			}
 		}
 	}
 
@@ -209,6 +281,31 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitEveryRule(ParserRuleContext ctx) { }
 	@Override public void visitTerminal(TerminalNode node) { }
 	@Override public void visitErrorNode(ErrorNode node) { }
+	
+	private AccidentalEnum setKeySigAccidental(NoteEnum note) {
+		int[] accidentals = key.getAccidentals();
+		int index = 0;
+		switch(note) {
+		case A: index = 0; break;
+		case B: index = 1; break;
+		case C: index = 2; break;
+		case D: index = 3; break;
+		case E: index = 4; break;
+		case F: index = 5; break;
+		case G: index = 6; break;
+		}
+		if(accidentals[index] == 2)
+			return AccidentalEnum.DOUBLE_SHARP;
+		if(accidentals[index] == 1)
+			return AccidentalEnum.SHARP;
+		if(accidentals[index] == 0)
+			return AccidentalEnum.NONE;
+		if(accidentals[index] == -1)
+			return AccidentalEnum.FLAT;
+		if(accidentals[index] == -2)
+			return AccidentalEnum.DOUBLE_FLAT;
+		return AccidentalEnum.NONE;
+	}
 	
 	private Fraction parseFraction(String str) {
 		String[] fracArray = str.split("/");
@@ -245,7 +342,7 @@ public class SongListener implements ABCMusicListener {
                 lyric.add("");
             } else if (context.charAt(i) == '~') {
                 syllable.append(" "); //
-            } else if (context.charAt(i) == '/-') {
+            } else if (String.valueOf(context.charAt(i)).equals("/-")) {
                 syllable.append("-");
             } else if (context.charAt(i) == '|') {
                 
