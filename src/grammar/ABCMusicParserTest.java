@@ -53,9 +53,9 @@ public class ABCMusicParserTest {
         ((RuleContext)tree).inspect(parser);
         
         ParseTreeWalker walker = new ParseTreeWalker();
-        ParseTreeListener listener = new ABCMusicBaseListener();
+        ParseTreeListener listener = new SongListener();
         walker.walk(listener, tree);
-        return ((ABCMusicBaseListener)listener).toString();
+        return (listener).toString();
     }
     
     public static String unEscapeString(String s){
