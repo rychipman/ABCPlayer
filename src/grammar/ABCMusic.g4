@@ -56,19 +56,18 @@ FIELD_VOICE : 'V:' (SPACE)*  (~'\n')+ ;
 FRACTION : DIGIT+ '/' DIGIT+;
 
 LINEFEED : ('\t' | '\r' | '\n')+ ;
-NOTE : (PITCH | REST) ((SLASH? DIGITS) | (DIGIT+ '/' DIGIT+))?;
+NOTE : (PITCH | REST) ( SLASH | (SLASH? DIGITS) | (DIGIT+ '/' DIGIT+))?;
 PITCH : ('^' | '^^' | '_' | '__' | '=')? ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') ('\''+ | ','+)?;
 KEYACCIDENTAL : '#' | 'b';
 MODEMINOR : 'm';
-SPACE : [ ] -> skip;
+SPACE : ' '+ -> skip;
 REST : 'z';
 BARLINE : '|' | '||' | '[|' | '|]' | ':|' | '|:';
 
 
 FIELD_KEY : 'K:' (SPACE)* ('C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B' | 'c' | 'd' | 'e' | 'f' | 'g' | 'a' | 'b') KEYACCIDENTAL? MODEMINOR?;
 
-LYRIC : 'w:' LYRICAL_ELEMENT* (~'\n')*;
-LYRICAL_ELEMENT : ' '+ | '-' | '_' | '*' | '~' | '\-' | '|' ; 
+LYRIC : 'w:' (' '+ | '-' | '_' | '*' | '~' | '\-' | '|' )* (~'\n')*; 
 
 NTH_REPEAT : '[1' | '[2';
 
@@ -107,9 +106,9 @@ field_key : FIELD_KEY ;
 abc_music : abc_line+;
 abc_line : (element+ LINEFEED (LYRIC LINEFEED)? | FIELD_VOICE) LINEFEED?;
 
-note : NOTE;
-multinote: L_BRACKET (note)+ R_BRACKET;
-note_element : note | multinote;
-tuplet_element : TUPLET_START note_element+;
 
-element : (note_element | tuplet_element | BARLINE | NTH_REPEAT ) (SPACE*) ;
+multinote: L_BRACKET (NOTE)+ R_BRACKET;
+note_element : NOTE | multinote;
+tuplet_element : TUPLET_START note_element+;
+barline : BARLINE SPACE*;
+element : (note_element | tuplet_element | barline | NTH_REPEAT ) (SPACE*) ;
