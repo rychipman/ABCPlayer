@@ -142,19 +142,13 @@ public class SongListener implements ABCMusicListener {
 	 */
 	
 	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) { }
-	@Override public void exitBarline(ABCMusicParser.BarlineContext ctx) { 
-	    System.out.println("Leaving barline");
-	}
+	@Override public void exitBarline(ABCMusicParser.BarlineContext ctx) { }
 	
 	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
-	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { 
-	    System.out.println("Leaving line");
-	}
+	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
 	
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
-	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { 
-	    System.out.println("Leaving element");
-	}
+	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
 
 	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) {
 		chordParentContainer = noteContainer;
