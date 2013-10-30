@@ -11,6 +11,7 @@ public class Header implements ISongSequencerVisitable{
     private final KeySignature keySignature;
     private final Fraction noteLengthPerBeat;
     private final int beatsPerMinute;
+    private final Fraction defaultLength;
 
     /**
      * Initializes a new Header.
@@ -20,14 +21,16 @@ public class Header implements ISongSequencerVisitable{
      * @param keySignature is a KeySignature
      * @param noteLengthPerBeat is a Fraction
      * @param beatsPerMinute is an int
+     * @param defaultLength is a Fraction
      */
-    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMinute) {
+    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMinute, Fraction defaultLength) {
         this.indexNumber = indexNumber;
         this.title = title;
         this.composer = composer;
         this.keySignature = keySignature;
         this.noteLengthPerBeat = noteLengthPerBeat;
         this.beatsPerMinute = beatsPerMinute;
+        this.defaultLength = defaultLength;
     }
     
     /**
@@ -35,7 +38,7 @@ public class Header implements ISongSequencerVisitable{
      * @param header the header to copy
      */
     public Header(Header header) {
-        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMinute());
+        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMinute(), header.getDefaultLength());
     }
 
     /**
@@ -75,17 +78,25 @@ public class Header implements ISongSequencerVisitable{
     }
     
     /**
+     * @return Returns the default length of the note
+     */
+    public Fraction getDefaultLength(){
+        return defaultLength;
+    }
+    
+    /**
      * Returns a string representation of the Header.
      */
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        output.append("Index Number: " + this.getIndexNumber());
-        output.append(" - Composer: " + this.getComposer());
-        output.append(" - Title: " + this.getTitle());
-        output.append(" - Key: " + this.getKeySignature().toString());
-        output.append(" - Note Length per Beat: " + this.getNoteLengthPerBeat());
-        output.append(" - Beats per Measure (meter): " + this.getBeatsPerMinute());
+        output.append("\n - Index Number: " + this.getIndexNumber());
+        output.append("\n - Composer: " + this.getComposer());
+        output.append("\n - Title: " + this.getTitle());
+        output.append("\n - Key: " + this.getKeySignature().toString());
+        output.append("\n - Note Length per Beat: " + this.getNoteLengthPerBeat());
+        output.append("\n - Beats per Measure (meter): " + this.getBeatsPerMinute());
+        output.append("\n - Default note length: " + this.getDefaultLength());
         return output.toString();
     }
 

@@ -38,6 +38,14 @@ public class KeySignature {
     }
     
     /**
+     * @return the string representation of the object
+     */
+    @Override
+    public String toString(){
+        return this.key;
+    }
+    
+    /**
      * Creates a map of the accidentals corresponding to each key in music.
      * -1 represents a flat, 0 represents a natural, and 1 represents a sharp.
      * The array corresponding to each key is ordered {A,B,C,D,E,F,G}

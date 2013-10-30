@@ -71,4 +71,15 @@ public class Voice implements ISongSequencerVisitable{
     public void accept(ISongSequencerVisitor visitor) {
         visitor.visit(this);
     }
+    
+    /**
+     * @return the string representation of this object
+     */
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder(this.voiceName +": ");
+        for (Music m : this.songComponents)
+            builder.append(m.toString() + " ");
+        return builder.toString();
+    }
 }

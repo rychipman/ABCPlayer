@@ -59,4 +59,18 @@ public class Body implements ISongSequencerVisitable{
     public void accept(ISongSequencerVisitor visitor) {
         visitor.visit(this);
     }
+    
+    /**
+     * @return the string representation of this object
+     */
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for (Voice v : this.voices){
+            builder.append("Voice: ");
+            builder.append(v.toString());
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
 }

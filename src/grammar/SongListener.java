@@ -64,11 +64,12 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx) {
 		song = new Song(header, body);
 		System.out.println("Created Song");
+		System.out.println(song.toString());
 	}
 	
 	@Override public void enterAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
 	@Override public void exitAbc_header(ABCMusicParser.Abc_headerContext ctx) {
-		header = new Header(index, title, composer, key, meter, tempo);
+		header = new Header(index, title, composer, key, meter, tempo, defaultLength);
 		System.out.println("Created header");
 	}
 	

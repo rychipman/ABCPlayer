@@ -42,4 +42,17 @@ public class Song implements ISongSequencerVisitable{
         visitor.visit(this);
     }
     
+    /**
+     * @return string representation of this Song
+     */
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder("Header: ");
+        builder.append(header.toString());
+        builder.append("\n");
+        builder.append("Body:");
+        builder.append(body.toString());
+        return builder.toString();
+    }
+    
 }
