@@ -65,10 +65,8 @@ public class ABCMusicParserTest {
         try {
             visitor.play();
         } catch (MidiUnavailableException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InvalidMidiDataException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return "";
