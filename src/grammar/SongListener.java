@@ -302,29 +302,50 @@ public class SongListener implements ABCMusicListener {
     public void exitLyric(LyricContext ctx) {
         List<String> lyric = new ArrayList<String>();
         StringBuilder syllable = new StringBuilder();
-        String context = ctx.getText();
+        String context = ctx.LYRIC().getText();
 
         for (int i=2; i < context.length(); i++) { //start at i = 2 so as to skip the w: at the beginning of lyric
 
             if (context.charAt(i) == '-') {
-                lyric.add(syllable.toString());
-                syllable = new StringBuilder();
+            	if(syllable != null) {
+	            	syllable.append("-");
+	                lyric.add(syllable.toString());
+            	} else {
+            		lyric.add("-");
+            	}
+                syllable = null;
             } else if (context.charAt(i) == '_') {
-                lyric.add(syllable.toString());
-                syllable = new StringBuilder();
+            	if(syllable != null) {
+	            	syllable.append("_");
+	                lyric.add(syllable.toString());
+            	}
+            	lyric.add("_");
+                syllable = null;
             } else if (context.charAt(i) == '*') {
-                lyric.add("");
+            	if(syllable != null)
+            		lyric.add(syllable.toString());
+            	lyric.add("");
+                syllable = null;
             } else if (context.charAt(i) == '~') {
                 syllable.append(" "); //
             } else if (String.valueOf(context.charAt(i)).equals("/-")) {
                 syllable.append("-");
             } else if (context.charAt(i) == '|') {
-                
+                //TODO this one is hard...I'm gonna have to attach lyrics to notes bar by bar 
+            } else if(context.charAt(i) == ' ') {
+            	if(syllable != null)
+            		lyric.add(syllable.toString());
+            	syllable = null;
             } else { // else context[i] should be a letter
-                syllable.append(""+context.charAt(i));
+            	if(syllable == null)
+            		syllable = new StringBuilder();
+                syllable.append(context.charAt(i) + "");
+            } 
+            if(i == context.length()-1 && syllable != null) {
+            	//don't forget to add any leftovers at the end!
+            	lyric.add(syllable.toString());
             }
-            
-        }
+        } 
         
     }
     @Override
@@ -381,5 +402,9 @@ public class SongListener implements ABCMusicListener {
 		//TODO make sure this works
 		String[] split = line.split(label);
 		return split[1].trim();
+	}
+	
+	public Song getSong() {
+		return song;
 	}
 }
