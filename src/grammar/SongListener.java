@@ -89,7 +89,9 @@ public class SongListener implements ABCMusicListener {
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) {	
 	    if(this.voiceName == null){
 	        this.voiceName = "THE_DEFAULT_VOICE";
-	        this.barsForVoiceName.put(this.voiceName, new ArrayList<List<Music>>());
+	        List<List<Music>> newVoice = new ArrayList<List<Music>>();
+	        newVoice.add(new ArrayList<Music>());
+	        this.barsForVoiceName.put(this.voiceName, newVoice);
 	        System.out.println("Added the default voice");
 	    }
 	}
@@ -149,8 +151,11 @@ public class SongListener implements ABCMusicListener {
 		}
 		if(ctx.FIELD_VOICE() != null) {
 			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
-			if(!this.barsForVoiceName.containsKey(voiceName))
-			    this.barsForVoiceName.put(voiceName, new ArrayList<List<Music>>());
+			if(!this.barsForVoiceName.containsKey(voiceName)) {
+				List<List<Music>> newVoice = new ArrayList<List<Music>>();
+				newVoice.add(new ArrayList<Music>());
+			    this.barsForVoiceName.put(voiceName, newVoice);
+			}
 		}
 	}
 
@@ -398,8 +403,11 @@ public class SongListener implements ABCMusicListener {
     @Override
     public void exitField_voice(Field_voiceContext ctx) {
         voiceName = ctx.getText().replace("V:", "").trim();
-        if(!this.barsForVoiceName.containsKey(voiceName))
-            this.barsForVoiceName.put(voiceName, new ArrayList<List<Music>>());
+        if(!this.barsForVoiceName.containsKey(voiceName)) {
+        	List<List<Music>> newVoice = new ArrayList<List<Music>>();
+        	newVoice.add(new ArrayList<Music>());
+            this.barsForVoiceName.put(voiceName, newVoice);
+        }
     }
 
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
