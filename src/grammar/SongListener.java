@@ -447,8 +447,8 @@ public class SongListener implements ABCMusicListener {
 			for(int j=0; j<bar.size(); j++) {
 				int index = noteCount;
 				String lyric = "";
-				if(index < lyrics.size())
-					lyric = lyrics.get(index);
+				if(index < lyrics.size()-1 && index >= -1)
+					lyric = lyrics.get(index+1);
 				Music m = bar.get(j);
 				if(m instanceof Note) {
 					noteCount++;
