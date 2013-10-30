@@ -34,13 +34,14 @@ public class SongListener implements ABCMusicListener {
 	private Header header;
 	private Body body;
 	
-	private int index;
-	private String title;
-	private String composer;
-	private KeySignature key;
-	private Fraction defaultLength;
-	private Fraction meter;
-	private int tempo;
+	private int index = 1;
+	private String title = "DEFAULT";
+	private String composer = "DEFAULT";
+	private KeySignature key = null;
+	private Fraction defaultLength = null;
+	private Fraction meter = new Fraction(4,4);
+	private Fraction tempoBeat = null;
+	private int bpm = -1;
 	
 	private List<Voice> voices = new ArrayList<Voice>();
 	private HashMap<String, List<Music>> musicForVoiceName = new HashMap<String, List<Music>>();
@@ -73,7 +74,15 @@ public class SongListener implements ABCMusicListener {
 	
 	@Override public void enterAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
 	@Override public void exitAbc_header(ABCMusicParser.Abc_headerContext ctx) {
-		header = new Header(index, title, composer, key, meter, tempo, defaultLength);
+	    if(key == null)
+	        throw new IllegalArgumentException("File is invalid - requires a key signature");
+	    if(defaultLength == null)
+	        defaultLength = (meter.getNumerator()*1.0/(1.0*meter.getDenominator()) < 0.75) ? new Fraction(1,16) : new Fraction(1,8);
+	    if(bpm == -1)
+	        bpm = 100;
+	    if(tempoBeat == null)
+	        tempoBeat = defaultLength;
+		header = new Header(index, title, composer, key, meter, bpm, tempoBeat, defaultLength);
 		System.out.println("Created header");
 	}
 	
@@ -134,12 +143,11 @@ public class SongListener implements ABCMusicListener {
 		}
 		if(ctx.FIELD_TEMPO() != null) {
 			//TODO also parse for optional length field
-		    String tempoString = ctx.FIELD_TEMPO().getText().replace("Q:", "").trim();
-		    int indexOfTempo = tempoString.indexOf("=");
-		    if (indexOfTempo+1 >= 0 && indexOfTempo+1 < tempoString.length())
-		        tempoString = tempoString.substring(indexOfTempo+1);
-			tempo = Integer.parseInt(tempoString);
-			System.out.println("Tempo is " + tempo);
+		    String[] tempoStrings = ctx.FIELD_TEMPO().getText().replace("Q:","").split("=");
+		    tempoBeat = new Fraction(tempoStrings[0].trim());
+		    bpm = Integer.parseInt(tempoStrings[1].trim());
+		    System.out.println("Beats per minute is " + bpm);
+		    System.out.println("Tempo beat is " + tempoBeat);
 		}
 		if(ctx.FIELD_VOICE() != null) {
 			//TODO what is this doing in the header?

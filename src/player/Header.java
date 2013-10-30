@@ -12,6 +12,15 @@ public class Header implements ISongSequencerVisitable{
     private final Fraction noteLengthPerBeat;
     private final int beatsPerMinute;
     private final Fraction defaultLength;
+    private Fraction tempoBeat;
+
+    public Fraction getTempoBeat() {
+        return tempoBeat;
+    }
+
+    public void setTempoBeat(Fraction tempoBeat) {
+        this.tempoBeat = tempoBeat;
+    }
 
     /**
      * Initializes a new Header.
@@ -22,8 +31,9 @@ public class Header implements ISongSequencerVisitable{
      * @param noteLengthPerBeat is a Fraction
      * @param beatsPerMinute is an int
      * @param defaultLength is a Fraction
+     * @param tempoBeat is a Fraction
      */
-    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMinute, Fraction defaultLength) {
+    public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMinute, Fraction tempoBeat, Fraction defaultLength) {
         this.indexNumber = indexNumber;
         this.title = title;
         this.composer = composer;
@@ -31,6 +41,7 @@ public class Header implements ISongSequencerVisitable{
         this.noteLengthPerBeat = noteLengthPerBeat;
         this.beatsPerMinute = beatsPerMinute;
         this.defaultLength = defaultLength;
+        this.tempoBeat = tempoBeat;
     }
     
     /**
@@ -38,7 +49,7 @@ public class Header implements ISongSequencerVisitable{
      * @param header the header to copy
      */
     public Header(Header header) {
-        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMinute(), header.getDefaultLength());
+        this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMinute(), header.getTempoBeat(), header.getDefaultLength());
     }
 
     /**
@@ -97,6 +108,7 @@ public class Header implements ISongSequencerVisitable{
         output.append("\n - Note Length per Beat: " + this.getNoteLengthPerBeat());
         output.append("\n - Beats per Measure (meter): " + this.getBeatsPerMinute());
         output.append("\n - Default note length: " + this.getDefaultLength());
+        output.append("\n - Tempo beat: " + this.getTempoBeat());
         return output.toString();
     }
 
