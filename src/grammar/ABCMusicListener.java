@@ -3,7 +3,6 @@
 package grammar;
 
 import org.antlr.v4.runtime.tree.*;
-import org.antlr.v4.runtime.Token;
 
 public interface ABCMusicListener extends ParseTreeListener {
 	void enterElement(ABCMusicParser.ElementContext ctx);
