@@ -22,7 +22,7 @@ public class SongTest {
     @Test
     public void testAllSongs() {
         String[] playMe = {"jingle"};
-        String[] avoidMe = {"fur"};
+        String[] avoidMe = {};
         boolean playAll = true;
         boolean shouldAvoid;
         for (String fileName : SongTest.getAllSampleFileNames()){
