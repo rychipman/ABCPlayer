@@ -218,7 +218,6 @@ public class SongListener implements ABCMusicListener {
 			String noteString = ctx.NOTE().getText();
 			String[] splitNote = noteString.split("(?=[\\d+/])",2);
 			String pitchString = splitNote[0];
-			
 			//Parse the not duration
 			Fraction duration = new Fraction(1,1);
 			if(splitNote.length == 2) {
@@ -227,7 +226,7 @@ public class SongListener implements ABCMusicListener {
 				String[] splitFraction = durationString.split("(?=/)|(?<=/)");
 				if(splitFraction.length == 3) {
 					int num = 1;
-					int den = 1;
+					int den = 2;
 					if(splitFraction[0].equals("")) {
 						den = Integer.parseInt(splitFraction[2]);
 					} else if(splitFraction[2].equals("")) {
@@ -241,9 +240,12 @@ public class SongListener implements ABCMusicListener {
 					int num = Integer.parseInt(splitFraction[0]);
 					int den = 1;
 					duration = new Fraction(num, den);
+				} else if (splitFraction.length == 2){
+				    int num = 1;
+				    int den = 2;
+				    duration = new Fraction(num, den);
 				}
 			}
-			
 			//Set arbitrary default values
 			NoteEnum baseNote = NoteEnum.C;
 			AccidentalEnum accidental = AccidentalEnum.NONE;

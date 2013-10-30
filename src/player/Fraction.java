@@ -140,6 +140,13 @@ public class Fraction implements Comparable<Object>{
     } 
     
     /**
+     * @return the double representation of this fraction
+     */
+    public double toDouble(){
+        return this.getNumerator()*1.0/this.getDenominator();
+    }
+    
+    /**
      * @return a string representation of the fraction (of the form numerator/denominator)
      */
     @Override

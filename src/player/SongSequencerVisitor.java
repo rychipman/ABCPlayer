@@ -52,10 +52,16 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
     
     public void play() throws MidiUnavailableException, InvalidMidiDataException{
         Fraction lcmCalc = new Fraction(1,1);
-        for (String voiceName : this.musicForVoiceName.keySet())
+        int lcm = 0;
+        for (String voiceName : this.musicForVoiceName.keySet()){
             for(Music m : this.musicForVoiceName.get(voiceName)){
                 lcmCalc = new Fraction(1, Fraction.LCM(m.getDuration().getDenominator(), lcmCalc.getDenominator()));
             }
+            if(lcmCalc.getDenominator() > lcm){
+                lcm = lcmCalc.getDenominator();
+                System.out.println("Changed LCM to " + lcm);
+            }
+        }
                 Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator());
                 System.out.println("LCM = " + lcmCalc.getDenominator());
         
@@ -64,7 +70,7 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                  System.out.println(text);
              }
         };
-        SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, ticksPerBeat.getDenominator(), listener);
+        SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, lcm, listener);
         System.out.println("Created player with bpm = " + beatsPerMinute
                 + " and ticks per beat = " + ticksPerBeat.getDenominator());
         int startTick = 0;
@@ -72,7 +78,7 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         for (String voiceName : this.musicForVoiceName.keySet()){
             startTick = 0;
             for(Music m : this.musicForVoiceName.get(voiceName)){
-                duration = (int) ((1.0*m.getDuration().getNumerator() * tempoBeat.getDenominator() * defaultNoteLength.getNumerator()) / (m.getDuration().getDenominator() * tempoBeat.getNumerator() * defaultNoteLength.getDenominator())*ticksPerBeat.getDenominator());
+                duration = (int) (m.getDuration().toDouble() * defaultNoteLength.toDouble() / tempoBeat.toDouble() * lcm);
                 if (m instanceof Note){
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 12*mNote.getOctave());
