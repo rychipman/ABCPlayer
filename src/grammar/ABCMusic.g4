@@ -71,7 +71,9 @@ LYRIC : 'w:' (' '+ | '-' | '_' | '*' | '~' | '\-' | '|' )* (~'\n')*;
 
 NTH_REPEAT : '[1' | '[2';
 
-TUPLET_START : '(' DIGIT;
+DUPLET : '(2';
+TRIPLET : '(3';
+QUADRUPLET : '(4';
 
 SLASH: '/';
 L_BRACKET : '[';
@@ -111,6 +113,7 @@ l_bracket : L_BRACKET;
 r_bracket : R_BRACKET;
 multinote: l_bracket (note_element)+ r_bracket;
 note_element : NOTE | multinote;
-tuplet_element : TUPLET_START note_element+;
+
+tuplet_element : (DUPLET element element) | (TRIPLET element element element) | (QUADRUPLET element element element element);
 barline : BARLINE SPACE*;
 element : (note_element | tuplet_element | barline | NTH_REPEAT ) (SPACE*) ;

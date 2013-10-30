@@ -55,7 +55,7 @@ public class ABCMusicParserTest {
         ParseTree tree;
         tree = parser.abc_tune(); // "abc_music" is the starter rule.
         
-//        ((RuleContext)tree).inspect(parser);
+        ((RuleContext)tree).inspect(parser);
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new SongListener();
         walker.walk(listener, tree);

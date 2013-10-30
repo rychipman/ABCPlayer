@@ -79,7 +79,7 @@ public class Voice implements ISongSequencerVisitable{
     public String toString(){
         StringBuilder builder = new StringBuilder(this.voiceName +": ");
         for (Music m : this.songComponents)
-            builder.append(m.toString() + " ");
+            builder.append("\n - " + m.toString() + " ");
         return builder.toString();
     }
 }

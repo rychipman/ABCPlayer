@@ -46,6 +46,7 @@ public class SongListener implements ABCMusicListener {
 	private HashMap<String, List<Music>> musicForVoiceName = new HashMap<String, List<Music>>();
 	
 	private boolean inMultinote = false;
+	private int remainingInTuplet = 0;
 	
 	//temporary containers to be used when parsing higher-level objects
 	private String voiceName;
@@ -175,6 +176,7 @@ public class SongListener implements ABCMusicListener {
 	}
 	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) {
 	    System.out.println("Ended multinote");
+	    this.inMultinote = false;
 	}
 
 	@Override public void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
@@ -186,18 +188,23 @@ public class SongListener implements ABCMusicListener {
 		this.inMultinote = true;
 	}
 	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
-		int type = Integer.parseInt(ctx.TUPLET_START().getText().replace("(", "").trim());
-		TupleEnum tupletType = TupleEnum.TRIPLET;
+		int type = 3;
+	    if(ctx.DUPLET() != null)
+		    type = 2;
+	    else if (ctx.QUADRUPLET() != null)
+	        type = 4;
+	    
+	    TupleEnum tupletType = TupleEnum.TRIPLET;
 		switch(type) {
 		    case 2: tupletType = TupleEnum.DUPLET; break;
 		    case 3: tupletType = TupleEnum.TRIPLET; break;
 		    case 4: tupletType = TupleEnum.QUADRUPLET; break;
 		}
+		this.inMultinote = false;
 		//create the tuplet object and append it to the voice
 		tupletParentContainer.add(new Tuplet(tupletType, tupletNotes));		    
 		//set the container back to the main voice
 		noteContainer = tupletParentContainer;
-		this.inMultinote = false;
 		this.musicForVoiceName.get(voiceName).add(new Tuplet(tupletType, tupletNotes));
 		System.out.println("Tuplet with " + new Tuplet(tupletType, tupletNotes));
 	}
@@ -211,13 +218,14 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) {
 		// if this is a base note element, not a multinote (chord)
 		if(ctx.NOTE() != null) {
+		    System.out.println("MADE MATCH FOR " + ctx.getText());
 			//Split the string into a note and a note_duration part
 			String noteString = ctx.NOTE().getText();
 			String[] splitNote = noteString.split("(?=[\\d+/])",2);
 			String pitchString = splitNote[0];
 			
 			//Parse the not duration
-			Fraction duration = defaultLength;
+			Fraction duration = new Fraction(1,1);
 			if(splitNote.length == 2) {
 				//TODO why does fraction notation for duration allow for just a slash?
 				String durationString = splitNote[1];
@@ -301,9 +309,10 @@ public class SongListener implements ABCMusicListener {
 			
 			//add a rest or a note
 			if(basenoteString.equals("z")) {
+			    for(int i = 0; i < 20; i++)
 				noteContainer.add(new Rest(duration));
-				if(!this.inMultinote)
-				    this.musicForVoiceName.get(voiceName).add(new Rest(duration));
+			    if(!this.inMultinote)
+			        this.musicForVoiceName.get(voiceName).add(new Rest(duration));
 			} else {
 				noteContainer.add(new Note(baseNote, accidental, octave, duration));
 				if(!this.inMultinote){
@@ -437,7 +446,7 @@ public class SongListener implements ABCMusicListener {
         chordParentContainer.add(new Chord(notes));
         System.out.println(new Chord(notes));
         noteContainer = chordParentContainer;
-        this.inMultinote = true;
+        this.inMultinote = false;
         this.musicForVoiceName.get(voiceName).add(new Chord(notes));
         
     }

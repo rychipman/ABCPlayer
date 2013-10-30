@@ -12,7 +12,7 @@ import sound.SequencePlayer;
 
 public class SongSequencerVisitor implements ISongSequencerVisitor{
     private KeySignature keySignature;
-    private Fraction noteLengthPerBeat;
+    private Fraction defaultNoteLength;
     private int beatsPerMinute;
     private HashMap<String, List<Music>> musicForVoiceName;
     
@@ -29,11 +29,11 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
     @Override
     public void visit(Header header) {
         this.keySignature = header.getKeySignature();
-        this.noteLengthPerBeat = header.getNoteLengthPerBeat();
+        this.defaultNoteLength = header.getDefaultLength();
         this.beatsPerMinute = header.getBeatsPerMinute();
         System.out.println("Key sig is " + this.keySignature);
         System.out
-                .println("note length per beat is " + noteLengthPerBeat);
+                .println("note length per beat is " + defaultNoteLength);
         System.out.println("beats per minute is " + beatsPerMinute);
     }
 
@@ -51,9 +51,12 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
     public void play() throws MidiUnavailableException, InvalidMidiDataException{
         Fraction lcmCalc = new Fraction(1,1);
         for (String voiceName : this.musicForVoiceName.keySet())
-            for(Music m : this.musicForVoiceName.get(voiceName))
+            for(Music m : this.musicForVoiceName.get(voiceName)){
+                System.out.println("Including " + m.getDuration().getDenominator());
                 lcmCalc = new Fraction(1, Fraction.LCM(m.getDuration().getDenominator(), lcmCalc.getDenominator()));
-                Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator() / this.noteLengthPerBeat.getDenominator());
+            }
+                Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator() * this.defaultNoteLength.getDenominator());
+                System.out.println("LCM = " + lcmCalc.getDenominator());
         
         LyricListener listener = new LyricListener() {
              public void processLyricEvent(String text) {
@@ -61,12 +64,14 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
              }
         };
         SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, ticksPerBeat.getDenominator(), listener);
-                
+        System.out.println("Created player with bpm = " + beatsPerMinute
+                + " and ticks per beat = " + ticksPerBeat.getDenominator());
         int startTick = 0;
         int duration;
         for (String voiceName : this.musicForVoiceName.keySet()){
             for(Music m : this.musicForVoiceName.get(voiceName)){
-                duration = (ticksPerBeat.getDenominator() * m.getDuration().getNumerator() * this.noteLengthPerBeat.getDenominator()) / m.getDuration().getDenominator();
+                System.out.println("I'm Sequencing " + m);
+                duration = (ticksPerBeat.getDenominator() * m.getDuration().getNumerator() * this.defaultNoteLength.getDenominator()) / m.getDuration().getDenominator();
                 if (m instanceof Note){
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 12*mNote.getOctave());
@@ -121,6 +126,7 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                         }
                     }
                 } else if (m instanceof Rest){
+                    System.out.println("It's a rest");
                     startTick += duration;
                 }
             }
