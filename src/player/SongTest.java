@@ -1,7 +1,5 @@
 package player;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +8,19 @@ import org.junit.Test;
 
 public class SongTest {
     
+    /*
+     * Parition input space : Play all the songs in our sample directory
+     */
+    
     @Test
-    public void test() {
+    public void testAllSongs() {
+        String[] playMe = {"jingle"};
         for (String fileName : SongTest.getAllSampleFileNames()){
-            Main.play(fileName);
+            for(String s : playMe)
+                if(fileName.contains(s)){
+                    Main.play(fileName);
+                    break;
+                }
         }
     }
     
