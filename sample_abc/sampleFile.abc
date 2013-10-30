@@ -1,7 +1,13 @@
-X: 1
-T:Piece No.1
+X:1
+T:Alphabet Song
+C:Traditional Kid's Song
 M:4/4
 L:1/4
-Q:200
-K:C
-[^F/2=e/2][F/2e/2]z/2[F/2e/2]z/2[F/2c/2][Fe]|[GBg]zGz|c3/2 G/2 z E|E/2 A B _B/2 A| (3Geg a f/2 g/2 | z/2 e c/2 d/2 B3/4 z3/4 |]
+Q:1/4=100
+K:D
+| D D A A|B B A2|G G F F|E/2E/2E/2E/2 D2|
+w:A B C D E F G  H I J K L  M  N  O   P
+  A A G F | F F E2|A       A  G  G | F F E2|
+w:Q R S *   T U V  W~(dou-ble u) | X Y Z
+   D   D    A    A |B B A2 | G    G  F    F | E     E  D2|
+w: Now I've said my A B C's. Tell me what you think of me.

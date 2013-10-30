@@ -105,7 +105,7 @@ field_key : FIELD_KEY ;
 
 /* Music stuff */
 abc_music : abc_line+;
-abc_line : (element+ LINEFEED (lyric LINEFEED)? | field_voice) LINEFEED?;
+abc_line : (element+ LINEFEED* (lyric LINEFEED*)? | field_voice) LINEFEED?;
 
 lyric : LYRIC;
 field_voice : FIELD_VOICE;
