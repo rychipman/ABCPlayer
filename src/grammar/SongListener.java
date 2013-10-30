@@ -50,7 +50,6 @@ public class SongListener implements ABCMusicListener {
 	//temporary containers to be used when parsing higher-level objects
 	private String voiceName;
 	//container for things in the Voice
-	private List<Music> components = new ArrayList<Music>();
 	private List<Music> tupletNotes = new ArrayList<Music>();
 	private List<Music> chordNotes = new ArrayList<Music>();
 	
