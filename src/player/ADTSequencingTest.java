@@ -10,69 +10,73 @@ import javax.sound.midi.MidiUnavailableException;
 
 import org.junit.Test;
 
-public class ADTTest {
+/**
+ * Test the ADT and ensure that we can use it to play songs
+ */
 
-//    @Test
-//    public void odeToJoy() {
-//        List<Music> music = new ArrayList<Music>();
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        
-//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        
-//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(3,4)));
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(2,4)));
-//        
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        
-//        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        
-//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
-//        
-//        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(3,4)));
-//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
-//        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(2,4)));
-//        
-//        Voice voice = new Voice("Test Voice", music);
-//        List<Voice> voices = new ArrayList<Voice>();
-//        voices.add(voice);
-//        Body body = new Body(voices);
-//        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,1), 180);
-//        Song song = new Song(header, body);
-//        SongSequencerVisitor visitor = new SongSequencerVisitor();
-//        song.accept(visitor);
-//        try {
-//            visitor.play();
-//        } catch (MidiUnavailableException e) {
-//            e.printStackTrace();
-//        } catch (InvalidMidiDataException e) {
-//            e.printStackTrace();
-//        }
-//        assertTrue(true);
-//    }
+public class ADTSequencingTest {
+
+    @Test
+    public void odeToJoy() {
+        List<Music> music = new ArrayList<Music>();
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
+        
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
+        
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
+        
+        Voice voice = new Voice("Test Voice", music);
+        List<Voice> voices = new ArrayList<Voice>();
+        voices.add(voice);
+        Body body = new Body(voices);
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,1), 180, new Fraction(1,4), new Fraction(1,4));
+        Song song = new Song(header, body);
+        SongSequencerVisitor visitor = new SongSequencerVisitor();
+        song.accept(visitor);
+        try {
+            visitor.play();
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
+        }
+        assertTrue(true);
+    }
     
     @Test
-    public void superMario() {
+    public void testSuperMario() {
         List<Music> music = new ArrayList<Music>();
         List<Note> chordHolder = new ArrayList<Note>();
         List<Music> tupletHolder = new ArrayList<Music>();
@@ -134,10 +138,8 @@ public class ADTTest {
         try {
             visitor.play();
         } catch (MidiUnavailableException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InvalidMidiDataException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         assertTrue(true);
