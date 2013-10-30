@@ -47,7 +47,7 @@ public class ABCMusicLexerTest {
 	 * - Slash
 	 * - L_Bracket
 	 * - R_Bracket
-	 * - Dit
+	 * - Digit
 	 */
 	
     @Test
@@ -78,103 +78,152 @@ public class ABCMusicLexerTest {
         verifyLexer(input, expected);
     }
     
-	@Test
-	public void testDigits() {
-		String input = "0123456789";
-		String[] expected = {"0","1","2","3","4","5","6","7","8","9"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testBaseNotes() {
-		String input = "C D E F G A B c d e f g a b";
-		String[] expected = {"C",  "D", "E", "F", "G", "A", "B", "c", "d", "e", "f", "g", "a", "b"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testAccidentals() {
-		String input = "C' B,";
-		String[] expected = {"C'", "B,"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testMode() {
-		String input = "K: Gm";
-		String[] expected = {"K: Gm"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testRests() {
-		String input = "z z C";
-		String[] expected = {"z", "z", "C"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testOctaves() {
-		String input = "C' C,";
-		String[] expected = {"C'", "C,"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testAccidental() {
-		String input = "^B,1/2 __C'3";
-		String[] expected = {"^B,1/2", "__C'3"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testBarline() {
-		String input = "| || [| |] |: :||";
-		String[] expected = {"|", "||", "[|", "|]", "|:", ":|", "|"};
-		verifyLexer(input, expected);
-	}
-	
-	@Test
-	public void testFractions() {
-	    String input = "3/4 1/2 2C";
-	    String[] expected = {"3/4", "1/2", "2", "C"};
-	    verifyLexer(input, expected);
-	}
-	
-	@Test
-    public void testKey() {
-        String input = "K: Gm";
-        String[] expected = {"K: Gm"};
-        verifyLexer(input, expected);
-    }
-	
-	@Test
-    public void testTempo() {
-        String input = "Q:1/4=234";
-        String[] expected = {"Q:1/4=234"};
-        verifyLexer(input, expected);
-    }
-	
-	@Test
+    @Test
     public void testMeter() {
         String input = "M: C|";
         String[] expected = {"M: C|"};
         verifyLexer(input, expected);
     }
-	
-	@Test
-    public void testBrackets() {
-        String input = "[B1/2 G]";
-        String[] expected = {"[", "B1/2", "G", "]"};
+    
+    @Test
+    public void testTempo() {
+        String input = "Q:1/4=234";
+        String[] expected = {"Q:1/4=234"};
         verifyLexer(input, expected);
     }
-	
-	@Test
-	public void testLinefeed() {
-	    String input = "\t\r\n";
-	    String[] expected = {"\t\r\n"};
-	    verifyLexer(input, expected);
-	}
+    
+    @Test
+    public void testVoice() {
+        String input = "w: Amazing Grace";
+        String[] expected = {"w: Amazing Grace"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testFraction() {
+        String input = "3/4 1/2 2C";
+        String[] expected = {"3/4", "1/2", "2", "C"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testLinefeed() {
+        String input = "\t\r\n";
+        String[] expected = {"\t\r\n"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testNote() {
+        String input = "^C ^^D _E __F =G A B c d e f g a b";
+        String[] expected = {"^C",  "^^D", "_E", "__F", "=G", "A", "B", "c", "d", "e", "f", "g", "a", "b"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testPitch() {
+        String input = "z ^c c3/4";
+        String[] expected = {"z", "^c", "c3/4"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testKeyAccidental() {
+        String input = "# C b";
+        String[] expected = {"#", "C", "b"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testModeMinor() {
+        String input = "m";
+        String[] expected = {"m"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testRest() {
+        String input = "z C z";
+        String[] expected = {"z", "C", "z"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testBarline() {
+        String input = "| || [| |] |: :||";
+        String[] expected = {"|", "||", "[|", "|]", "|:", ":|", "|"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testFieldKey() {
+        String input = "K: C#m";
+        String[] expected = {"K: C#m"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testLyric() {
+        String input = "w: Amazing Grace";
+        String[] expected = {"w: Amazing Grace"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testNthRepeat() {
+        String input = "[1 [2";
+        String[] expected = {"[1", "[2"};
+        verifyLexer(input, expected);
+    }
+        
+    @Test
+    public void testDuplet() {
+        String input = "(2";
+        String[] expected = {"(2"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testTriplet() {
+        String input = "(3";
+        String[] expected = {"(3"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testQuadruplet() {
+        String input = "(4";
+        String[] expected = {"(4"};
+        verifyLexer(input, expected);
+    }
+        
+    @Test
+    public void testSlash() {
+        String input = "/";
+        String[] expected = {"/"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testLBracket() {
+        String input = "[";
+        String[] expected = {"["};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testRBracket() {
+        String input = "]";
+        String[] expected = {"]"};
+        verifyLexer(input, expected);
+    }
+    
+    @Test
+    public void testDigit() {
+        String input = "0123456789";
+        String[] expected = {"0","1","2","3","4","5","6","7","8","9"};
+        verifyLexer(input, expected);
+    }
 	
 	@Test
 	public void testFullPiece(){
