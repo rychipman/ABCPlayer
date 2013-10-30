@@ -110,25 +110,21 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitField_number(ABCMusicParser.Field_numberContext ctx) {
 		String indexString = ctx.FIELD_NUMBER().getText().replace("X:", "").trim();
 		index = Integer.parseInt(indexString);
-		System.out.println("The index is " + indexString);
 	}
 
 	@Override public void enterField_title(ABCMusicParser.Field_titleContext ctx) { }
 	@Override public void exitField_title(ABCMusicParser.Field_titleContext ctx) {
 		title = ctx.FIELD_TITLE().getText().replace("T:", "").trim();
-		System.out.println("The title is " + title);
 	}
 
 	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) {
 		if(ctx.FIELD_COMPOSER() != null) {
 			composer = ctx.FIELD_COMPOSER().getText().replace("C:", "").trim();
-			System.out.println("Composer is " + composer);
 		}
 		if(ctx.FIELD_DEFAULT_LENGTH() != null) {
 			String fracText = ctx.FIELD_DEFAULT_LENGTH().getText().replace("L:", "").trim();
 			defaultLength = new Fraction(fracText);
-			System.out.println("Default length is " + defaultLength);
 		}
 		if(ctx.FIELD_METER() != null) {
 			String meterString = ctx.FIELD_METER().getText().replace("M:", "").trim();
@@ -139,22 +135,18 @@ public class SongListener implements ABCMusicListener {
 			} else {
 				meter = new Fraction(meterString);
 			}
-			System.out.println("Meter is " + meter);
 		}
 		if(ctx.FIELD_TEMPO() != null) {
 			//TODO also parse for optional length field
 		    String[] tempoStrings = ctx.FIELD_TEMPO().getText().replace("Q:","").split("=");
 		    tempoBeat = new Fraction(tempoStrings[0].trim());
 		    bpm = Integer.parseInt(tempoStrings[1].trim());
-		    System.out.println("Beats per minute is " + bpm);
-		    System.out.println("Tempo beat is " + tempoBeat);
 		}
 		if(ctx.FIELD_VOICE() != null) {
 			//TODO what is this doing in the header?
 			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
 			if(!this.musicForVoiceName.containsKey(voiceName))
 			    this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
-			System.out.println("Voice name is " + voiceName);
 		}
 	}
 
@@ -163,7 +155,6 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) {
 		String keyString = ctx.FIELD_KEY().getText().replace("K:", "").trim();
 		key = new KeySignature(keyString);
-		System.out.println("Key is " + keyString);
 	}
 	
 	/**
@@ -180,10 +171,8 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
 
 	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) {	
-	    System.out.println("Started multinote");
 	}
 	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) {
-	    System.out.println("Ended multinote");
 	    this.inMultinote = false;
 	}
 
@@ -214,7 +203,6 @@ public class SongListener implements ABCMusicListener {
 		//set the container back to the main voice
 		noteContainer = tupletParentContainer;
 		this.musicForVoiceName.get(voiceName).add(new Tuplet(tupletType, tupletNotes));
-		System.out.println("Tuplet with " + new Tuplet(tupletType, tupletNotes));
 	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
@@ -226,7 +214,6 @@ public class SongListener implements ABCMusicListener {
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) {
 		// if this is a base note element, not a multinote (chord)
 		if(ctx.NOTE() != null) {
-		    System.out.println("MADE MATCH FOR " + ctx.getText());
 			//Split the string into a note and a note_duration part
 			String noteString = ctx.NOTE().getText();
 			String[] splitNote = noteString.split("(?=[\\d+/])",2);
@@ -324,7 +311,7 @@ public class SongListener implements ABCMusicListener {
 			} else {
 				noteContainer.add(new Note(baseNote, accidental, octave, duration));
 				if(!this.inMultinote){
-				    System.out.println(voiceName + ": " + new Note(baseNote, accidental, octave, duration));
+
 				    this.musicForVoiceName.get(voiceName).add(new Note(baseNote, accidental, octave, duration));
 				}
 			}
@@ -396,9 +383,6 @@ public class SongListener implements ABCMusicListener {
         voiceName = ctx.getText().replace("V:", "").trim();
         if(!this.musicForVoiceName.containsKey(voiceName))
             this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
-        System.out.println("Switched to voice name = " + voiceName);
-        //voiceName = parseText("V:", ctx.FIELD_VOICE().getText());
-        //System.out.println("Voice name is " + voiceName);
     }
 
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
@@ -452,7 +436,6 @@ public class SongListener implements ABCMusicListener {
             notes.add((Note)m);
         }
         chordParentContainer.add(new Chord(notes));
-        System.out.println(new Chord(notes));
         noteContainer = chordParentContainer;
         this.inMultinote = false;
         this.musicForVoiceName.get(voiceName).add(new Chord(notes));
