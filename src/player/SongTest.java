@@ -22,8 +22,16 @@ public class SongTest {
     @Test
     public void testAllSongs() {
         String[] playMe = {"jingle"};
-        boolean playAll = false;
+        String[] avoidMe = {};
+        boolean playAll = true;
+        boolean shouldAvoid;
         for (String fileName : SongTest.getAllSampleFileNames()){
+            shouldAvoid = false;
+            for(String s : avoidMe)
+                if(fileName.contains(s))
+                    shouldAvoid = true;
+            if(shouldAvoid)
+                continue;
             for(String s : playMe)
                 if(fileName.contains(s) || playAll){
                     Main.play(fileName);

@@ -1,5 +1,7 @@
 package grammar;
 
+import grammar.ABCMusicParser.Abc_headerContext;
+import grammar.ABCMusicParser.Abc_tuneContext;
 import grammar.ABCMusicParser.BarlineContext;
 import grammar.ABCMusicParser.Field_voiceContext;
 import grammar.ABCMusicParser.L_bracketContext;
@@ -29,12 +31,24 @@ import player.TupleEnum;
 import player.Tuplet;
 import player.Voice;
 
+/**
+ * The SongListener will walk the parse tree and generate a Song object
+ */
+
 public class SongListener implements ABCMusicListener {
 	
+    /**
+     * Fields for overall song:
+     * Song = Header + Body
+     */
 	private Song song;
 	private Header header;
 	private Body body;
 	
+	/**
+	 * Fields for Header
+	 * Header = index + title + composer + key + defaultLength + meter + tempoBeat + bpm
+	 */
 	private int index = 1;
 	private String title = "DEFAULT";
 	private String composer = "DEFAULT";
@@ -44,39 +58,57 @@ public class SongListener implements ABCMusicListener {
 	private Fraction tempoBeat = null;
 	private int bpm = -1;
 	
+	/**
+	 * Fields for Body
+	 * Body = List<Voice>
+	 */
 	private List<Voice> voices = new ArrayList<Voice>();
+	
+	/**
+	 * Returns the bars (List<List<Music>>) for a given voice name
+	 * Each bar is a List<Music>
+	 */
 	private HashMap<String, List<List<Music>>> barsForVoiceName = new HashMap<String, List<List<Music>>>();
 	private HashMap<String, Integer> currentBarForVoiceName = new HashMap<String, Integer>();
 	
+	/**
+	 * true if the listener is currently processing a multinote (i.e. tuplet, chord) 
+	 */
 	private boolean inMultinote = false;
-	private int remainingInTuplet = 0;
 	
-	//temporary containers to be used when parsing higher-level objects
+	/**
+	 * The current voice name being processed
+	 */
 	private String voiceName;
-	//container for things in the Voice
+
+	/**
+	 * Container for things in voice
+	 */
 	private List<Music> tupletNotes = new ArrayList<Music>();
 	private List<Music> chordNotes = new ArrayList<Music>();
 	
-	//Notes are always put in this container. this will be assigned to the appropriate
-	//container from above (see below) when necessary
+	/**
+	 * Notes are always put in this container. this will be assigned to the appropriate
+	 * container from above (see below) when necessary
+	 */
 	private List<Music> chordParentContainer = new ArrayList<Music>();
 	private List<Music> tupletParentContainer = new ArrayList<Music>();
 	private List<Music> noteContainer = new ArrayList<Music>();
 	
 	/**
-	 * Top-level elements
+	 * When we exit the tune, we construct the song object
 	 */
-	@Override public void enterAbc_tune(ABCMusicParser.Abc_tuneContext ctx) { }
 	@Override public void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx) {
 		song = new Song(header, body);
-		System.out.println("Created Song");
-		System.out.println(song.toString());
 	}
+	@Override
+    public void enterAbc_header(Abc_headerContext ctx) {   }
 	
-	@Override public void enterAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
+	/**
+	 * When we exit the header, we construct the header object
+	 */
 	@Override public void exitAbc_header(ABCMusicParser.Abc_headerContext ctx) {
-	    if(key == null)
-	        throw new IllegalArgumentException("File is invalid - requires a key signature");
+	    // If there's no default length, 
 	    if(defaultLength == null)
 	        defaultLength = (meter.getNumerator()*1.0/(1.0*meter.getDenominator()) < 0.75) ? new Fraction(1,16) : new Fraction(1,8);
 	    if(bpm == -1)
@@ -86,6 +118,8 @@ public class SongListener implements ABCMusicListener {
 		header = new Header(index, title, composer, key, meter, bpm, tempoBeat, defaultLength);
 		System.out.println("Created header");
 	}
+	@Override
+    public void enterAbc_tune(Abc_tuneContext ctx) {   }
 	
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) {	
 	    if(this.voiceName == null){
@@ -521,4 +555,8 @@ public class SongListener implements ABCMusicListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+    
+
+    
 }
