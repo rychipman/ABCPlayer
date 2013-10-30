@@ -484,7 +484,10 @@ public class SongListener implements ABCMusicListener {
 	
 	private void matchLyricsToNotes(List<String> lyrics, List<List<Music>> bars) {
 		int noteCount = 0;
-		for(int i=currentBarForVoiceName.get(voiceName); i<bars.size(); i++) {
+		int startBar = 0;
+		if(currentBarForVoiceName.containsKey(voiceName))
+			startBar = currentBarForVoiceName.get(voiceName);
+		for(int i=startBar; i<bars.size(); i++) {
 			List<Music> bar = bars.get(i);
 			for(int j=0; j<bar.size(); j++) {
 				int index = noteCount;
