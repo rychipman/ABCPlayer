@@ -441,19 +441,44 @@ public class SongListener implements ABCMusicListener {
 	}
 	
 	private void matchLyricsToNotes(List<String> lyrics, List<List<Music>> bars) {
-//		int noteCount = 0;
-//		for(int i=0; i<bars.size(); i++) {
-//			List<Music> bar = bars.get(i);
-//			for(int j=0; j<bar.size(); j++) {
-//				int index = noteCount;
-//				Music m = bar.get(j);
-//				if(m instanceof Note) {
-//					noteCount++;
-//					String lyric = lyrics.get(index);
-//					((Note)m).setSyllable(lyric);
-//				}
-//			}
-//		}
+		int noteCount = 0;
+		for(int i=0; i<bars.size(); i++) {
+			List<Music> bar = bars.get(i);
+			for(int j=0; j<bar.size(); j++) {
+				int index = noteCount;
+				String lyric = "";
+				if(index < lyrics.size())
+					lyric = lyrics.get(index);
+				Music m = bar.get(j);
+				if(m instanceof Note) {
+					noteCount++;
+					((Note)m).setSyllable(lyric);
+				} else if(m instanceof Chord) {
+					noteCount++;
+					((Chord)m).setSyllable(lyric);
+				} else if(m instanceof Tuplet) {
+					for(Music subMusic : ((Tuplet)m).getNotes() ) {
+						if(subMusic instanceof Note) {
+							noteCount++;
+							((Note)subMusic).setSyllable(lyric);
+						} else if(subMusic instanceof Chord) {
+							noteCount++;
+							((Chord)subMusic).setSyllable(lyric);
+						}
+					}
+				} else if(m instanceof Rest) {
+					//Do nothing, because rests cannot have lyrics
+				}
+				//if the lyric is a new bar character
+				if(index < lyrics.size()-1) {
+					String nextLyric = lyrics.get(index + 1);
+					if(nextLyric.equals("|")) {
+						noteCount++;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	public Song getSong() {

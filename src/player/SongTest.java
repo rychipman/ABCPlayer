@@ -12,9 +12,10 @@ public class SongTest {
     
     @Test
     public void test() {
-        for (String fileName : SongTest.getAllSampleFileNames()){
-            Main.play(fileName);
-        }
+    	Main.play("sample_abc/waxies_dargle.abc");
+//        for (String fileName : SongTest.getAllSampleFileNames()){
+//            Main.play(fileName);
+//        }
     }
     
     private static String[] getAllSampleFileNames(){
