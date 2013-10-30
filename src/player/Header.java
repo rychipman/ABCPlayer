@@ -5,10 +5,30 @@ package player;
  * 
  */
 public class Header implements ISongSequencerVisitable{
+    
+    /**
+     * The index of the song (field X in header)
+     */
     private final int indexNumber;
+    
+    /**
+     * The title of the song (field T in header)
+     */
     private final String title;
+    
+    /**
+     * The composer of the song (field C in header)
+     */
     private final String composer;
+    
+    /**
+     * The key signature of the song (field K in header)
+     */
     private final KeySignature keySignature;
+    
+    /**
+     * The note 
+     */
     private final Fraction noteLengthPerBeat;
     private final int beatsPerMinute;
     private final Fraction defaultLength;
