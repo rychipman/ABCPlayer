@@ -21,7 +21,7 @@ public class SongTest {
      */
     @Test
     public void testAllSongs() {
-        String[] playMe = {"dargle"};
+        String[] playMe = {"jingle"};
         boolean playAll = false;
         for (String fileName : SongTest.getAllSampleFileNames()){
             for(String s : playMe)

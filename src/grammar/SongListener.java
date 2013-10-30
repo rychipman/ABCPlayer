@@ -46,6 +46,7 @@ public class SongListener implements ABCMusicListener {
 	
 	private List<Voice> voices = new ArrayList<Voice>();
 	private HashMap<String, List<List<Music>>> barsForVoiceName = new HashMap<String, List<List<Music>>>();
+	private HashMap<String, Integer> currentBarForVoiceName = new HashMap<String, Integer>();
 	
 	private boolean inMultinote = false;
 	private int remainingInTuplet = 0;
@@ -178,7 +179,14 @@ public class SongListener implements ABCMusicListener {
 	}
 	
 	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
-	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
+	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) {
+		List<List<Music>> bars = barsForVoiceName.get(voiceName);
+		int lineLength = bars.size();
+		int oldLength = 0;
+		if(currentBarForVoiceName.containsKey(voiceName))
+			oldLength = currentBarForVoiceName.get(voiceName);
+		currentBarForVoiceName.put(voiceName, lineLength + oldLength);
+	}
 	
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
@@ -221,7 +229,7 @@ public class SongListener implements ABCMusicListener {
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	/**
-	 * Called whenever the lisener exits a note_element. If the note element is also a multinote,
+	 * Called whenever the listener exits a note_element. If the note element is also a multinote,
 	 * it ignores and lets the multinote handler take it. If it is a basic note, parses and creates
 	 * the note object
 	 */
@@ -442,7 +450,7 @@ public class SongListener implements ABCMusicListener {
 	
 	private void matchLyricsToNotes(List<String> lyrics, List<List<Music>> bars) {
 		int noteCount = 0;
-		for(int i=0; i<bars.size(); i++) {
+		for(int i=currentBarForVoiceName.get(voiceName); i<bars.size(); i++) {
 			List<Music> bar = bars.get(i);
 			for(int j=0; j<bar.size(); j++) {
 				int index = noteCount;
