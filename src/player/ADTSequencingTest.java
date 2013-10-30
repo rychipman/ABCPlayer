@@ -34,9 +34,9 @@ public class ADTSequencingTest {
         music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
         music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
         
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(4,3)));
         music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(2,1)));
         
         music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
         music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
@@ -53,15 +53,15 @@ public class ADTSequencingTest {
         music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
         music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL, 1, new Fraction(1,1)));
         
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL, 1, new Fraction(4,3)));
         music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL, 1, new Fraction(2,1)));
         
         Voice voice = new Voice("Test Voice", music);
         List<Voice> voices = new ArrayList<Voice>();
         voices.add(voice);
         Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(1,1), 180, new Fraction(1,4), new Fraction(1,4));
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("A"), new Fraction(4,4), 180, new Fraction(1,4), new Fraction(1,4));
         Song song = new Song(header, body);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
         song.accept(visitor);
@@ -103,7 +103,7 @@ public class ADTSequencingTest {
         music.add(test);
         
         music.add(new Rest(new Fraction(1,1)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(4,3)));
         music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,2)));
         music.add(new Rest(new Fraction(1,1)));
         music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
@@ -123,14 +123,14 @@ public class ADTSequencingTest {
         music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
         music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
         music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(6,4)));
         music.add(new Rest(new Fraction(3,4)));
         
         Voice voice = new Voice("Test Voice", music);
         List<Voice> voices = new ArrayList<Voice>();
         voices.add(voice);
         Body body = new Body(voices);
-        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 200,  new Fraction(1,4),new Fraction(1,4));
+        Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(4,4), 200,  new Fraction(1,4),new Fraction(1,4));
         Song song = new Song(header, body);
         System.out.println(song);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
