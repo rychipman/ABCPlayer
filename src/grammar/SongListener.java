@@ -59,6 +59,7 @@ public class SongListener implements ABCMusicListener {
 	private List<Music> tupletParentContainer = new ArrayList<Music>();
 	private List<Music> noteContainer = new ArrayList<Music>();
     
+	
 	/**
 	 * Top-level elements
 	 */
