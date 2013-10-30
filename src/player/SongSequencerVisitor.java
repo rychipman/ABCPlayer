@@ -31,6 +31,10 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         this.keySignature = header.getKeySignature();
         this.noteLengthPerBeat = header.getNoteLengthPerBeat();
         this.beatsPerMinute = header.getBeatsPerMinute();
+        System.out.println("Key sig is " + this.keySignature);
+        System.out
+                .println("note length per beat is " + noteLengthPerBeat);
+        System.out.println("beats per minute is " + beatsPerMinute);
     }
 
     @Override
@@ -67,6 +71,9 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 12*mNote.getOctave());
                     if (mNote.getSyllable() != null) {seqPlayer.addLyricEvent(mNote.getSyllable(), startTick);}
+                    System.out.println("Sequencing " + pitch
+                            + ", " + startTick + ", "
+                            + duration);
                     seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     startTick += duration;
                 } else if (m instanceof Chord){
@@ -74,6 +81,9 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                     if (mChord.getSyllable() != null) {seqPlayer.addLyricEvent(mChord.getSyllable(), startTick);}
                     for (Note n : mChord.getNotes()){
                         Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
+                        System.out.println("Sequencing " + pitch
+                                + ", " + startTick + ", "
+                                + duration);
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     }
                     startTick += duration;
@@ -87,6 +97,9 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                         	Note n = (Note)tupletElem;
                         	pitch1 = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
                         	if (n.getSyllable() != null) {seqPlayer.addLyricEvent(n.getSyllable(), startTick);}
+                        	System.out.println("Sequencing " + pitch1
+                                    + ", " + startTick + ", "
+                                    + tupleNoteDur);
                         	seqPlayer.addNote(pitch1.toMidiNote(), startTick, tupleNoteDur); 
                         	startTick += tupleNoteDur;
                         } else if (tupletElem instanceof Chord) {
@@ -95,6 +108,9 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                             for (Note note : c.getNotes()){
                                 Pitch pitch2 = null;
                                 pitch2 = new Pitch(note.getNote().toString().charAt(0)).transpose(note.getAccidental().getSemitoneOffset() + 12*note.getOctave());
+                                System.out.println("Sequencing " + pitch2
+                                        + ", " + startTick + ", "
+                                        + tupleNoteDur);
                                 seqPlayer.addNote(pitch2.toMidiNote(), startTick, tupleNoteDur);
                             }
                             startTick += tupleNoteDur;

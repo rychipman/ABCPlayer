@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -19,6 +22,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
+
+import player.SongSequencerVisitor;
 public class ABCMusicParserTest {
 
     public final static String[] songFileNames = new String[]{"sample_abc/sampleFile.abc"};
@@ -54,7 +59,19 @@ public class ABCMusicParserTest {
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new SongListener();
         walker.walk(listener, tree);
-        return (listener).toString();
+        
+        SongSequencerVisitor visitor = new SongSequencerVisitor();
+        ((SongListener)listener).getSong().accept(visitor);
+        try {
+            visitor.play();
+        } catch (MidiUnavailableException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InvalidMidiDataException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
     }
     
     public static String unEscapeString(String s){

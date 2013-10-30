@@ -129,6 +129,7 @@ public class ADTTest {
         Body body = new Body(voices);
         Header header = new Header(3, "Test Title", "Test Composer", new KeySignature("C"), new Fraction(1,4), 200, new Fraction(1,4));
         Song song = new Song(header, body);
+        System.out.println(song);
         SongSequencerVisitor visitor = new SongSequencerVisitor();
         song.accept(visitor);
         try {

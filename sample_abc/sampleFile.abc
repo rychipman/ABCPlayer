@@ -1,14 +1,7 @@
-X:2167
-T:Waxie's Dargle
+X: 1
+T:Piece No.1
 M:4/4
-L:1/8
-Q:1/4=180
-K:G
- gf|e2dc B2A2|B2G2 E2D2|G2G2 GABc|d4 B2gf|
-w: Sa-ys my aul' wan to your aul' wan
-e2dc B2A2|B2G2 E2G2|F2A2 D2EF|G2z2 G4|
-w: Sa-ys your aul'_ wan to my aul' wan,
-B2d2 e2f2|g2d2 BAG2|Bcd2 e2f2|g4 f2gf|
-w: I'll go down to Mon-to to-w-n
-e2dc B2A2|B2G2 E2G2|F2A2 D2EF|G2z2 G4|
-w: A-nd ask him for a half a crown
+L:1/4
+Q:200
+K:C
+[^F/2e/2][F/2e/2]z/2[F/2e/2]z/2[F/2c/2][Fe]|[GBg]zGz|c3/2 G/2 z E|E/2 A B _B/2 A| (3Geg a f/2 g/2 | z/2 e c/2 d/2 B3/4 z3/4 |]
