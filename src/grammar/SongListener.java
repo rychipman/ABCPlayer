@@ -1,5 +1,6 @@
 package grammar;
 
+import grammar.ABCMusicParser.BarlineContext;
 import grammar.ABCMusicParser.Field_voiceContext;
 import grammar.ABCMusicParser.L_bracketContext;
 import grammar.ABCMusicParser.LyricContext;
@@ -44,7 +45,7 @@ public class SongListener implements ABCMusicListener {
 	private int bpm = -1;
 	
 	private List<Voice> voices = new ArrayList<Voice>();
-	private HashMap<String, List<Music>> musicForVoiceName = new HashMap<String, List<Music>>();
+	private HashMap<String, List<List<Music>>> barsForVoiceName = new HashMap<String, List<List<Music>>>();
 	
 	private boolean inMultinote = false;
 	private int remainingInTuplet = 0;
@@ -88,14 +89,19 @@ public class SongListener implements ABCMusicListener {
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) {	
 	    if(this.voiceName == null){
 	        this.voiceName = "THE_DEFAULT_VOICE";
-	        this.musicForVoiceName.put(this.voiceName, new ArrayList<Music>());
+	        this.barsForVoiceName.put(this.voiceName, new ArrayList<List<Music>>());
 	        System.out.println("Added the default voice");
 	    }
 	}
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) {
-	    for(String name : this.musicForVoiceName.keySet()){
+	    for(String name : this.barsForVoiceName.keySet()){
 	        System.out.println("Added voice " + name + " to voices list");
-	        voices.add(new Voice(name, musicForVoiceName.get(name)));
+	        List<List<Music>> voiceBars = barsForVoiceName.get(name);
+	        List<Music> concatenatedBars = new ArrayList<Music>();
+	        for(List<Music> bar : voiceBars) {
+	        	concatenatedBars.addAll(bar);
+	        }
+	        voices.add(new Voice(name, concatenatedBars));
 	    }
 		body = new Body(voices);
 		System.out.println("Created body");
@@ -143,8 +149,8 @@ public class SongListener implements ABCMusicListener {
 		}
 		if(ctx.FIELD_VOICE() != null) {
 			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
-			if(!this.musicForVoiceName.containsKey(voiceName))
-			    this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
+			if(!this.barsForVoiceName.containsKey(voiceName))
+			    this.barsForVoiceName.put(voiceName, new ArrayList<List<Music>>());
 		}
 	}
 
@@ -160,12 +166,10 @@ public class SongListener implements ABCMusicListener {
 	 */
 	
 	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) {
-		if(barsContainer.size() > 0) {
-			//if this is not the first bar of the line
-			barsContainer.add(currentBar);
-			currentBar = new ArrayList<Music>();
-		}
-		noteContainer = currentBar;
+		//TODO check about bars at the beginning/ this weird thing [|, etc
+		//TODO do we need a barline at the end?
+		List<List<Music>> bars = barsForVoiceName.get(voiceName);
+		bars.add(new ArrayList<Music>());
 	}
 	
 	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
@@ -206,7 +210,8 @@ public class SongListener implements ABCMusicListener {
 		tupletParentContainer.add(new Tuplet(tupletType, tupletNotes));		    
 		//set the container back to the main voice
 		noteContainer = tupletParentContainer;
-		this.musicForVoiceName.get(voiceName).add(new Tuplet(tupletType, tupletNotes));
+		List<List<Music>> bars = this.barsForVoiceName.get(voiceName);
+		bars.get(bars.size()-1).add(new Tuplet(tupletType, tupletNotes));
 	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
@@ -312,13 +317,15 @@ public class SongListener implements ABCMusicListener {
 			if(basenoteString.equals("z")) {
 			    for(int i = 0; i < 20; i++)
 				noteContainer.add(new Rest(duration));
-			    if(!this.inMultinote)
-			        this.musicForVoiceName.get(voiceName).add(new Rest(duration));
+			    if(!this.inMultinote) {
+			        List<List<Music>> bars = this.barsForVoiceName.get(voiceName);
+			    	bars.get(bars.size()-1).add(new Rest(duration));
+			    }
 			} else {
 				noteContainer.add(new Note(baseNote, accidental, octave, duration));
-				if(!this.inMultinote){
-
-				    this.musicForVoiceName.get(voiceName).add(new Note(baseNote, accidental, octave, duration));
+				if(!this.inMultinote) {
+					List<List<Music>> bars = this.barsForVoiceName.get(voiceName);
+			    	bars.get(bars.size()-1).add(new Note(baseNote, accidental, octave, duration));
 				}
 			}
 		}
@@ -380,7 +387,8 @@ public class SongListener implements ABCMusicListener {
             	lyric.add(syllable.toString());
             }
         } 
-        matchLyricsToNotes(lyric, barsContainer);
+        //TODO We need to do this for all voices and all lyrics
+        matchLyricsToNotes(lyric, barsForVoiceName.get(voiceName));
     }
     @Override
     public void enterField_voice(Field_voiceContext ctx) {
@@ -390,8 +398,8 @@ public class SongListener implements ABCMusicListener {
     @Override
     public void exitField_voice(Field_voiceContext ctx) {
         voiceName = ctx.getText().replace("V:", "").trim();
-        if(!this.musicForVoiceName.containsKey(voiceName))
-            this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
+        if(!this.barsForVoiceName.containsKey(voiceName))
+            this.barsForVoiceName.put(voiceName, new ArrayList<List<Music>>());
     }
 
 	@Override public void enterEveryRule(ParserRuleContext ctx) { }
@@ -425,19 +433,19 @@ public class SongListener implements ABCMusicListener {
 	}
 	
 	private void matchLyricsToNotes(List<String> lyrics, List<List<Music>> bars) {
-		int noteCount = 0;
-		for(int i=0; i<bars.size(); i++) {
-			List<Music> bar = bars.get(i);
-			for(int j=0; j<bar.size(); j++) {
-				int index = noteCount;
-				Music m = bar.get(j);
-				if(m instanceof Note) {
-					noteCount++;
-					String lyric = lyrics.get(index);
-					((Note)m).setSyllable(lyric);
-				}
-			}
-		}
+//		int noteCount = 0;
+//		for(int i=0; i<bars.size(); i++) {
+//			List<Music> bar = bars.get(i);
+//			for(int j=0; j<bar.size(); j++) {
+//				int index = noteCount;
+//				Music m = bar.get(j);
+//				if(m instanceof Note) {
+//					noteCount++;
+//					String lyric = lyrics.get(index);
+//					((Note)m).setSyllable(lyric);
+//				}
+//			}
+//		}
 	}
 
 	public Song getSong() {
@@ -463,7 +471,13 @@ public class SongListener implements ABCMusicListener {
         chordParentContainer.add(new Chord(notes));
         noteContainer = chordParentContainer;
         this.inMultinote = false;
-        this.musicForVoiceName.get(voiceName).add(new Chord(notes));
+        List<List<Music>> bars = this.barsForVoiceName.get(voiceName);
+        bars.get(bars.size()-1).add(new Chord(notes));
         
     }
+	@Override
+	public void exitBarline(BarlineContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
 }
