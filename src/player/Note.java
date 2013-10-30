@@ -35,7 +35,7 @@ public class Note implements Singable {
             octaveBuilder.append("'");
         for(int i = 0; i < this.octave*-1; i++)
             octaveBuilder.append(",");
-        return String.format("%s%s%s%s with %s", this.accidental.toString(), this.note.toString(), octaveBuilder.toString(), this.duration.toString(), this.getSyllable());
+        return String.format("%s%s%s%s with %s", (this.accidental == null) ? "" : this.accidental.toString(), (this.note == null) ? "" : this.note.toString(), (octaveBuilder == null) ? "" : octaveBuilder.toString(), (this.duration == null) ? "" : this.duration.toString(), this.getSyllable());
     }
    
     /**

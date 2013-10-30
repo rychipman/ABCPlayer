@@ -1,7 +1,14 @@
-X: 1
-T: Piece Number 1
+X:2167
+T:Waxie's Dargle
 M:4/4
-L:1/4 % Test
-Q:1/4=140
-K:C
-C C C3/4 D/4 E | E3/4 D/4 E3/4 F/4 G2 | (3c1/2c1/2c1/2 (3G/2G/2G/2 (3E/2E/2E/2 (3C/2C/2C/2 | G3/4 F/4 E3/4 D/4 C2 |]
+L:1/8
+Q:1/4=180
+K:G
+ gf|e2dc B2A2|B2G2 E2D2|G2G2 GABc|d4 B2gf|
+w: Sa-ys my aul' wan to your aul' wan
+e2dc B2A2|B2G2 E2G2|F2A2 D2EF|G2z2 G4|
+w: Sa-ys your aul'_ wan to my aul' wan,
+B2d2 e2f2|g2d2 BAG2|Bcd2 e2f2|g4 f2gf|
+w: I'll go down to Mon-to to-w-n
+e2dc B2A2|B2G2 E2G2|F2A2 D2EF|G2z2 G4|
+w: A-nd ask him for a half a crown

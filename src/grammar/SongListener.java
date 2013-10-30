@@ -6,6 +6,7 @@ import grammar.ABCMusicParser.LyricContext;
 import grammar.ABCMusicParser.R_bracketContext;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -42,6 +43,9 @@ public class SongListener implements ABCMusicListener {
 	private int tempo;
 	
 	private List<Voice> voices = new ArrayList<Voice>();
+	private HashMap<String, List<Music>> musicForVoiceName = new HashMap<String, List<Music>>();
+	
+	private boolean inMultinote = false;
 	
 	//temporary containers to be used when parsing higher-level objects
 	private String voiceName;
@@ -55,8 +59,7 @@ public class SongListener implements ABCMusicListener {
 	private List<Music> chordParentContainer = new ArrayList<Music>();
 	private List<Music> tupletParentContainer = new ArrayList<Music>();
 	private List<Music> noteContainer = new ArrayList<Music>();
-	
-	
+    
 	/**
 	 * Top-level elements
 	 */
@@ -73,8 +76,18 @@ public class SongListener implements ABCMusicListener {
 		System.out.println("Created header");
 	}
 	
-	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) {	}
+	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) {	
+	    if(this.voiceName == null){
+	        this.voiceName = "THE_DEFAULT_VOICE";
+	        this.musicForVoiceName.put(this.voiceName, new ArrayList<Music>());
+	        System.out.println("Added the default voice");
+	    }
+	}
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) {
+	    for(String name : this.musicForVoiceName.keySet()){
+	        System.out.println("Added voice " + name + " to voices list");
+	        voices.add(new Voice(name, musicForVoiceName.get(name)));
+	    }
 		body = new Body(voices);
 		System.out.println("Created body");
 	}
@@ -130,10 +143,13 @@ public class SongListener implements ABCMusicListener {
 		if(ctx.FIELD_VOICE() != null) {
 			//TODO what is this doing in the header?
 			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
+			if(!this.musicForVoiceName.containsKey(voiceName))
+			    this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
 			System.out.println("Voice name is " + voiceName);
 		}
 	}
 
+	
 	@Override public void enterField_key(ABCMusicParser.Field_keyContext ctx) { }
 	@Override public void exitField_key(ABCMusicParser.Field_keyContext ctx) {
 		String keyString = ctx.FIELD_KEY().getText().replace("K:", "").trim();
@@ -167,6 +183,7 @@ public class SongListener implements ABCMusicListener {
 		tupletNotes = new ArrayList<Music>();
 		//set the tuplet container as the current destination for all notes
 		noteContainer = tupletNotes;
+		this.inMultinote = true;
 	}
 	@Override public void exitTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
 		int type = Integer.parseInt(ctx.TUPLET_START().getText().replace("(", "").trim());
@@ -180,6 +197,8 @@ public class SongListener implements ABCMusicListener {
 		tupletParentContainer.add(new Tuplet(tupletType, tupletNotes));		    
 		//set the container back to the main voice
 		noteContainer = tupletParentContainer;
+		this.inMultinote = false;
+		this.musicForVoiceName.get(voiceName).add(new Tuplet(tupletType, tupletNotes));
 		System.out.println("Tuplet with " + new Tuplet(tupletType, tupletNotes));
 	}
 
@@ -283,9 +302,14 @@ public class SongListener implements ABCMusicListener {
 			//add a rest or a note
 			if(basenoteString.equals("z")) {
 				noteContainer.add(new Rest(duration));
+				if(!this.inMultinote)
+				    this.musicForVoiceName.get(voiceName).add(new Rest(duration));
 			} else {
 				noteContainer.add(new Note(baseNote, accidental, octave, duration));
-				System.out.println(noteContainer.get(noteContainer.size() - 1));
+				if(!this.inMultinote){
+				    System.out.println(voiceName + ": " + new Note(baseNote, accidental, octave, duration));
+				    this.musicForVoiceName.get(voiceName).add(new Note(baseNote, accidental, octave, duration));
+				}
 			}
 		}
 	}
@@ -352,7 +376,9 @@ public class SongListener implements ABCMusicListener {
     }
     @Override
     public void exitField_voice(Field_voiceContext ctx) {
-        String voiceName = ctx.getText().replace("V:", "").trim();
+        voiceName = ctx.getText().replace("V:", "").trim();
+        if(!this.musicForVoiceName.containsKey(voiceName))
+            this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
         System.out.println("Switched to voice name = " + voiceName);
         //voiceName = parseText("V:", ctx.FIELD_VOICE().getText());
         //System.out.println("Voice name is " + voiceName);
@@ -398,6 +424,7 @@ public class SongListener implements ABCMusicListener {
         chordParentContainer = noteContainer;
         chordNotes = new ArrayList<Music>();
         noteContainer = chordNotes;
+        this.inMultinote = true;
     }
     @Override
     public void enterR_bracket(R_bracketContext ctx) {}
@@ -410,6 +437,8 @@ public class SongListener implements ABCMusicListener {
         chordParentContainer.add(new Chord(notes));
         System.out.println(new Chord(notes));
         noteContainer = chordParentContainer;
+        this.inMultinote = true;
+        this.musicForVoiceName.get(voiceName).add(new Chord(notes));
         
     }
 }
