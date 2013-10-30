@@ -60,7 +60,6 @@ public class SongListener implements ABCMusicListener {
 	private List<Music> chordParentContainer = new ArrayList<Music>();
 	private List<Music> tupletParentContainer = new ArrayList<Music>();
 	private List<Music> noteContainer = new ArrayList<Music>();
-    
 	
 	/**
 	 * Top-level elements
@@ -150,7 +149,6 @@ public class SongListener implements ABCMusicListener {
 		    System.out.println("Tempo beat is " + tempoBeat);
 		}
 		if(ctx.FIELD_VOICE() != null) {
-			//TODO what is this doing in the header?
 			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
 			if(!this.musicForVoiceName.containsKey(voiceName))
 			    this.musicForVoiceName.put(voiceName, new ArrayList<Music>());
@@ -170,8 +168,14 @@ public class SongListener implements ABCMusicListener {
 	 * Music Elements
 	 */
 	
-	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) { }
-	@Override public void exitBarline(ABCMusicParser.BarlineContext ctx) { }
+	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) {
+		if(barsContainer.size() > 0) {
+			//if this is not the first bar of the line
+			barsContainer.add(currentBar);
+			currentBar = new ArrayList<Music>();
+		}
+		noteContainer = currentBar;
+	}
 	
 	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
 	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
@@ -369,7 +373,10 @@ public class SongListener implements ABCMusicListener {
             } else if (String.valueOf(context.charAt(i)).equals("/-")) {
                 syllable.append("-");
             } else if (context.charAt(i) == '|') {
-                //TODO this one is hard...I'm gonna have to attach lyrics to notes bar by bar 
+                if(syllable != null)
+                	lyric.add(syllable.toString());
+                lyric.add("|");
+                syllable = null;
             } else if(context.charAt(i) == ' ') {
             	if(syllable != null)
             		lyric.add(syllable.toString());
@@ -384,7 +391,7 @@ public class SongListener implements ABCMusicListener {
             	lyric.add(syllable.toString());
             }
         } 
-        
+        matchLyricsToNotes(lyric, barsContainer);
     }
     @Override
     public void enterField_voice(Field_voiceContext ctx) {
@@ -429,6 +436,22 @@ public class SongListener implements ABCMusicListener {
 		if(accidentals[index] == -2)
 			return AccidentalEnum.DOUBLE_FLAT;
 		return AccidentalEnum.NONE;
+	}
+	
+	private void matchLyricsToNotes(List<String> lyrics, List<List<Music>> bars) {
+		int noteCount = 0;
+		for(int i=0; i<bars.size(); i++) {
+			List<Music> bar = bars.get(i);
+			for(int j=0; j<bar.size(); j++) {
+				int index = noteCount;
+				Music m = bar.get(j);
+				if(m instanceof Note) {
+					noteCount++;
+					String lyric = lyrics.get(index);
+					((Note)m).setSyllable(lyric);
+				}
+			}
+		}
 	}
 
 	public Song getSong() {

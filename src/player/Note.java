@@ -18,6 +18,7 @@ public class Note implements Singable {
         this.accidental = accidental;
         this.octave = octave;
         this.duration = duration;
+        this.syllable = "";
     }
     
     public void setSyllable(String syllable) {

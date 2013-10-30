@@ -46,6 +46,7 @@ public class Chord implements Singable {
     public Chord(List<Note> notes){
         assert notes.size() > 1;
         this.notes = new ArrayList<Note>();
+        this.syllable = "";
         for (Note n : notes)
             this.notes.add(n);
     }
