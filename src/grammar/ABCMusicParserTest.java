@@ -1,5 +1,7 @@
 package grammar;
 
+//TODO: Write better parser tests
+
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -7,7 +9,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -16,7 +17,6 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -25,7 +25,15 @@ import org.junit.Test;
 
 import player.SongSequencerVisitor;
 public class ABCMusicParserTest {
-
+    /*
+     * Partitioning the input space:
+     * - Parse note
+     * - Parse accidentals
+     * - Parse octave
+     * - Parse lowercase and uppercase notes
+     * - Parse note with 
+     * - Fail to parse note with invalid order
+     */
     public final static String[] songFileNames = new String[]{"sample_abc/sampleFile.abc"};
     @Test
     public void parseTest(){

@@ -12,8 +12,9 @@ public class SongTest {
     
     @Test
     public void test() {
-        for (String fileName : SongTest.getAllSampleFileNames())
+        for (String fileName : SongTest.getAllSampleFileNames()){
             Main.play(fileName);
+        }
     }
     
     private static String[] getAllSampleFileNames(){
