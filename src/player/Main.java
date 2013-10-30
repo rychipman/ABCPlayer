@@ -25,8 +25,7 @@ public class Main {
     public static void main(String[] args) {
         // CALL play() HERE
         try {
-            System.out.println(ABCMusicParserTest
-                    .parseFile(ABCMusicParserTest.songFileNames[0]));
+            System.out.println(ABCMusicParserTest.parseFile(ABCMusicParserTest.songFileNames[0]));
         } catch (IOException e) {
             e.printStackTrace();
         }

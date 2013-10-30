@@ -1,7 +1,9 @@
 package grammar;
 
 import grammar.ABCMusicParser.Field_voiceContext;
+import grammar.ABCMusicParser.L_bracketContext;
 import grammar.ABCMusicParser.LyricContext;
+import grammar.ABCMusicParser.R_bracketContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,19 +153,11 @@ public class SongListener implements ABCMusicListener {
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
 	@Override public void exitElement(ABCMusicParser.ElementContext ctx) { }
 
-	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) {
-		chordParentContainer = noteContainer;
-		chordNotes = new ArrayList<Music>();
-		noteContainer = chordNotes;
+	@Override public void enterMultinote(ABCMusicParser.MultinoteContext ctx) {	
+	    System.out.println("Started multinote");
 	}
 	@Override public void exitMultinote(ABCMusicParser.MultinoteContext ctx) {
-		ArrayList<Note> notes = new ArrayList<Note>();
-		for(Music m : chordNotes) {
-			notes.add((Note)m);
-		}
-		chordParentContainer.add(new Chord(notes));
-		System.out.println(new Chord(notes));
-		noteContainer = chordParentContainer;
+	    System.out.println("Ended multinote");
 	}
 
 	@Override public void enterTuplet_element(ABCMusicParser.Tuplet_elementContext ctx) {
@@ -177,14 +171,15 @@ public class SongListener implements ABCMusicListener {
 		int type = Integer.parseInt(ctx.TUPLET_START().getText().replace("(", "").trim());
 		TupleEnum tupletType = TupleEnum.TRIPLET;
 		switch(type) {
-		case 2: tupletType = TupleEnum.DUPLET; break;
-		case 3: tupletType = TupleEnum.TRIPLET; break;
-		case 4: tupletType = TupleEnum.QUADRUPLET; break;
+		    case 2: tupletType = TupleEnum.DUPLET; break;
+		    case 3: tupletType = TupleEnum.TRIPLET; break;
+		    case 4: tupletType = TupleEnum.QUADRUPLET; break;
 		}
 		//create the tuplet object and append it to the voice
-		tupletParentContainer.add(new Tuplet(tupletType, tupletNotes));
+		tupletParentContainer.add(new Tuplet(tupletType, tupletNotes));		    
 		//set the container back to the main voice
 		noteContainer = tupletParentContainer;
+		System.out.println("Tuplet with " + new Tuplet(tupletType, tupletNotes));
 	}
 
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
@@ -289,6 +284,7 @@ public class SongListener implements ABCMusicListener {
 				noteContainer.add(new Rest(duration));
 			} else {
 				noteContainer.add(new Note(baseNote, accidental, octave, duration));
+				System.out.println(noteContainer.get(noteContainer.size() - 1));
 			}
 		}
 	}
@@ -390,21 +386,29 @@ public class SongListener implements ABCMusicListener {
 			return AccidentalEnum.DOUBLE_FLAT;
 		return AccidentalEnum.NONE;
 	}
-	
-	private Fraction parseFraction(String str) {
-		String[] fracArray = str.split("/");
-		int num = Integer.parseInt(fracArray[0]);
-		int den = Integer.parseInt(fracArray[1]);
-		return new Fraction(num, den);
-	}
-	
-	private String parseText(String label, String line) {
-		//TODO make sure this works
-		String[] split = line.split(label);
-		return split[1].trim();
-	}
-	
+
 	public Song getSong() {
 		return song;
 	}
+    @Override
+    public void enterL_bracket(L_bracketContext ctx) {}
+    @Override
+    public void exitL_bracket(L_bracketContext ctx) {
+        chordParentContainer = noteContainer;
+        chordNotes = new ArrayList<Music>();
+        noteContainer = chordNotes;
+    }
+    @Override
+    public void enterR_bracket(R_bracketContext ctx) {}
+    @Override
+    public void exitR_bracket(R_bracketContext ctx) {
+        ArrayList<Note> notes = new ArrayList<Note>();
+        for(Music m : chordNotes) {
+            notes.add((Note)m);
+        }
+        chordParentContainer.add(new Chord(notes));
+        System.out.println(new Chord(notes));
+        noteContainer = chordParentContainer;
+        
+    }
 }

@@ -107,8 +107,9 @@ abc_line : (element+ LINEFEED (lyric LINEFEED)? | field_voice) LINEFEED?;
 
 lyric : LYRIC;
 field_voice : FIELD_VOICE;
-
-multinote: L_BRACKET (NOTE)+ R_BRACKET;
+l_bracket : L_BRACKET;
+r_bracket : R_BRACKET;
+multinote: l_bracket (note_element)+ r_bracket;
 note_element : NOTE | multinote;
 tuplet_element : TUPLET_START note_element+;
 barline : BARLINE SPACE*;

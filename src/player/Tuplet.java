@@ -27,12 +27,12 @@ public class Tuplet implements Music {
 	
 	@Override
 	public String toString() {
-		StringBuilder tupletBuilder = new StringBuilder();
-		tupletBuilder.append(type.toString());
-		type.toString();
+	    String startString = (type == TupleEnum.DUPLET) ? "Duplet(" : ((type == TupleEnum.TRIPLET) ? "Triplet(" : "Quadruplet(");
+		StringBuilder tupletBuilder = new StringBuilder(startString);
 		for(Music n : notes) {
-			tupletBuilder.append(n.toString());
+			tupletBuilder.append(n.toString() + ",");
 		}
+		tupletBuilder.append(")");
 		return tupletBuilder.toString();
 	}
 	@Override

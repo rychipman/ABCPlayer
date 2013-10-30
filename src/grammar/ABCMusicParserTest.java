@@ -21,7 +21,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 public class ABCMusicParserTest {
 
-    public final static String[] songFileNames = new String[]{"sample_abc/fur_elise.abc"};
+    public final static String[] songFileNames = new String[]{"sample_abc/sampleFile.abc"};
     @Test
     public void parseTest(){
         try {
@@ -51,7 +51,6 @@ public class ABCMusicParserTest {
         tree = parser.abc_tune(); // "abc_music" is the starter rule.
         
         ((RuleContext)tree).inspect(parser);
-        
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new SongListener();
         walker.walk(listener, tree);

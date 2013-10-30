@@ -21,14 +21,17 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 	@Override public void enterOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 	@Override public void exitOther_fields(ABCMusicParser.Other_fieldsContext ctx) { }
 
+	@Override public void enterL_bracket(ABCMusicParser.L_bracketContext ctx) { }
+	@Override public void exitL_bracket(ABCMusicParser.L_bracketContext ctx) { }
+
 	@Override public void enterAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
 	@Override public void exitAbc_header(ABCMusicParser.Abc_headerContext ctx) { }
 
-	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
-	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
-
 	@Override public void enterNote_element(ABCMusicParser.Note_elementContext ctx) { }
 	@Override public void exitNote_element(ABCMusicParser.Note_elementContext ctx) { }
+
+	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
+	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
 
 	@Override public void enterAbc_tune(ABCMusicParser.Abc_tuneContext ctx) { }
 	@Override public void exitAbc_tune(ABCMusicParser.Abc_tuneContext ctx) { }
@@ -50,6 +53,9 @@ public class ABCMusicBaseListener implements ABCMusicListener {
 
 	@Override public void enterField_title(ABCMusicParser.Field_titleContext ctx) { }
 	@Override public void exitField_title(ABCMusicParser.Field_titleContext ctx) { }
+
+	@Override public void enterR_bracket(ABCMusicParser.R_bracketContext ctx) { }
+	@Override public void exitR_bracket(ABCMusicParser.R_bracketContext ctx) { }
 
 	@Override public void enterField_voice(ABCMusicParser.Field_voiceContext ctx) { }
 	@Override public void exitField_voice(ABCMusicParser.Field_voiceContext ctx) { }
