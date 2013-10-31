@@ -78,8 +78,10 @@ public class Body implements ISongSequencerVisitable{
         if(!(other instanceof Body))
             return false;
         Body compareBody = (Body)other;
-        if (compareBody.voices.equals(this.voices)) {
-            return true;
-        } else {return false;}
+        for (int i = 0; i < compareBody.voices.size(); i ++) {
+           if (!(compareBody.voices.get(i).equals(this.voices.get(i))))
+               return false;
+        }
+        return true;
     }
 }

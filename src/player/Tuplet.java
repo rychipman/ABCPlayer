@@ -65,16 +65,19 @@ public class Tuplet implements Music {
 		tupletBuilder.append(")");
 		return tupletBuilder.toString();
 	}
-	
+    
     @Override
     public boolean equals(Object other) {
         if(!(other instanceof Tuplet))
             return false;
-        Tuplet compareTuplet = (Tuplet)other;
-        if (compareTuplet.notes.equals(this.notes)) {
-            return true;
-        } else {return false;}
+        Tuplet Tuplet = (Tuplet)other;
+        for (int i = 0; i < Tuplet.notes.size(); i ++) {
+           if (!(Tuplet.notes.get(i).equals(this.notes.get(i))))
+               return false;
+        }
+        return true;
     }
+
 	
 	/**
 	 * @return returns a copy of this tuplet

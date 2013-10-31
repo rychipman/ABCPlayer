@@ -71,7 +71,7 @@ public class Song implements ISongSequencerVisitable{
         if(!(other instanceof Song))
             return false;
         Song compareSong = (Song)other;
-        if (compareSong.header == this.header && compareSong.body == this.body) {
+        if (compareSong.header.equals(this.header) && compareSong.body.equals(this.body)) {
             return true;
         } else {return false;}
     }

@@ -102,9 +102,11 @@ public class Chord implements Singable {
         if(!(other instanceof Chord))
             return false;
         Chord compareChord = (Chord)other;
-        if (compareChord.notes.equals(this.notes)) {
-            return true;
-        } else {return false;}
+        for (int i = 0; i < compareChord.notes.size(); i ++) {
+           if (!(compareChord.notes.get(i).equals(this.notes.get(i))))
+               return false;
+        }
+        return true;
     }
 
 }

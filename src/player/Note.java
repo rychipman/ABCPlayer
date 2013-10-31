@@ -116,11 +116,11 @@ public class Note implements Singable {
         if(!(other instanceof Note))
             return false;
         Note compareNote = (Note)other;
-        if (compareNote.note == this.note &&
-                compareNote.accidental == this.accidental &&
+        if (compareNote.note.equals(this.note) &&
+                compareNote.accidental.equals(this.accidental) &&
                 compareNote.octave == this.octave &&
-                compareNote.duration == this.duration &&
-                compareNote.syllable == this.syllable) {
+                compareNote.duration.equals(this.duration) &&
+                compareNote.syllable.equals(this.syllable)) {
             return true;
         } else {return false;}
     }

@@ -42,7 +42,7 @@ public class Rest implements Music {
         if(!(other instanceof Rest))
             return false;
         Rest compareRest = (Rest)other;
-        if (compareRest.duration == this.duration) {
+        if (compareRest.duration.equals(this.duration)) {
             return true;
         } else {return false;}
     }

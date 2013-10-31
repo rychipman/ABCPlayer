@@ -156,4 +156,14 @@ public class Fraction implements Comparable<Object>{
     public String toString(){
         return String.format("%d/%d", this.getNumerator(), this.getDenominator());
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Fraction))
+            return false;
+        Fraction compareFraction = (Fraction)other;
+        if (compareFraction.numerator == this.numerator && compareFraction.denominator == this.denominator ) {
+            return true;
+        } else {return false;}
+    }
 }

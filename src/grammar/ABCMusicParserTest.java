@@ -9,6 +9,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -23,8 +25,21 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 
+import player.AccidentalEnum;
+import player.Body;
+import player.Chord;
+import player.Fraction;
+import player.Header;
+import player.KeySignature;
+import player.Music;
+import player.Note;
+import player.NoteEnum;
+import player.Rest;
 import player.Song;
 import player.SongSequencerVisitor;
+import player.TupleEnum;
+import player.Tuplet;
+import player.Voice;
 public class ABCMusicParserTest {
     /*
      * Partitioning the input space:
@@ -49,12 +64,79 @@ public class ABCMusicParserTest {
     
     @Test
     public void testSong(){
+        
+        List<Music> music = new ArrayList<Music>();
+        List<Note> chordHolder = new ArrayList<Note>();
+        List<Music> tupletHolder = new ArrayList<Music>();
+        chordHolder.add(new Note(NoteEnum.F, AccidentalEnum.SHARP, 0, new Fraction(1,2)));
+        chordHolder.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        music.add(new Chord(chordHolder));
+        music.add(new Chord(chordHolder));
+        music.add(new Rest(new Fraction(1,2)));
+        music.add(new Chord(chordHolder));
+        music.add(new Rest(new Fraction(1,2)));
+        chordHolder.set(1, (new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(1,2))));
+        music.add(new Chord(chordHolder));
+        chordHolder.set(0, (new Note(NoteEnum.F, AccidentalEnum.SHARP,0, new Fraction(1,1))));
+        chordHolder.set(1, (new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1))));
+        music.add(new Chord(chordHolder));
+        chordHolder.set(0, (new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1))));
+        chordHolder.set(1, (new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,1))));
+        chordHolder.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        music.add(new Chord(chordHolder));
+        music.add(new Rest(new Fraction(1,1)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        music.add(new Rest(new Fraction(1,1)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(4,3)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,2)));
+        music.add(new Rest(new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,0, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.B, AccidentalEnum.FLAT,0, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        tupletHolder.add(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        tupletHolder.add(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        tupletHolder.add(2, new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        music.add(new Tuplet(TupletEnum.TRIPLET, tupletHolder));
+        music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        music.add(new Rest(new Fraction(1,2)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(3,4)));
+        music.add(new Rest(new Fraction(3,4)));
+        
+        Voice voice = new Voice("THE_DEFAULT_VOICE", music);
+        List<Voice> voices = new ArrayList<Voice>();
+        voices.add(voice);
+        Body body = new Body(voices);
+        Header header = new Header(1, "Piece No.1", "DEFAULT", new KeySignature("C"), new Fraction(4,4), 200,  new Fraction(1,4),new Fraction(1,4));
+        Song manualSong = new Song(header, body);
+        
         try {
-            Song parsedSong = this.parseFile("sample_abc/piece1.abc");
-
+            Song parsedSong = parseFile("sample_abc/piece2.abc");
+            
+            System.out.println("++++++++++++++++++++++++++++++++++++++");
+            System.out.println(parsedSong.getBody().toString());
+            System.out.println("--------------------------------------");
+            System.out.println(manualSong.getBody().toString());
+           
+            for (int index = 0; index < manualSong.getBody().getVoices().size(); index ++) {
+                System.out.println(manualSong.getBody().getVoices().get(index).equals(parsedSong.getBody().getVoices().get(index)));
+            }
+            
+            System.out.println(parsedSong.getBody().equals(manualSong.getBody()));
+            
+            assertTrue(parsedSong.getBody().equals(manualSong.getBody()));
+            
         } catch (IOException e) {
             assertTrue(false);
         };
+        
     }
     
     public static Song parseFile(String path) throws IOException {

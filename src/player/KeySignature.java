@@ -106,4 +106,14 @@ public class KeySignature {
         keySigMap.put("Abm", new int[] {-1,-1,-1,-1,-1,-1,-1});
         return keySigMap;
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof KeySignature))
+            return false;
+        KeySignature compareKeySig = (KeySignature)other;
+        if (compareKeySig.key.equals(this.key)) {
+            return true;
+        } else {return false;}
+    }
 }

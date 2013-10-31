@@ -164,12 +164,12 @@ public class Header implements ISongSequencerVisitable{
             return false;
         Header compareHeader = (Header)other;
         if (compareHeader.indexNumber == this.indexNumber &&
-                compareHeader.title == this.title &&
-                compareHeader.composer == this.composer &&
-                compareHeader.keySignature == this.keySignature &&
+                compareHeader.title.equals(this.title) &&
+                compareHeader.composer.equals(this.composer) &&
+                compareHeader.keySignature.equals(this.keySignature) &&
                 compareHeader.beatsPerMinute == this.beatsPerMinute &&
-                compareHeader.defaultLength == this.defaultLength &&
-                compareHeader.tempoBeat == this.tempoBeat) {
+                compareHeader.defaultLength.equals(this.defaultLength) &&
+                compareHeader.tempoBeat.equals(this.tempoBeat)) {
             return true;
         } else {return false;}
     }

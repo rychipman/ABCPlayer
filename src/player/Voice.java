@@ -90,4 +90,16 @@ public class Voice implements ISongSequencerVisitable{
             builder.append("\n - " + m.toString() + " ");
         return builder.toString();
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Voice))
+            return false;
+        Voice compareVoice = (Voice)other;
+        for (int i = 0; i < compareVoice.songComponents.size(); i ++) {
+           if (!(compareVoice.songComponents.get(i).equals(this.songComponents.get(i))))
+               return false;
+        }
+        return true;
+    }
 }
