@@ -23,6 +23,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 
+import player.Song;
 import player.SongSequencerVisitor;
 public class ABCMusicParserTest {
     /*
@@ -34,7 +35,7 @@ public class ABCMusicParserTest {
      * - Parse note with 
      * - Fail to parse note with invalid order
      */
-    public final static String[] songFileNames = new String[]{"sample_abc/sampleFile.abc"};
+    public final static String[] songFileNames = new String[]{"sample_abc/piece1.abc"};
     @Test
     public void parseTest(){
         try {
@@ -46,10 +47,20 @@ public class ABCMusicParserTest {
         }
     }
     
-    public static String parseFile(String path) throws IOException {
+    @Test
+    public void testSong(){
+        try {
+            Song parsedSong = this.parseFile("sample_abc/piece1.abc");
+            Song builtUpSong;
+            assertTrue(header.equals(builtUpSong));
+        } catch (IOException e) {
+            assertTrue(false);
+        };
+    }
+    
+    public static Song parseFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         String fileAsString = Charset.defaultCharset().decode(ByteBuffer.wrap(encoded)).toString();
-    	System.out.println(unEscapeString(fileAsString));
     	CharStream fileAsStream = new ANTLRInputStream(fileAsString);
     	ABCMusicLexer lexer = new ABCMusicLexer(fileAsStream);
         lexer.reportErrorsAsExceptions();
@@ -63,21 +74,12 @@ public class ABCMusicParserTest {
         ParseTree tree;
         tree = parser.abc_tune(); // "abc_music" is the starter rule.
         
-        ((RuleContext)tree).inspect(parser);
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new SongListener();
         walker.walk(listener, tree);
         
         SongSequencerVisitor visitor = new SongSequencerVisitor();
-        ((SongListener)listener).getSong().accept(visitor);
-        try {
-            visitor.play();
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-        } catch (InvalidMidiDataException e) {
-            e.printStackTrace();
-        }
-        return "";
+        return ((SongListener)listener).getSong();
     }
     
     public static String unEscapeString(String s){

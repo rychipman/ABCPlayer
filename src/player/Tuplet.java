@@ -35,6 +35,17 @@ public class Tuplet implements Music {
 		tupletBuilder.append(")");
 		return tupletBuilder.toString();
 	}
+	
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Tuplet))
+            return false;
+        Tuplet compareTuplet = (Tuplet)other;
+        if (compareTuplet.notes.equals(this.notes)) {
+            return true;
+        } else {return false;}
+    }
+	
 	@Override
 	public Music copy() {
 		return new Tuplet(this.type, new ArrayList<Music>(this.notes));

@@ -33,6 +33,16 @@ public class Rest implements Music {
     public String toString(){
         return String.format("z%s",this.duration.toString());
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Rest))
+            return false;
+        Rest compareRest = (Rest)other;
+        if (compareRest.duration == this.duration) {
+            return true;
+        } else {return false;}
+    }
 
     /**
      * Returns a copy of the current Rest.

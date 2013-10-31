@@ -73,4 +73,14 @@ public class Body implements ISongSequencerVisitable{
         }
         return builder.toString();
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Body))
+            return false;
+        Body compareBody = (Body)other;
+        if (compareBody.voices.equals(this.voices)) {
+            return true;
+        } else {return false;}
+    }
 }

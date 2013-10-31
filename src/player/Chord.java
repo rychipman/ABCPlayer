@@ -86,5 +86,15 @@ public class Chord implements Singable {
         chord.append(")");
         return chord.toString();
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Chord))
+            return false;
+        Chord compareChord = (Chord)other;
+        if (compareChord.notes.equals(this.notes)) {
+            return true;
+        } else {return false;}
+    }
 
 }
