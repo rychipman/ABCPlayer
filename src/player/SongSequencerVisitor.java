@@ -70,7 +70,9 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         this.musicForVoiceName.put(voice.getVoiceName(), voice.getSongComponents());
     }
     
+    // Transforms a Song in to language that can be fed to the MIDI Sequencer
     public void play() throws MidiUnavailableException, InvalidMidiDataException{
+        // LCM calculations that ultimately give us how many ticks per beat we should have
         Fraction lcmCalc = defaultNoteLength;
         int lcm = 0;
         for (String voiceName : this.musicForVoiceName.keySet()){
@@ -84,17 +86,20 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         }
                 Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator());
                 System.out.println("LCM = " + lcmCalc.getDenominator());
-        
+        // Initializes a new listener that allows us to print the lyrics
         LyricListener listener = new LyricListener() {
              public void processLyricEvent(String text) {
                  System.out.println(text);
              }
         };
+        // Initializes a new SequencePlayer that will make our notes audible
         SequencePlayer seqPlayer = new SequencePlayer(this.beatsPerMinute, lcm, listener);
         int startTick = 0;
         int duration;
+        // Considers every Voice in our Song
         for (String voiceName : this.musicForVoiceName.keySet()){
             startTick = 0;
+            // Considers every Music element in our Voice
             for(Music m : this.musicForVoiceName.get(voiceName)){
                 duration = (int) (m.getDuration().toDouble() * defaultNoteLength.toDouble() / tempoBeat.toDouble() * lcm);
                 if (m instanceof Note){
