@@ -37,8 +37,8 @@ import player.NoteEnum;
 import player.Rest;
 import player.Song;
 import player.SongSequencerVisitor;
-import player.TupleEnum;
 import player.Tuplet;
+import player.TupletEnum;
 import player.Voice;
 public class ABCMusicParserTest {
     /*
