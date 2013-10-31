@@ -80,7 +80,23 @@ public class SongListener implements ABCMusicListener {
 	 * The current voice name being processed
 	 */
 	private String voiceName;
-
+	
+	/**
+	 * a List containing documentation of repeats:
+	 * a repeat is a 3-element array including the following data:
+	 * - range of bars to repeat (start & end)
+	 * - the bar after which the repeat is inserted
+	 * [startBar (inclusive), endBar (exclusive), repeatAt]
+	 * the last entry in this list will always be the currently open repeat
+	 * (as such, nested repeats are not supported)
+	 */
+	private List<Integer[]> repeats;
+	
+	/**
+	 * a hashmap to associate repeats with the appropriate voice
+	 */
+	private HashMap<String, List<Integer[]>> repeatsForVoiceName = new HashMap<String, List<Integer[]>>();
+	
 	/**
 	 * Container for things in voice
 	 */
@@ -128,12 +144,23 @@ public class SongListener implements ABCMusicListener {
 	        newVoice.add(new ArrayList<Music>());
 	        this.barsForVoiceName.put(this.voiceName, newVoice);
 	        System.out.println("Added the default voice");
+		    this.repeatsForVoiceName.put(voiceName, new ArrayList<Integer[]>());
 	    }
 	}
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) {
-	    for(String name : this.barsForVoiceName.keySet()){
+		for(String name : this.barsForVoiceName.keySet()){
 	        System.out.println("Added voice " + name + " to voices list");
 	        List<List<Music>> voiceBars = barsForVoiceName.get(name);
+	        List<Integer[]> repeats = repeatsForVoiceName.get(name);
+	        int indexShift = 0;
+	        for(int i = 0; i < repeats.size(); i++){
+	        	List<List<Music>> barsToRepeat = new ArrayList<List<Music>>();
+	        	for(int j = repeats.get(i)[0]; j < repeats.get(i)[1]; j++) {
+	        		barsToRepeat.add(voiceBars.get(j));
+	        	}
+	        	voiceBars.addAll(repeats.get(i)[2] + indexShift, barsToRepeat);
+	        	//indexShift += barsToRepeat.size();
+	        }
 	        List<Music> concatenatedBars = new ArrayList<Music>();
 	        for(List<Music> bar : voiceBars) {
 	        	concatenatedBars.addAll(bar);
@@ -190,6 +217,7 @@ public class SongListener implements ABCMusicListener {
 				List<List<Music>> newVoice = new ArrayList<List<Music>>();
 				newVoice.add(new ArrayList<Music>());
 			    this.barsForVoiceName.put(voiceName, newVoice);
+			    this.repeatsForVoiceName.put(voiceName, new ArrayList<Integer[]>());
 			}
 		}
 	}
@@ -208,17 +236,51 @@ public class SongListener implements ABCMusicListener {
 	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) {
 		//TODO check about bars at the beginning/ this weird thing [|, etc
 		//TODO do we need a barline at the end?
+		String barlineString = "";
+		if(ctx.BARLINE() != null)
+			barlineString = ctx.BARLINE().getText();
+		else if(ctx.NTH_REPEAT() != null)
+			barlineString = ctx.NTH_REPEAT().getText();
+		
 		List<List<Music>> bars = barsForVoiceName.get(voiceName);
-		bars.add(new ArrayList<Music>());
+		
+		//TODO right now this supports only |:, :|
+		//TODO does not support nested repeats/multiple end repeats to same start repeat
+		boolean addNewBar = true;
+		
+		//TODO initialize each array when voice created
+		List<Integer[]> repeats = repeatsForVoiceName.get(voiceName);
+		Integer[] currentRepeat  = null;
+		if(repeats.size() > 0)
+			currentRepeat = repeats.get(repeats.size()-1);
+		else
+			currentRepeat = new Integer[3];
+		
+		if(barlineString.equals("|:")) {
+			if(currentRepeat != null) {
+				repeats.add(currentRepeat);
+			}
+			currentRepeat = new Integer[3];
+			currentRepeat[0] = new Integer(bars.size());
+		} else if(barlineString.equals(":|")) {
+			if(currentRepeat[1] == null)
+				currentRepeat[1] = new Integer(bars.size());
+			currentRepeat[2] = new Integer(bars.size() + 1);
+		} else if(barlineString.equals("[1")) {
+			addNewBar = false;
+			currentRepeat[1] = new Integer(bars.size());
+		} else if(barlineString.equals("[2")) {
+			addNewBar = false;
+		}
+		repeats.set(repeats.size()-1, currentRepeat);
+		if(addNewBar)
+			bars.add(new ArrayList<Music>());
 	}
 	
 	@Override public void enterAbc_line(ABCMusicParser.Abc_lineContext ctx) { }
 	@Override public void exitAbc_line(ABCMusicParser.Abc_lineContext ctx) {
 		List<List<Music>> bars = barsForVoiceName.get(voiceName);
 		int lineLength = bars.size();
-		int oldLength = 0;
-		if(currentBarForVoiceName.containsKey(voiceName))
-			oldLength = currentBarForVoiceName.get(voiceName);
 		currentBarForVoiceName.put(voiceName, lineLength);
 	}
 	
@@ -277,7 +339,6 @@ public class SongListener implements ABCMusicListener {
 			//Parse the not duration
 			Fraction duration = new Fraction(1,1);
 			if(splitNote.length == 2) {
-				//TODO why does fraction notation for duration allow for just a slash?
 				String durationString = splitNote[1];
 				String[] splitFraction = durationString.split("(?=/)|(?<=/)");
 				if(splitFraction.length == 3) {
@@ -449,6 +510,7 @@ public class SongListener implements ABCMusicListener {
         	List<List<Music>> newVoice = new ArrayList<List<Music>>();
         	newVoice.add(new ArrayList<Music>());
             this.barsForVoiceName.put(voiceName, newVoice);
+		    this.repeatsForVoiceName.put(voiceName, new ArrayList<Integer[]>());
         }
     }
 
@@ -557,9 +619,5 @@ public class SongListener implements ABCMusicListener {
 	public void exitBarline(BarlineContext ctx) {
 		// TODO Auto-generated method stub
 		
-	}
-
-    
-
-    
+	}    
 }

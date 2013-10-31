@@ -115,5 +115,5 @@ multinote: l_bracket (note_element)+ r_bracket;
 note_element : NOTE | multinote;
 
 tuplet_element : (DUPLET element element) | (TRIPLET element element element) | (QUADRUPLET element element element element);
-barline : BARLINE SPACE*;
-element : (note_element | tuplet_element | barline | NTH_REPEAT ) (SPACE*) ;
+barline : (BARLINE | NTH_REPEAT) SPACE*;
+element : (note_element | tuplet_element | barline ) (SPACE*) ;

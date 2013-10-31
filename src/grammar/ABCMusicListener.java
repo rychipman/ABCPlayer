@@ -1,8 +1,9 @@
-// Generated from ABCMusic.g4 by ANTLR 4.0
+// Generated from ./src/grammar/ABCMusic.g4 by ANTLR 4.0
 
 package grammar;
 
 import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.Token;
 
 public interface ABCMusicListener extends ParseTreeListener {
 	void enterElement(ABCMusicParser.ElementContext ctx);

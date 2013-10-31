@@ -21,7 +21,7 @@ public class SongTest {
      */
     @Test
     public void testAllSongs() {
-        String[] playMe = {"fur"};
+        String[] playMe = {"repeat"};
         String[] avoidMe = {};
         boolean playAll = false;
         boolean shouldAvoid;

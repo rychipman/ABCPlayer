@@ -1,9 +1,10 @@
-// Generated from ABCMusic.g4 by ANTLR 4.0
+// Generated from ./src/grammar/ABCMusic.g4 by ANTLR 4.0
 
 package grammar;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
 
