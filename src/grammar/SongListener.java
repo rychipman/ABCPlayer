@@ -27,7 +27,7 @@ import player.Note;
 import player.NoteEnum;
 import player.Rest;
 import player.Song;
-import player.TupleEnum;
+import player.TupletEnum;
 import player.Tuplet;
 import player.Voice;
 
@@ -308,11 +308,11 @@ public class SongListener implements ABCMusicListener {
 	    else if (ctx.QUADRUPLET() != null)
 	        type = 4;
 	    
-	    TupleEnum tupletType = TupleEnum.TRIPLET;
+	    TupletEnum tupletType = TupletEnum.TRIPLET;
 		switch(type) {
-		    case 2: tupletType = TupleEnum.DUPLET; break;
-		    case 3: tupletType = TupleEnum.TRIPLET; break;
-		    case 4: tupletType = TupleEnum.QUADRUPLET; break;
+		    case 2: tupletType = TupletEnum.DUPLET; break;
+		    case 3: tupletType = TupletEnum.TRIPLET; break;
+		    case 4: tupletType = TupletEnum.QUADRUPLET; break;
 		}
 		this.inMultinote = false;
 		//create the tuplet object and append it to the voice

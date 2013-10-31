@@ -3,31 +3,61 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A type representing a tuplet, which is simply a group of 
+ * notes played successively, with spacing dependent on the type of tuplet
+ * 
+ * Rep Invariant: This class is immutable
+ *      We copy the notes in the constructor to ensure that the client cannot modify them
+ *      The list of notes is final
+ *      We do not modify the fields in other methods
+ *      There is no rep exposure
+ *      
+ * Datatype definition:
+ * Tuplet = List<Note> + tuplet type
+ */
+
 public class Tuplet implements Music {
 
-	private final TupleEnum type;
-	private List<Music> notes;
+    /**
+     * The type of the tuplet - either a duplet, triplet, or quadruplet 
+     */
+	private final TupletEnum type;
 	
+	/**
+	 * The notes that constitute this tuplet
+	 */
+	private final List<Music> notes;
+	
+	/**
+	 * @return the notes that constitute this tuplet (IMPORTANT: the "notes" can include Chords)
+	 */
 	public List<Music> getNotes() {
         return notes;
     }
 	
-	public TupleEnum getType() {
+	/**
+	 * @return the type of this tuplet
+	 */
+	public TupletEnum getType() {
 		return type;
 	}
 
-    public void setNotes(List<Music> notes) {
-        this.notes = notes;
-    }
-
-    public Tuplet(TupleEnum type, List<Music> notes) {
+	/**
+	 * @param type the type of this tuplet (duplet, triplet, quadruplet)
+	 * @param notes the notes that constitute this tuplet
+	 */
+    public Tuplet(TupletEnum type, List<Music> notes) {
 		this.type = type;
 		this.notes = new ArrayList<Music>(notes);
 	}
 	
+    /**
+     * @return a string representation of this tuplet
+     */
 	@Override
 	public String toString() {
-	    String startString = (type == TupleEnum.DUPLET) ? "Duplet(" : ((type == TupleEnum.TRIPLET) ? "Triplet(" : "Quadruplet(");
+	    String startString = (type == TupletEnum.DUPLET) ? "Duplet(" : ((type == TupletEnum.TRIPLET) ? "Triplet(" : "Quadruplet(");
 		StringBuilder tupletBuilder = new StringBuilder(startString);
 		for(Music n : notes) {
 			tupletBuilder.append(n.toString() + ",");
@@ -46,11 +76,17 @@ public class Tuplet implements Music {
         } else {return false;}
     }
 	
+	/**
+	 * @return returns a copy of this tuplet
+	 */
 	@Override
 	public Music copy() {
 		return new Tuplet(this.type, new ArrayList<Music>(this.notes));
 	}
 
+	/**
+	 * @return Computes the duration of the tuplet based on its type and its constituents
+	 */
 	@Override
 	public Fraction getDuration() {
 		int durationNum = 0;
@@ -80,5 +116,4 @@ public class Tuplet implements Music {
 		}
 		return new Fraction(durationNum, durationDen);
 	}
-
 }

@@ -10,11 +10,31 @@ import sound.LyricListener;
 import sound.Pitch;
 import sound.SequencePlayer;
 
+/**
+ * A "Visitor" which recursively visits a Song and allows the Sequencer to play the song
+ */
 public class SongSequencerVisitor implements ISongSequencerVisitor{
+    
+    /**
+     * The key signature of the song
+     */
     private KeySignature keySignature;
+    
+    /**
+     * The default note length of the song
+     */
     private Fraction defaultNoteLength;
+    
+    /**
+     * The beats per minute of the song
+     */
     private int beatsPerMinute;
+    
+    /**
+     * The duration of one beat in the song
+     */
     private Fraction tempoBeat;
+    
     private HashMap<String, List<Music>> musicForVoiceName;
     
     public SongSequencerVisitor(){
@@ -126,7 +146,7 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         seqPlayer.play();
     }
     
-    public static int getTupleNoteDur(TupleEnum type, int duration) {
+    public static int getTupleNoteDur(TupletEnum type, int duration) {
         switch (type) {
         case DUPLET:
             duration /= 2;

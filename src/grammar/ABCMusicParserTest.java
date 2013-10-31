@@ -51,8 +51,7 @@ public class ABCMusicParserTest {
     public void testSong(){
         try {
             Song parsedSong = this.parseFile("sample_abc/piece1.abc");
-            Song builtUpSong;
-            assertTrue(header.equals(builtUpSong));
+
         } catch (IOException e) {
             assertTrue(false);
         };

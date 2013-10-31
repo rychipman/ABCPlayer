@@ -18,7 +18,6 @@ import java.util.List;
  *  Body = List<Voices>
  */
 public class Body implements ISongSequencerVisitable{
-    
     /**
      * This is the list of voices composing the song
      * Each voice will correspond to an instrument or the lyrics

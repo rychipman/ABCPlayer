@@ -43,7 +43,10 @@ public class Fraction implements Comparable<Object>{
         this.denominator = denominator;
     }
     
-    
+    /**
+     * Creates a fraction from a string
+     * @param fractionAsString a string of the form "x/y", where y cannot be 0
+     */
     public Fraction(String fractionAsString){
         String[] fracArray = fractionAsString.split("/");
         int num = Integer.parseInt(fracArray[0]);

@@ -7,12 +7,19 @@ import java.util.List;
  * This defines the basic functionality of all the constituents of the song (music + lyric).
  * Voice provides methods for the Visitor to use to transform notes, chords, lyrics, etc. to something that
  * can be used and played by the SequencePlayer. 
- * @author daniman
  */
 public class Voice implements ISongSequencerVisitable{
-    
+
+    /**
+     * The name of this voice
+     */
     private String voiceName;
     
+    /**
+     * The list of music (ex. notes (with lyrics), chords, tuplets) in this voice
+     */
+    private List<Music> songComponents;
+
     /**
      * Getter function for returning the voice name.
      * @return Returns the voice name.
@@ -28,12 +35,10 @@ public class Voice implements ISongSequencerVisitable{
     public void setVoiceName(String voiceName) {
         this.voiceName = voiceName;
     }
-
-    private List<Music> songComponents;
     
     /**
      * Returns a list of the Musics in the current Song.
-     * @return
+     * @return the song components
      */
     public List<Music> getSongComponents() {
         return this.songComponents;
@@ -67,6 +72,9 @@ public class Voice implements ISongSequencerVisitable{
         throw new UnsupportedOperationException("Can't get duration");
         }
 
+    /**
+     * Allows a visitor object to process this object
+     */
     @Override
     public void accept(ISongSequencerVisitor visitor) {
         visitor.visit(this);
