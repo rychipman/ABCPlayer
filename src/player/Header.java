@@ -27,9 +27,13 @@ public class Header implements ISongSequencerVisitable{
     private final KeySignature keySignature;
     
     /**
-     * The note 
+     * The meter of the song (field M )
      */
-    private final Fraction noteLengthPerBeat;
+    private final Fraction meter;
+    
+    /**
+     * The beats per minute of the song
+     */
     private final int beatsPerMinute;
     private final Fraction defaultLength;
     private Fraction tempoBeat;
@@ -58,7 +62,7 @@ public class Header implements ISongSequencerVisitable{
         this.title = title;
         this.composer = composer;
         this.keySignature = keySignature;
-        this.noteLengthPerBeat = noteLengthPerBeat;
+        this.meter = noteLengthPerBeat;
         this.beatsPerMinute = beatsPerMinute;
         this.defaultLength = defaultLength;
         this.tempoBeat = tempoBeat;
@@ -98,7 +102,7 @@ public class Header implements ISongSequencerVisitable{
      * @return Returns the note length per beat associated with the header.
      */
     public Fraction getNoteLengthPerBeat() {
-        return noteLengthPerBeat;
+        return meter;
     }
     
     /**
