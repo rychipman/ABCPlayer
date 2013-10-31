@@ -16,11 +16,6 @@ import sound.SequencePlayer;
 public class SongSequencerVisitor implements ISongSequencerVisitor{
     
     /**
-     * The key signature of the song
-     */
-    private KeySignature keySignature;
-    
-    /**
      * The default note length of the song
      */
     private Fraction defaultNoteLength;
@@ -49,14 +44,10 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
 
     @Override
     public void visit(Header header) {
-        this.keySignature = header.getKeySignature();
         this.defaultNoteLength = header.getDefaultLength();
         this.beatsPerMinute = header.getBeatsPerMinute();
         this.tempoBeat = header.getTempoBeat();
-        System.out.println("Key sig is " + this.keySignature);
-        System.out.println("note length per beat is " + defaultNoteLength);
-        System.out.println("beats per minute is " + beatsPerMinute);
-        System.out.println("Tempo beat is " + tempoBeat);
+        System.out.println(header);
     }
 
     @Override

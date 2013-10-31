@@ -73,7 +73,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Main.play(args[1]);
+            Main.play(args[0]);
         }catch(Exception ex){
             ex.printStackTrace();
         }

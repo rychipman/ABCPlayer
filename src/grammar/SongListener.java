@@ -206,7 +206,6 @@ public class SongListener implements ABCMusicListener {
 			}
 		}
 		if(ctx.FIELD_TEMPO() != null) {
-			//TODO also parse for optional length field
 		    String[] tempoStrings = ctx.FIELD_TEMPO().getText().replace("Q:","").split("=");
 		    tempoBeat = new Fraction(tempoStrings[0].trim());
 		    bpm = Integer.parseInt(tempoStrings[1].trim());
@@ -442,10 +441,7 @@ public class SongListener implements ABCMusicListener {
 	}
 	
 	@Override
-    public void enterLyric(LyricContext ctx) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void enterLyric(LyricContext ctx) {}
     @Override
     public void exitLyric(LyricContext ctx) {
     	//parse the lyrics into a list of individual syllables to be matched with notes
@@ -501,10 +497,7 @@ public class SongListener implements ABCMusicListener {
         matchLyricsToNotes(lyric, barsForVoiceName.get(voiceName));
     }
     @Override
-    public void enterField_voice(Field_voiceContext ctx) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void enterField_voice(Field_voiceContext ctx) {}
     @Override
     public void exitField_voice(Field_voiceContext ctx) {
         voiceName = ctx.getText().replace("V:", "").trim();
@@ -621,8 +614,5 @@ public class SongListener implements ABCMusicListener {
         
     }
 	@Override
-	public void exitBarline(BarlineContext ctx) {
-		// TODO Auto-generated method stub
-		
-	}    
+	public void exitBarline(BarlineContext ctx) {}    
 }
