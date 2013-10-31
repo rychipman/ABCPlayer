@@ -12,6 +12,7 @@ import org.junit.Test;
 
 /**
  * Test the ADT and ensure that we can use it to play songs
+ * @category no_didit
  */
 
 public class ADTSequencingTest {
@@ -75,7 +76,7 @@ public class ADTSequencingTest {
         assertTrue(true);
     }
     
-    @Test
+    @Test 
     public void testSuperMario() {
         List<Music> music = new ArrayList<Music>();
         List<Note> chordHolder = new ArrayList<Note>();

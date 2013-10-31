@@ -51,6 +51,7 @@ public class ABCMusicParserTest {
      * - Fail to parse note with invalid order
      */
     public final static String[] songFileNames = new String[]{"sample_abc/piece1.abc"};
+    
     @Test
     public void parseTest(){
         try {
@@ -69,45 +70,49 @@ public class ABCMusicParserTest {
         List<Note> chordHolder = new ArrayList<Note>();
         List<Music> tupletHolder = new ArrayList<Music>();
         chordHolder.add(new Note(NoteEnum.F, AccidentalEnum.SHARP, 0, new Fraction(1,2)));
-        chordHolder.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        chordHolder.add(new Note(NoteEnum.E, AccidentalEnum.NONE,1, new Fraction(1,2)));
         music.add(new Chord(chordHolder));
-        music.add(new Chord(chordHolder));
+        List<Note> chordHolder2 = new ArrayList<Note>();
+        chordHolder2.add(new Note(NoteEnum.F, AccidentalEnum.NONE, 0, new Fraction(1,2)));
+        chordHolder2.add(new Note(NoteEnum.E, AccidentalEnum.NONE,1, new Fraction(1,2)));
+        music.add(new Chord(chordHolder2));
         music.add(new Rest(new Fraction(1,2)));
-        music.add(new Chord(chordHolder));
+        music.add(new Chord(chordHolder2));
         music.add(new Rest(new Fraction(1,2)));
-        chordHolder.set(1, (new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(1,2))));
+        chordHolder.set(0, (new Note(NoteEnum.F, AccidentalEnum.NONE,0, new Fraction(1,2))));
+        chordHolder.set(1, (new Note(NoteEnum.C, AccidentalEnum.NONE,1, new Fraction(1,2))));
         music.add(new Chord(chordHolder));
-        chordHolder.set(0, (new Note(NoteEnum.F, AccidentalEnum.SHARP,0, new Fraction(1,1))));
-        chordHolder.set(1, (new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1))));
+        chordHolder.set(0, (new Note(NoteEnum.F, AccidentalEnum.NONE,0, new Fraction(1,1))));
+        chordHolder.set(1, (new Note(NoteEnum.E, AccidentalEnum.NONE,1, new Fraction(1,1))));
         music.add(new Chord(chordHolder));
-        chordHolder.set(0, (new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1))));
-        chordHolder.set(1, (new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,1))));
-        chordHolder.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        chordHolder.set(0, (new Note(NoteEnum.G, AccidentalEnum.NONE,0, new Fraction(1,1))));
+        chordHolder.set(1, (new Note(NoteEnum.B, AccidentalEnum.NONE,0, new Fraction(1,1))));
+        chordHolder.add(new Note(NoteEnum.G, AccidentalEnum.NONE,1, new Fraction(1,1)));
         music.add(new Chord(chordHolder));
         music.add(new Rest(new Fraction(1,1)));
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NONE,0, new Fraction(1,1)));
         music.add(new Rest(new Fraction(1,1)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(4,3)));
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NONE,1, new Fraction(3,2)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NONE,0, new Fraction(1,2)));
         music.add(new Rest(new Fraction(1,1)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,0, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
-        music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NONE,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NONE,0, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.A, AccidentalEnum.NONE,0, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.B, AccidentalEnum.NONE,0, new Fraction(1,1)));
         music.add(new Note(NoteEnum.B, AccidentalEnum.FLAT,0, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
-        tupletHolder.add(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
-        tupletHolder.add(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
-        tupletHolder.add(2, new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.A, AccidentalEnum.NONE,0, new Fraction(1,1)));
+        tupletHolder.add(0, new Note(NoteEnum.G, AccidentalEnum.NONE,0, new Fraction(1,1)));
+        tupletHolder.add(1, new Note(NoteEnum.E, AccidentalEnum.NONE,1, new Fraction(1,1)));
+        tupletHolder.add(2, new Note(NoteEnum.G, AccidentalEnum.NONE,1, new Fraction(1,1)));
         music.add(new Tuplet(TupletEnum.TRIPLET, tupletHolder));
-        music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
-        music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.A, AccidentalEnum.NONE,1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.F, AccidentalEnum.NONE,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.G, AccidentalEnum.NONE,1, new Fraction(1,2)));
         music.add(new Rest(new Fraction(1,2)));
-        music.add(new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
-        music.add(new Note(NoteEnum.C, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.D, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
-        music.add(new Note(NoteEnum.B, AccidentalEnum.NATURAL,0, new Fraction(3,4)));
+        music.add(new Note(NoteEnum.E, AccidentalEnum.NONE,1, new Fraction(1,1)));
+        music.add(new Note(NoteEnum.C, AccidentalEnum.NONE,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.D, AccidentalEnum.NONE,1, new Fraction(1,2)));
+        music.add(new Note(NoteEnum.B, AccidentalEnum.NONE,0, new Fraction(3,4)));
         music.add(new Rest(new Fraction(3,4)));
         
         Voice voice = new Voice("THE_DEFAULT_VOICE", music);
@@ -119,20 +124,7 @@ public class ABCMusicParserTest {
         
         try {
             Song parsedSong = parseFile("sample_abc/piece2.abc");
-            
-            System.out.println("++++++++++++++++++++++++++++++++++++++");
-            System.out.println(parsedSong.getBody().toString());
-            System.out.println("--------------------------------------");
-            System.out.println(manualSong.getBody().toString());
-           
-            for (int index = 0; index < manualSong.getBody().getVoices().size(); index ++) {
-                System.out.println(manualSong.getBody().getVoices().get(index).equals(parsedSong.getBody().getVoices().get(index)));
-            }
-            
-            System.out.println(parsedSong.getBody().equals(manualSong.getBody()));
-            
-            assertTrue(parsedSong.getBody().equals(manualSong.getBody()));
-            
+            assertTrue(parsedSong.equals(manualSong));
         } catch (IOException e) {
             assertTrue(false);
         };
