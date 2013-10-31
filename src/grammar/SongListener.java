@@ -152,6 +152,9 @@ public class SongListener implements ABCMusicListener {
 	        System.out.println("Added voice " + name + " to voices list");
 	        List<List<Music>> voiceBars = barsForVoiceName.get(name);
 	        List<Integer[]> repeats = repeatsForVoiceName.get(name);
+	        Integer[] lastRepeat = repeats.get(repeats.size()-1);
+	        if(lastRepeat[0] == null || lastRepeat[1] == null || lastRepeat[2] == null)
+	        	repeats.remove(repeats.size()-1);
 	        int indexShift = 0;
 	        for(int i = 0; i < repeats.size(); i++){
 	        	List<List<Music>> barsToRepeat = new ArrayList<List<Music>>();
@@ -272,7 +275,10 @@ public class SongListener implements ABCMusicListener {
 		} else if(barlineString.equals("[2")) {
 			addNewBar = false;
 		}
-		repeats.set(repeats.size()-1, currentRepeat);
+		if(repeats.size() > 0)
+			repeats.set(repeats.size()-1, currentRepeat);
+		else
+			repeats.add(currentRepeat);
 		if(addNewBar)
 			bars.add(new ArrayList<Music>());
 	}
