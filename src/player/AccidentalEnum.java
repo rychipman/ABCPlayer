@@ -31,8 +31,7 @@ public enum AccidentalEnum {
     /**
      * @return the number of semitones that this accidental will offset a note by
      */
-    public int getSemitoneOffset()
-    {
+    public int getSemitoneOffset(){
         return this.semitoneOffset;
     }
     

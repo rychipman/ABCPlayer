@@ -9,8 +9,29 @@ import java.util.Map;
  */
 
 public class KeySignature {
+    /**
+     * Array indicating the accidentals applied to each note, where
+     * accidental[i] = the number of semitones to increase the i'th note by
+     * and the "i'th" note can be determined as follows:
+     * 0 = A
+     * 1 = B
+     * 2 = C
+     * 3 = D
+     * 4 = E
+     * 5 = F
+     * 6 = G
+     */
     private int[] accidentals = new int[7];
+    
+    /**
+     * A map where the keys are the key signatures (ex. D, C#)
+     * and the values are the accidental offsets (as explained in the accidentals array comment)
+     */
     private Map<String, int[]> keySigMap;
+    
+    /**
+     * The key (ex. D, C#)
+     */
     private final String key;
     
     /**

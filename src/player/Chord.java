@@ -22,19 +22,29 @@ public class Chord implements Singable {
      * The list of notes to be played simultaneously
      */
     private final List<Note> notes;
+    
+    /**
+     * The syllable (associated with Chord)
+     */
     private String syllable;
     
     /**
-     * @return
+     * @return the notes in the chord
      */
     public List<Note> getNotes() {
         return notes;
     }
     
+    /**
+     * Sets the syllable associated with this Chord
+     */
     public void setSyllable(String syllable) {
     	this.syllable = syllable;
     }
     
+    /**
+     * Returns the syllable associated with this Chord
+     */
     public String getSyllable() {
         return syllable;
     }

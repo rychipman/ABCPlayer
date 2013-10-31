@@ -7,28 +7,62 @@ package player;
  */
 public class Note implements Singable {
     
+    /**
+     * The letter of this note (i.e. A, B, C, D, E, F, or G)
+     */
     private final NoteEnum note;
+    
+    /**
+     * The accidental applied to this note (sharp, flat, natural, double flat, double sharp)
+     */
     private final AccidentalEnum accidental;
+    
+    /**
+     * The octave of this note above (or below, if the value is negative) middle C
+     */
     private final int octave;
+    
+    /**
+     * The duration of the note
+     */
     private final Fraction duration;
+    
+    /**
+     * The syllable of the lyrics associated with this note
+     */
     private String syllable;
     
+    /**
+     * @param note The letter of this note (i.e. A, B, C, D, E, F, or G)
+     * @param accidental The accidental applied to this note (sharp, flat, natural, double flat, double sharp)
+     * @param octave The octave of this note above (or below, if the value is negative) middle C
+     * @param duration The duration of the note
+     */
     public Note(NoteEnum note, AccidentalEnum accidental, int octave, Fraction duration){
         this.note = note;
         this.accidental = accidental;
         this.octave = octave;
         this.duration = duration;
-        this.syllable = "";
+        this.syllable = ""; // begin with an empty syllable
     }
     
+    /**
+     * @param the syllable associated with this note
+     */
     public void setSyllable(String syllable) {
     	this.syllable = syllable;
     }
     
+    /**
+     * @return the syllable associated with this note 
+     */
     public String getSyllable() {
         return syllable;
     }
 
+    /**
+     * @return the string representation of this Note
+     */
     @Override
     public String toString() {
         StringBuilder octaveBuilder = new StringBuilder();

@@ -8,6 +8,9 @@ package player;
  */
 public class Rest implements Music {
 
+    /**
+     * The duration of the rest
+     */
     private final Fraction duration;
     
     /**

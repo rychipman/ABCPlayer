@@ -115,7 +115,7 @@ public class ADTSequencingTest {
         tupletHolder.add(0, new Note(NoteEnum.G, AccidentalEnum.NATURAL,0, new Fraction(1,1)));
         tupletHolder.add(1, new Note(NoteEnum.E, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
         tupletHolder.add(2, new Chord(chordHolder));
-        music.add(new Tuplet(TupleEnum.TRIPLET, tupletHolder));
+        music.add(new Tuplet(TupletEnum.TRIPLET, tupletHolder));
         music.add(new Note(NoteEnum.A, AccidentalEnum.NATURAL,1, new Fraction(1,1)));
         music.add(new Note(NoteEnum.F, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
         music.add(new Note(NoteEnum.G, AccidentalEnum.NATURAL,1, new Fraction(1,2)));
