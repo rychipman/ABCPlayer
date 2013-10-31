@@ -1,6 +1,5 @@
 package grammar;
 
-//TODO: Write better parser tests
 
 import static org.junit.Assert.*;
 
@@ -12,13 +11,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiUnavailableException;
-
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -36,7 +31,6 @@ import player.Note;
 import player.NoteEnum;
 import player.Rest;
 import player.Song;
-import player.SongSequencerVisitor;
 import player.Tuplet;
 import player.TupletEnum;
 import player.Voice;
@@ -62,7 +56,7 @@ public class ABCMusicParserTest {
             assertTrue(false);
         }
     }
-    
+
     @Test
     public void testSong(){
         
@@ -131,6 +125,7 @@ public class ABCMusicParserTest {
         
     }
     
+
     public static Song parseFile(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         String fileAsString = Charset.defaultCharset().decode(ByteBuffer.wrap(encoded)).toString();
@@ -150,8 +145,6 @@ public class ABCMusicParserTest {
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTreeListener listener = new SongListener();
         walker.walk(listener, tree);
-        
-        SongSequencerVisitor visitor = new SongSequencerVisitor();
         return ((SongListener)listener).getSong();
     }
     

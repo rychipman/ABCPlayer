@@ -129,7 +129,6 @@ public class SongListener implements ABCMusicListener {
 	    if(tempoBeat == null)
 	        tempoBeat = defaultLength;
 		header = new Header(index, title, composer, key, meter, bpm, tempoBeat, defaultLength);
-		System.out.println("Created header");
 	}
 	@Override
     public void enterAbc_tune(Abc_tuneContext ctx) {   }
@@ -145,18 +144,10 @@ public class SongListener implements ABCMusicListener {
 	        List<List<Music>> newVoice = new ArrayList<List<Music>>();
 	        newVoice.add(new ArrayList<Music>());
 	        this.barsForVoiceName.put(this.voiceName, newVoice);
-	        System.out.println("Added the default voice");
-		    Integer[] startRepeat = new Integer[]{0,0,0};
-		    List<Integer[]> reps = new ArrayList<Integer[]>();
-		    reps.add(startRepeat);
-		    this.repeatsForVoiceName.put(voiceName, reps);
 	    }
 	}
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) {
-		//for all voices, apply repeats and then move all the music
-		//from the containers representing bars into one List<Music>
-		for(String name : this.barsForVoiceName.keySet()){
-	        System.out.println("Added voice " + name + " to voices list");
+	    for(String name : this.barsForVoiceName.keySet()){
 	        List<List<Music>> voiceBars = barsForVoiceName.get(name);
 	        List<Integer[]> repeats = repeatsForVoiceName.get(name);
 	        Integer[] lastRepeat = repeats.get(repeats.size()-1);
@@ -178,7 +169,6 @@ public class SongListener implements ABCMusicListener {
 	        voices.add(new Voice(name, concatenatedBars));
 	    }
 		body = new Body(voices);
-		System.out.println("Created body");
 	}
 	
 	/**

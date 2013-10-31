@@ -19,7 +19,6 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import grammar.ABCMusicLexer;
 import grammar.ABCMusicParser;
-import grammar.ABCMusicParserTest;
 import grammar.SongListener;
 
 /**
@@ -73,11 +72,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        // CALL play() HERE
         try {
-            System.out.println(ABCMusicParserTest.parseFile(ABCMusicParserTest.songFileNames[0]));
-        } catch (IOException e) {
-            e.printStackTrace();
+            Main.play(args[1]);
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 }

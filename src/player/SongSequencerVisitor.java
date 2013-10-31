@@ -81,12 +81,8 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
             }
             if(lcmCalc.getDenominator() > lcm){
                 lcm = lcmCalc.getDenominator();
-                System.out.println("Changed LCM to " + lcm);
             }
         }
-                Fraction ticksPerBeat = new Fraction(1, lcmCalc.getDenominator());
-                System.out.println("LCM = " + lcmCalc.getDenominator());
-        // Initializes a new listener that allows us to print the lyrics
         LyricListener listener = new LyricListener() {
              public void processLyricEvent(String text) {
                  System.out.println(text);
