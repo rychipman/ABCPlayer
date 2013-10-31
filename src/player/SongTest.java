@@ -23,7 +23,7 @@ public class SongTest {
     public void testAllSongs() {
         String[] playMe = {"repeat"};
         String[] avoidMe = {};
-        boolean playAll = false;
+        boolean playAll = true;
         boolean shouldAvoid;
         for (String fileName : SongTest.getAllSampleFileNames()){
             shouldAvoid = false;

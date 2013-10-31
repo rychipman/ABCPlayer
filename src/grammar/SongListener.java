@@ -144,6 +144,10 @@ public class SongListener implements ABCMusicListener {
 	        List<List<Music>> newVoice = new ArrayList<List<Music>>();
 	        newVoice.add(new ArrayList<Music>());
 	        this.barsForVoiceName.put(this.voiceName, newVoice);
+	        Integer[] startRepeat = new Integer[]{0,0,0};
+	        List<Integer[]> reps = new ArrayList<Integer[]>();
+	        reps.add(startRepeat);
+	        this.repeatsForVoiceName.put(voiceName, reps);
 	    }
 	}
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) {
