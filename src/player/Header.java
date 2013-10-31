@@ -27,38 +27,44 @@ public class Header implements ISongSequencerVisitable{
     private final KeySignature keySignature;
     
     /**
-     * The note 
+     * The meter of the song (field M in header)
      */
-    private final Fraction noteLengthPerBeat;
+    private final Fraction meter;
+    
+    /**
+     * The beats per minute of the song (field Q in header)
+     */
     private final int beatsPerMinute;
+    
+    /**
+     * The default length of a note (field L in header)
+     */
     private final Fraction defaultLength;
+    
+    /**
+     * The duration of a note which counts as one beat (field Q in header)
+     */
     private Fraction tempoBeat;
 
-    public Fraction getTempoBeat() {
-        return tempoBeat;
-    }
-
-    public void setTempoBeat(Fraction tempoBeat) {
-        this.tempoBeat = tempoBeat;
-    }
+   
 
     /**
      * Initializes a new Header.
-     * @param indexNumber is an int
-     * @param title is a String
-     * @param composer is a String
-     * @param keySignature is a KeySignature
-     * @param noteLengthPerBeat is a Fraction
-     * @param beatsPerMinute is an int
-     * @param defaultLength is a Fraction
-     * @param tempoBeat is a Fraction
+     * @param indexNumber is the index of the header
+     * @param title is the title of the header
+     * @param composer is the composer of the header
+     * @param keySignature is the key signature of the header
+     * @param meter is the meter of the header
+     * @param beatsPerMinute is the beats per minute of the header
+     * @param defaultLength is the default length of a note
+     * @param tempoBeat is the duration of a note which is associated with one beat
      */
     public Header(int indexNumber, String title, String composer, KeySignature keySignature, Fraction noteLengthPerBeat, int beatsPerMinute, Fraction tempoBeat, Fraction defaultLength) {
         this.indexNumber = indexNumber;
         this.title = title;
         this.composer = composer;
         this.keySignature = keySignature;
-        this.noteLengthPerBeat = noteLengthPerBeat;
+        this.meter = noteLengthPerBeat;
         this.beatsPerMinute = beatsPerMinute;
         this.defaultLength = defaultLength;
         this.tempoBeat = tempoBeat;
@@ -72,6 +78,13 @@ public class Header implements ISongSequencerVisitable{
         this(header.getIndexNumber(), header.getTitle(), header.getComposer(), header.getKeySignature(), header.getNoteLengthPerBeat(), header.getBeatsPerMinute(), header.getTempoBeat(), header.getDefaultLength());
     }
 
+    /**
+     * @return The duration of a note which counts as one beat (field Q in header)
+     */
+    public Fraction getTempoBeat() {
+        return tempoBeat;
+    }
+    
     /**
      * @return Returns the index number associated with the header.
      */
@@ -98,7 +111,7 @@ public class Header implements ISongSequencerVisitable{
      * @return Returns the note length per beat associated with the header.
      */
     public Fraction getNoteLengthPerBeat() {
-        return noteLengthPerBeat;
+        return meter;
     }
     
     /**
@@ -132,6 +145,9 @@ public class Header implements ISongSequencerVisitable{
         return output.toString();
     }
 
+    /**
+     * Method that allows the Visitor to process this object
+     */
     @Override
     public void accept(ISongSequencerVisitor visitor) {
         visitor.visit(this);

@@ -10,7 +10,15 @@ package player;
  *      and they are recursively immutable
  */
 public class Song implements ISongSequencerVisitable{
+    
+    /**
+     * The header of the song
+     */
     private final Header header;
+    
+    /**
+     * The body of the song
+     */
     private final Body body;
     
     /**
@@ -37,6 +45,9 @@ public class Song implements ISongSequencerVisitable{
         return body;
     }
 
+    /**
+     * Method that allows the Visitor to process this object
+     */
     @Override
     public void accept(ISongSequencerVisitor visitor) {
         visitor.visit(this);
