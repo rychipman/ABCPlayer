@@ -82,18 +82,15 @@ public class SongListener implements ABCMusicListener {
 	private String voiceName;
 	
 	/**
-	 * a List containing documentation of repeats:
+	 * a hashmap to associate repeats with the appropriate voice
+	 * 
+	 * the lists contain documentation of repeats:
 	 * a repeat is a 3-element array including the following data:
 	 * - range of bars to repeat (start & end)
 	 * - the bar after which the repeat is inserted
 	 * [startBar (inclusive), endBar (exclusive), repeatAt]
 	 * the last entry in this list will always be the currently open repeat
 	 * (as such, nested repeats are not supported)
-	 */
-	private List<Integer[]> repeats;
-	
-	/**
-	 * a hashmap to associate repeats with the appropriate voice
 	 */
 	private HashMap<String, List<Integer[]>> repeatsForVoiceName = new HashMap<String, List<Integer[]>>();
 	
@@ -137,17 +134,27 @@ public class SongListener implements ABCMusicListener {
 	@Override
     public void enterAbc_tune(Abc_tuneContext ctx) {   }
 	
+	/**
+	 * Entering the music section of the file
+	 */
 	@Override public void enterAbc_music(ABCMusicParser.Abc_musicContext ctx) {	
-	    if(this.voiceName == null){
+	    // if there is not voice specified, use a default voice
+		//initialize containers
+		if(this.voiceName == null){
 	        this.voiceName = "THE_DEFAULT_VOICE";
 	        List<List<Music>> newVoice = new ArrayList<List<Music>>();
 	        newVoice.add(new ArrayList<Music>());
 	        this.barsForVoiceName.put(this.voiceName, newVoice);
 	        System.out.println("Added the default voice");
-		    this.repeatsForVoiceName.put(voiceName, new ArrayList<Integer[]>());
+		    Integer[] startRepeat = new Integer[]{0,0,0};
+		    List<Integer[]> reps = new ArrayList<Integer[]>();
+		    reps.add(startRepeat);
+		    this.repeatsForVoiceName.put(voiceName, reps);
 	    }
 	}
 	@Override public void exitAbc_music(ABCMusicParser.Abc_musicContext ctx) {
+		//for all voices, apply repeats and then move all the music
+		//from the containers representing bars into one List<Music>
 		for(String name : this.barsForVoiceName.keySet()){
 	        System.out.println("Added voice " + name + " to voices list");
 	        List<List<Music>> voiceBars = barsForVoiceName.get(name);
@@ -162,7 +169,7 @@ public class SongListener implements ABCMusicListener {
 	        		barsToRepeat.add(voiceBars.get(j));
 	        	}
 	        	voiceBars.addAll(repeats.get(i)[2] + indexShift, barsToRepeat);
-	        	//indexShift += barsToRepeat.size();
+	        	indexShift += barsToRepeat.size();
 	        }
 	        List<Music> concatenatedBars = new ArrayList<Music>();
 	        for(List<Music> bar : voiceBars) {
@@ -215,12 +222,16 @@ public class SongListener implements ABCMusicListener {
 		    bpm = Integer.parseInt(tempoStrings[1].trim());
 		}
 		if(ctx.FIELD_VOICE() != null) {
+			//initialize containers for this voice
 			voiceName = ctx.FIELD_VOICE().getText().replace("V:", "").trim();
 			if(!this.barsForVoiceName.containsKey(voiceName)) {
 				List<List<Music>> newVoice = new ArrayList<List<Music>>();
 				newVoice.add(new ArrayList<Music>());
 			    this.barsForVoiceName.put(voiceName, newVoice);
-			    this.repeatsForVoiceName.put(voiceName, new ArrayList<Integer[]>());
+			    Integer[] startRepeat = new Integer[]{0,0,0};
+			    List<Integer[]> reps = new ArrayList<Integer[]>();
+			    reps.add(startRepeat);
+			    this.repeatsForVoiceName.put(voiceName, reps);
 			}
 		}
 	}
@@ -237,8 +248,7 @@ public class SongListener implements ABCMusicListener {
 	 */
 	
 	@Override public void enterBarline(ABCMusicParser.BarlineContext ctx) {
-		//TODO check about bars at the beginning/ this weird thing [|, etc
-		//TODO do we need a barline at the end?
+		//parse notes into bars and keep track of repeats
 		String barlineString = "";
 		if(ctx.BARLINE() != null)
 			barlineString = ctx.BARLINE().getText();
@@ -246,12 +256,9 @@ public class SongListener implements ABCMusicListener {
 			barlineString = ctx.NTH_REPEAT().getText();
 		
 		List<List<Music>> bars = barsForVoiceName.get(voiceName);
-		
-		//TODO right now this supports only |:, :|
-		//TODO does not support nested repeats/multiple end repeats to same start repeat
+		//does not support nested repeats/multiple end repeats to same start repeat
 		boolean addNewBar = true;
 		
-		//TODO initialize each array when voice created
 		List<Integer[]> repeats = repeatsForVoiceName.get(voiceName);
 		Integer[] currentRepeat  = null;
 		if(repeats.size() > 0)
@@ -260,10 +267,6 @@ public class SongListener implements ABCMusicListener {
 			currentRepeat = new Integer[3];
 		
 		if(barlineString.equals("|:")) {
-			if(currentRepeat != null) {
-				repeats.add(currentRepeat);
-			}
-			currentRepeat = new Integer[3];
 			currentRepeat[0] = new Integer(bars.size());
 		} else if(barlineString.equals(":|")) {
 			if(currentRepeat[1] == null)
@@ -274,6 +277,9 @@ public class SongListener implements ABCMusicListener {
 			currentRepeat[1] = new Integer(bars.size());
 		} else if(barlineString.equals("[2")) {
 			addNewBar = false;
+		} else if(barlineString.equals("[|")) {
+			if(currentRepeat[0] == null)
+				currentRepeat[0] = new Integer(bars.size());
 		}
 		if(repeats.size() > 0)
 			repeats.set(repeats.size()-1, currentRepeat);
@@ -452,6 +458,7 @@ public class SongListener implements ABCMusicListener {
     }
     @Override
     public void exitLyric(LyricContext ctx) {
+    	//parse the lyrics into a list of individual syllables to be matched with notes
         List<String> lyric = new ArrayList<String>();
         StringBuilder syllable = new StringBuilder();
         String context = ctx.LYRIC().getText();
@@ -501,7 +508,6 @@ public class SongListener implements ABCMusicListener {
             	lyric.add(syllable.toString());
             }
         } 
-        //TODO We need to do this for all voices and all lyrics
         matchLyricsToNotes(lyric, barsForVoiceName.get(voiceName));
     }
     @Override
@@ -516,7 +522,10 @@ public class SongListener implements ABCMusicListener {
         	List<List<Music>> newVoice = new ArrayList<List<Music>>();
         	newVoice.add(new ArrayList<Music>());
             this.barsForVoiceName.put(voiceName, newVoice);
-		    this.repeatsForVoiceName.put(voiceName, new ArrayList<Integer[]>());
+		    Integer[] startRepeat = new Integer[]{0,0,0};
+		    List<Integer[]> reps = new ArrayList<Integer[]>();
+		    reps.add(startRepeat);
+		    this.repeatsForVoiceName.put(voiceName, reps);
         }
     }
 

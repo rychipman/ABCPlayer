@@ -94,18 +94,21 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
         int startTick = 0;
         int duration;
         for (String voiceName : this.musicForVoiceName.keySet()){
+        	String lyricsPrefix = "";
+        	if(!voiceName.equals("THE_DEFAULT_VOICE"))
+        		lyricsPrefix = voiceName;
             startTick = 0;
             for(Music m : this.musicForVoiceName.get(voiceName)){
                 duration = (int) (m.getDuration().toDouble() * defaultNoteLength.toDouble() / tempoBeat.toDouble() * lcm);
                 if (m instanceof Note){
                     Note mNote = (Note)m;
                     Pitch pitch = new Pitch(mNote.getNote().toString().charAt(0)).transpose(mNote.getAccidental().getSemitoneOffset() + 12*mNote.getOctave());
-                    if (mNote.getSyllable() != null && !mNote.getSyllable().equals("")) {seqPlayer.addLyricEvent(mNote.getSyllable(), startTick);}
+                    if (mNote.getSyllable() != null && !mNote.getSyllable().equals("")) {seqPlayer.addLyricEvent(lyricsPrefix + mNote.getSyllable(), startTick);}
                     seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
                     startTick += duration;
                 } else if (m instanceof Chord){
                     Chord mChord = (Chord)m;
-                    if (mChord.getSyllable() != null && !mChord.getSyllable().equals("")) {seqPlayer.addLyricEvent(mChord.getSyllable(), startTick);}
+                    if (mChord.getSyllable() != null && !mChord.getSyllable().equals("")) {seqPlayer.addLyricEvent(lyricsPrefix + mChord.getSyllable(), startTick);}
                     for (Note n : mChord.getNotes()){
                         Pitch pitch = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
                         seqPlayer.addNote(pitch.toMidiNote(), startTick, duration);
@@ -120,12 +123,12 @@ public class SongSequencerVisitor implements ISongSequencerVisitor{
                             Pitch pitch1 = null;
                         	Note n = (Note)tupletElem;
                         	pitch1 = new Pitch(n.getNote().toString().charAt(0)).transpose(n.getAccidental().getSemitoneOffset() + 12*n.getOctave());
-                        	if (n.getSyllable() != null && !n.getSyllable().equals("")) {seqPlayer.addLyricEvent(n.getSyllable(), startTick);}
+                        	if (n.getSyllable() != null && !n.getSyllable().equals("")) {seqPlayer.addLyricEvent(lyricsPrefix + n.getSyllable(), startTick);}
                         	seqPlayer.addNote(pitch1.toMidiNote(), startTick, tupleNoteDur); 
                         	startTick += tupleNoteDur;
                         } else if (tupletElem instanceof Chord) {
                             Chord c = (Chord)tupletElem;
-                            if (c.getSyllable() != null && !c.getSyllable().equals("")) {seqPlayer.addLyricEvent(c.getSyllable(), startTick);}
+                            if (c.getSyllable() != null && !c.getSyllable().equals("")) {seqPlayer.addLyricEvent(lyricsPrefix + c.getSyllable(), startTick);}
                             for (Note note : c.getNotes()){
                                 Pitch pitch2 = null;
                                 pitch2 = new Pitch(note.getNote().toString().charAt(0)).transpose(note.getAccidental().getSemitoneOffset() + 12*note.getOctave());
