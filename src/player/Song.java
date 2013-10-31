@@ -66,4 +66,14 @@ public class Song implements ISongSequencerVisitable{
         return builder.toString();
     }
     
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Song))
+            return false;
+        Song compareSong = (Song)other;
+        if (compareSong.header == this.header && compareSong.body == this.body) {
+            return true;
+        } else {return false;}
+    }
+    
 }

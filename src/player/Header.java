@@ -46,7 +46,9 @@ public class Header implements ISongSequencerVisitable{
      */
     private Fraction tempoBeat;
 
-   
+    public void setTempoBeat(Fraction tempoBeat) {
+        this.tempoBeat = tempoBeat;
+    }
 
     /**
      * Initializes a new Header.
@@ -129,6 +131,14 @@ public class Header implements ISongSequencerVisitable{
     }
     
     /**
+     * Method that allows the Visitor to process this object
+     */
+    @Override
+    public void accept(ISongSequencerVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    /**
      * Returns a string representation of the Header.
      */
     @Override
@@ -144,12 +154,23 @@ public class Header implements ISongSequencerVisitable{
         output.append("\n - Tempo beat: " + this.getTempoBeat());
         return output.toString();
     }
-
+    
     /**
-     * Method that allows the Visitor to process this object
+     * Returns a boolean representing whether the two compared Headers are equivalent.
      */
     @Override
-    public void accept(ISongSequencerVisitor visitor) {
-        visitor.visit(this);
+    public boolean equals(Object other) {
+        if(!(other instanceof Header))
+            return false;
+        Header compareHeader = (Header)other;
+        if (compareHeader.indexNumber == this.indexNumber &&
+                compareHeader.title == this.title &&
+                compareHeader.composer == this.composer &&
+                compareHeader.keySignature == this.keySignature &&
+                compareHeader.beatsPerMinute == this.beatsPerMinute &&
+                compareHeader.defaultLength == this.defaultLength &&
+                compareHeader.tempoBeat == this.tempoBeat) {
+            return true;
+        } else {return false;}
     }
 }

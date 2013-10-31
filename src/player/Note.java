@@ -76,4 +76,18 @@ public class Note implements Singable {
         copiedNote.setSyllable(this.getSyllable());
         return copiedNote;
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Note))
+            return false;
+        Note compareNote = (Note)other;
+        if (compareNote.note == this.note &&
+                compareNote.accidental == this.accidental &&
+                compareNote.octave == this.octave &&
+                compareNote.duration == this.duration &&
+                compareNote.syllable == this.syllable) {
+            return true;
+        } else {return false;}
+    }
 }
