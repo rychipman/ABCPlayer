@@ -219,7 +219,7 @@ public class SongListener implements ABCMusicListener {
 		int oldLength = 0;
 		if(currentBarForVoiceName.containsKey(voiceName))
 			oldLength = currentBarForVoiceName.get(voiceName);
-		currentBarForVoiceName.put(voiceName, lineLength + oldLength);
+		currentBarForVoiceName.put(voiceName, lineLength);
 	}
 	
 	@Override public void enterElement(ABCMusicParser.ElementContext ctx) { }
